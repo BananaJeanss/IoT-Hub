@@ -1,0 +1,138 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+#login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 30, 30, 0.95);
+}
+
+.auth-container {
+  background: #25282b;
+  padding: 40px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 340px;
+  max-width: fit-content;
+  width: 100%;
+}
+
+.auth-container h1 {
+  margin-bottom: 24px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.auth-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 64px;
+  padding: 25px;
+  width: fit-content;
+}
+
+.auth-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-right img {
+  display: block;
+  max-width: 150px;
+  height: auto;
+}
+
+.auth-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.auth-left form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+}
+
+.auth-left label {
+  font-weight: 500;
+  margin-top: 8px;
+  color: #fff;
+}
+
+.auth-left input[type="text"],
+.auth-left input[type="password"],
+.auth-left input[type="email"] {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #1f1f1f;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.auth-left input:focus {
+  border-color: #3498db;
+}
+
+.auth-left button[type="submit"] {
+  margin-top: 12px;
+  padding: 10px 0;
+  border: none;
+  border-radius: 6px;
+  background: #3498db;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.auth-left button:hover {
+  background: #217dbb;
+}
+
+.auth-left p {
+  margin-top: 18px;
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+.auth-left a {
+  color: #72b4e0;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.auth-left a:hover {
+  color: #3498db;
+}
+
+@media (max-width: 600px) {
+  .auth-container {
+    padding: 24px 8px;
+    min-width: unset;
+    max-width: 98vw;
+  }
+  .auth-inner {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .auth-right img {
+    max-width: 120px;
+  }
+}

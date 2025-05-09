@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - IoT Hub</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div id="navbar"></div>
+    <div id="hero">
+        <div id="hero-container">
+            <div id="left-half">
+                <img src="../assets/logow.png" height="150px" alt="">
+            </div>
+            <div id="right-half">
+                <div class="glow-bg green"></div>
+                <h1>Community</h1>
+                <p>Share your ideas, discuss projects, and more with the community.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        fetch('../navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+            });
+    </script>
+</body>
+</html>

@@ -111,6 +111,24 @@ body {
   pointer-events: none;
 }
 
+.glow-bg.green {
+    background: radial-gradient(circle, #27ae60 0%, transparent 70%);
+  }
+  
+.glow-bg.red {
+background: radial-gradient(circle, #e74c3c 0%, transparent 70%);
+}
+
+.glow-bg.yellow {
+background: radial-gradient(circle, #f1c40f 0%, transparent 70%);
+}
+.glow-bg.purple {
+background: radial-gradient(circle, #8e44ad 0%, transparent 70%);
+}
+.glow-bg.cyan {
+background: radial-gradient(circle, #00fff2 0%, transparent 70%);
+}
+
 #content {
   padding: 40px 0;
 }

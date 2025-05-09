@@ -1,0 +1,13 @@
+#foohfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    font-size: 2vh;
+}
+
+#foohfo h1 {
+    font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', 'Liberation Mono', 'Courier New', monospace;
+    font-size: 18vh;
+}
