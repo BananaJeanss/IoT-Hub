@@ -51,9 +51,9 @@ body {
 }
 
 #left-nav img {
-  height: 64px;
   margin-right: 16px;
 }
+
 
 #navbar a {
   color: var(--secondary-color);
