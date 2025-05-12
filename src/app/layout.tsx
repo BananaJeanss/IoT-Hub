@@ -1,6 +1,7 @@
 import Navbar from "../components/navbar"; // Import the Navbar component
 import "./globals.css";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "IoT Hub",
@@ -22,6 +23,7 @@ export default function RootLayout({
           <Navbar />
         </div>
         <div id="main">{children}</div>
+        <Analytics />
       </body>
     </html>
   );
