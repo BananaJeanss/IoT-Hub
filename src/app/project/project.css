@@ -1,0 +1,101 @@
+#project-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    padding: 40px 100px;
+}
+
+#project-header {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--tertiary-color);
+    border-radius: 25px 25px 0 0;
+}
+
+#project-upper-header {
+    background-color: beige ;
+    height: 10vmax;
+    border-radius: 25px 25px 0 0;
+}
+
+#project-lower-header {
+    padding: 10px 50px;
+}
+
+#tags p {
+    background-color: var(--background-color); /* Dark background */
+    color: var(--secondary-color); /* Light text color */
+    padding: 4px 12px; /* Padding for the tag */
+    border-radius: 12px; /* Rounded corners */
+    font-size: 14px; /* Font size */
+    font-weight: 500; /* Slightly bold text */
+    display: inline-block; /* Ensures proper spacing */
+    border: 1px solid #444; /* Optional border for better contrast */
+    text-align: center;
+    white-space: nowrap; /* Prevents text wrapping */
+}
+
+#project-contents {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--tertiary-color);
+    border-radius: 0 0 25px 25px;
+    padding: 25px;
+}
+
+#project-contents-left, #project-contents-right {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--tertiary-color);
+    border-radius: 0 0 25px 25px;
+    padding: 25px;
+}
+
+#project-contents-left {
+    flex: 2;
+}
+
+#project-contents-right {
+    flex: 0.7;
+}
+
+#project-content-seperator {
+    width: 4px;
+    background-color: var(--background-color);
+    margin: 0 25px;
+    align-self: stretch;
+    height: auto;
+}
+
+#project-contents-details {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color);
+    border-radius: 25px;
+    padding: 25px;
+}
+
+#project-contents-details p {
+    margin: 5px 5px;
+    padding: 15px;
+    background-color: var(--tertiary-color);
+    border-radius: 15px;
+}
+
+#project-contents-details p a {
+    color: var(--main-color);
+    text-decoration: none;
+}
+
+#github-logo-link {
+    display: inline-block; /* Makes it behave like an inline element */
+    background-image: url('/assets/github.png'); /* Path to your image */
+    background-size: cover; /* Ensures the image covers the entire div */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    width: 23px; /* Set the width of the icon */
+    height: 23px; /* Set the height of the icon */
+    vertical-align: middle; /* Aligns it with text */
+    filter: invert(1); /* Optional: Inverts the color for dark mode */
+}

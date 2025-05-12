@@ -1,0 +1,143 @@
+#explore {
+  margin: 0 64px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+#explore-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.explore-card {
+  background-color: var(--tertiary-color);
+  border-radius: 12px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.explore-card:hover {
+  transform: scale(1.03);
+}
+
+.explore-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.explore-card h3 {
+  margin: 16px;
+  font-size: 20px;
+  color: #72b4e0;
+}
+
+.explore-card p {
+  margin: 0 16px 16px 16px;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.explore-card a {
+  text-decoration: none;
+}
+
+#stats {
+  margin: 0 32px 16px 32px;
+}
+
+#stats-left {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+
+}
+
+#stats-left p {
+  padding: 0;
+  margin: 0 16px;
+  text-align: center;
+}
+
+#stats-right {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+#stats-username {
+  display: flex;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  margin: 0;
+}
+
+#stats-date {
+  display: flex;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  margin: 0;
+}
+
+#stats-pfp {
+    color: #ccc;
+    font-size: 14px;
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 10px;
+}
+
+.dropdown select {
+  background: var(--tertiary-color);
+  color: var(--secondary-color);
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 8px 32px 8px 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  appearance: none;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+
+.dropdown select:focus {
+  border-color: var(--main-color);
+  box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+}
+
+.dropdown option {
+  background: var(--background-color);
+  color: var(--secondary-color);
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown::after {
+  content: "▼";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+  font-size: 0.8em;
+}

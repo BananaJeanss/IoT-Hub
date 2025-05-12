@@ -65,6 +65,14 @@
   width: 100%;
   box-sizing: border-box;
   gap: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.37);
+  transform: scale(1);
+  transition: transform 0.2s;
+}
+
+.profile-project-card:hover {
+  transform: scale(1.03);
+  transition: transform 0.2s;
 }
 
 .profile-project-card img {
@@ -124,12 +132,17 @@
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 
-.tag {
-    background-color: var(--background-color);
-    padding: 4px 8px;
-    border-radius: 12px;
-    color: #ffffff;
-    font-size: 14px;
+  .tag {
+    background-color: var(--background-color); /* Dark background */
+    color: var(--secondary-color); /* Light text color */
+    padding: 4px 12px; /* Padding for the tag */
+    border-radius: 12px; /* Rounded corners */
+    font-size: 14px; /* Font size */
+    font-weight: 500; /* Slightly bold text */
+    display: inline-block; /* Ensures proper spacing */
+    border: 1px solid #444; /* Optional border for better contrast */
+    text-align: center;
+    white-space: nowrap; /* Prevents text wrapping */
 }
 
 #activity-link{
