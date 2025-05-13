@@ -4,6 +4,11 @@
     position: relative;
     z-index: 1;
     padding: 40px 100px;
+    
+}
+
+#project-cont2 {
+    background-color: var(--tertiary-color);
 }
 
 #project-header {
@@ -14,13 +19,18 @@
 }
 
 #project-upper-header {
-    background-color: beige ;
+    background: linear-gradient(90deg, var(--main-color), var(--secondary-color));
     height: 10vmax;
     border-radius: 25px 25px 0 0;
 }
 
 #project-lower-header {
     padding: 10px 50px;
+}
+
+#tags {
+    display: flex;
+    gap: 10px;
 }
 
 #tags p {
@@ -60,12 +70,34 @@
     flex: 0.7;
 }
 
-#project-content-seperator {
+hr {
     width: 4px;
     background-color: var(--background-color);
     margin: 0 25px;
+    border-radius: 4px;
     align-self: stretch;
     height: auto;
+    border: none;
+    min-height: 4px;
+    display: inline-block;
+}
+
+hr.horizontal {
+    width: calc(100% - 150px);
+    height: 4px;
+    background-color: var(--background-color);
+    margin: 0 75px;
+    border-radius: 4px;
+    display: block;
+}
+
+#project-content-horizontal-separator {
+    height: 4px;
+    width: 100%;
+    background-color: var(--background-color);
+    margin: 25px 0;
+    border-radius: 4px;
+    align-self: stretch;
 }
 
 #project-contents-details {

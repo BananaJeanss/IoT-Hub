@@ -1,10 +1,42 @@
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
-
+import { useState, useEffect, useRef } from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Navbar() {
+  const [navActive, setNavActive] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleToggle = () => {
+    setNavActive((prev) => !prev);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    }
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
   return (
-    <div className="navbar-container">
+    <div className={`navbar-container${navActive ? ' active' : ''}`}>
       <div id="left-nav">
         <Link href="/">
           <Image src="/assets/logow.png" alt="Logo" width={64} height={64} />
@@ -14,16 +46,56 @@ export default function Navbar() {
         <Link href="/popular">Popular</Link>
         <Link href="/community">Community</Link>
       </div>
-      <button id="navbar-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <button
+        id="navbar-toggle"
+        aria-label="Toggle navigation"
+        aria-expanded={navActive}
+        onClick={handleToggle}
+      >
+        &#9776;
+      </button>
       <div id="right-nav">
-        <div id="navbar-userinfo">
-          <Image id="nav-pfp" src="/assets/user.png" alt="Profile Picture" width={32} height={32} />
-          <span id="username">
-            <Link href="/user/"><strong>Username</strong></Link>
-          </span>
-        </div>
-        <Link href="/login">Login</Link>
-        <Link href="/login#signup">Sign Up</Link>
+        {session?.user ? (
+          <div id="navbar-userinfo" ref={dropdownRef}>
+            <Image
+              id="nav-pfp"
+              src={session.user.image || "/assets/user.png"}
+              alt="Profile Picture"
+              width={32}
+              height={32}
+            />
+            <span id="username">
+              <Link href="/user/">
+                <strong>{session.user.name || "User"}</strong>
+              </Link>
+            </span>
+            <div className="navbar-dropdown">
+              <button
+                className="dropdown-toggle"
+                aria-haspopup="true"
+                aria-expanded={dropdownOpen}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDropdownOpen((prev: boolean) => !prev);
+                }}
+              >
+                <Image src="/assets/arrow.png" alt="Menu" width={16} height={16} />
+              </button>
+              {dropdownOpen && (
+                <ul className="dropdown-menu">
+                  <li>
+                    <button onClick={() => signOut()}>Logout</button>
+                  </li>
+                </ul>
+              )}
+            </div>
+          </div>
+        ) : ( // User not logged in
+          <>
+            <Link href="/login">Login</Link>
+            <Link href="/login#signup">Sign Up</Link>
+          </>
+        )}
       </div>
     </div>
   );

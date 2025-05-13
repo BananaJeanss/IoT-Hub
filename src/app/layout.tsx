@@ -1,8 +1,6 @@
-import Navbar from "../components/navbar"; // Import the Navbar component
 import "./globals.css";
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
-
+import ClientLayout from "./ClientLayout";
 export const metadata: Metadata = {
   title: "IoT Hub",
   description: "Discover projects, learn new skills and share your own.",
@@ -19,12 +17,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       </head>
       <body>
-        <div id="navbar">
-          <Navbar />
-        </div>
-        <div id="main">{children}</div>
-        <Analytics />
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
 }
+
+// Add this import at the top:

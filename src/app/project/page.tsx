@@ -6,6 +6,7 @@ import './project.css';
 export default function ProjectPage() {
   return (
     <div id="project-container">
+      <div id="project-cont2">
       <div id="project-header">
         <div id="project-upper-header">
             {/* Show an image if available, otherwise nothing */}
@@ -28,7 +29,7 @@ export default function ProjectPage() {
           </div>
         </div>
       </div>
-      <div id="project-header-seperator"></div>
+      <hr className='horizontal'/>
       <div id="project-contents">
         <div id="project-contents-left">
           <h2>Description</h2>
@@ -42,7 +43,7 @@ export default function ProjectPage() {
             {/* You can add images here as needed */}
           </p>
         </div>
-        <div id="project-content-seperator"></div>
+        <hr />
         <div id="project-contents-right">
           <div id="project-contents-details">
             <h2>Details</h2>
@@ -67,6 +68,8 @@ export default function ProjectPage() {
             </p>
           </div>
         </div>
+      </div>
+              
       </div>
     </div>
   );

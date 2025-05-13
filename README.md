@@ -12,7 +12,6 @@ Work in progress.
   - Guides
 - Mobile responsiveness
 
-
 ## Attributions
 
 - [Technology icons created by Mayor Icons - Flaticon](https://www.flaticon.com/free-icons/technology "technology icons")
