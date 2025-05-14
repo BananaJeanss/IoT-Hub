@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 export default function CommunityPage() {
   return (
@@ -8,7 +9,7 @@ export default function CommunityPage() {
         <div id="hero">
             <div id="hero-container">
                 <div id="left-half">
-                    <img src="/assets/logow.png" height="150px" alt="" />
+                    <Image src="/assets/logow.png" height={150} width={150} alt="" />
                 </div>
                 <div id="right-half">
                     <div className="glow-bg green"></div>

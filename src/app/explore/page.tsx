@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 import "./explore.css";
 
@@ -10,7 +11,7 @@ export default function CommunityPage() {
       <div id="hero">
         <div id="hero-container">
           <div id="left-half">
-            <img src="../assets/logow.png" height="150px" alt=""></img>
+            <Image src="/assets/logow.png" height={150} width={150} alt="" />
           </div>
           <div id="right-half">
             <div className="glow-bg cyan"></div>
@@ -42,7 +43,7 @@ export default function CommunityPage() {
         </div>
         <div id="explore-list">
           <div className="explore-card">
-            <img src="../assets/logow.png" alt="Project 1"></img>
+            <Image src="/assets/logow.png" alt="Project 1" width={64} height={64} />
             <a href="">
               <h3>Project 1</h3>
             </a>
@@ -59,11 +60,13 @@ export default function CommunityPage() {
               </div>
               <div id="stats-right">
                 <p id="stats-username">
-                  <img
+                    <Image
                     id="stats-pfp"
-                    src="../assets/user.png"
+                    src="/assets/user.png"
                     alt="User 1"
-                  ></img>
+                    width={24}
+                    height={24}
+                    />
                   <strong>Username</strong>
                 </p>
                 <p id="stats-date">

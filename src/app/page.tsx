@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import Image from 'next/image'; // Add this import
 
 export default function HomePage() {
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function HomePage() {
         const card = document.createElement('div');
         card.className = 'content-card';
         card.innerHTML = `
-          <img src="${project.img}" alt="${project.title}" />
+          <Image src="${project.img}" alt="${project.title}" width="150" height="150" />
           <a href="${project.link}">
             <h3>${project.title}</h3>
           </a>
@@ -70,7 +71,7 @@ export default function HomePage() {
       <div id="hero">
         <div id="hero-container">
           <div id="left-half">
-            <img src="/assets/logow.png" height={150} alt="IoT Hub Logo" />
+            <Image src="/assets/logow.png" height={150} width={150} alt="IoT Hub Logo" />
           </div>
           <div id="right-half">
             <div className="glow-bg"></div>

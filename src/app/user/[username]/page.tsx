@@ -40,9 +40,12 @@ export default async function UserPage({
               <div className="profile-bg-overlay"></div>
               <div id="public-info-cont">
                 <div id="pfp">
-                  <img
-                    src={user.image || "../assets/user.png"}
-                    alt="Profile Picture"
+                  <Image
+                  src={user.image || "/assets/user.png"}
+                  alt="Profile Picture"
+                  width={96}
+                  height={96}
+                  className="profile-img"
                   />
                 </div>
                 <div id="info">
@@ -85,8 +88,13 @@ export default async function UserPage({
                         desc: "Lorem ipsum dolor sit amet…",
                       },
                     ].map((project, idx) => (
-                      <div className="profile-project-card" key={idx}>
-                        <img src={project.img} alt={project.title} />
+                        <div className="profile-project-card" key={idx}>
+                        <Image
+                          src={project.img}
+                          alt={project.title}
+                          width={64}
+                          height={64}
+                        />
                         <a href="">
                           <h3>{project.title}</h3>
                         </a>
@@ -95,7 +103,7 @@ export default async function UserPage({
                           <p>⭐ 4.8</p>
                           <p>👁️ 120</p>
                         </div>
-                      </div>
+                        </div>
                     ))}
                   </div>
                 </div>

@@ -11,7 +11,10 @@ export async function POST(req: NextRequest) {
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { username } });
     if (existingUser) {
-      return NextResponse.json({ error: "Username already taken." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Username already taken." },
+        { status: 400 }
+      );
     }
 
     // Hash password
@@ -28,6 +31,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Signup error:", error);
     return NextResponse.json({ error: "Signup failed." }, { status: 500 });
   }
 }

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 import './login.css';
 
@@ -85,14 +86,20 @@ export default function LoginPage() {
             <h1>Login to IoT Hub</h1>
             <div className="auth-inner">
               <div className="auth-left">
-                <button className="google-button">
-                  <img src="../assets/google.png" alt="Google Logo" />
-                  <span>Login with Google</span>
-                </button>
-                <button className="github-button">
-                  <img src="../assets/github.png" alt="GitHub Logo" />
-                  <span>Login with GitHub</span>
-                </button>
+                <Image
+                  src="/assets/google.png"
+                  alt="Google Logo"
+                  width={24}
+                  height={24}
+                  style={{ marginRight: 8 }}
+                />
+                <Image
+                  src="/assets/github.png"
+                  alt="GitHub Logo"
+                  width={24}
+                  height={24}
+                  style={{ marginRight: 8 }}
+                />
                 <p style={{ textAlign: 'center', fontSize: 25, color: 'white' }}>
                   <strong>or</strong>
                 </p>
@@ -137,11 +144,11 @@ export default function LoginPage() {
             <div className="auth-inner">
               <div className="auth-left">
                 <button className="google-button">
-                  <img src="../assets/google.png" alt="Google Logo" />
+                  <Image src="/assets/google.png" alt="Google Logo" width={24} height={24} />
                   <span>Sign up with Google</span>
                 </button>
                 <button className="github-button">
-                  <img src="../assets/github.png" alt="GitHub Logo" />
+                  <Image src="/assets/github.png" alt="GitHub Logo" width={24} height={24} />
                   <span>Sign up with GitHub</span>
                 </button>
                 <p style={{ textAlign: 'center', fontSize: 25, color: 'white' }}>

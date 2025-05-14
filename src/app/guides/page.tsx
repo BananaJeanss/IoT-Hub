@@ -1,15 +1,16 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 export default function GuidesPage() {
   return (
     <div id="main">
       <div id="hero">
         <div id="hero-container">
-          <div id="left-half">
-            <img src="/assets/logow.png" height={150} alt="IoT Hub Logo" />
-          </div>
+            <div id="left-half">
+            <Image src="/assets/logow.png" height={150} width={150} alt="IoT Hub Logo" />
+            </div>
           <div id="right-half">
             <div className="glow-bg yellow"></div>
             <h1>Guides</h1>
@@ -22,8 +23,8 @@ export default function GuidesPage() {
           <div id="content-class">
             <h2>📚 Guides</h2>
             <div id="card-container">
-              <div className="content-card">
-                <img src="/assets/logow.png" alt="Guide 1" />
+                <div className="content-card">
+                <Image src="/assets/logow.png" alt="Guide 1" width={150} height={150} />
                 <a href="">
                   <h3>Getting Started with IoT</h3>
                 </a>
@@ -36,7 +37,7 @@ export default function GuidesPage() {
                   <p>⭐ 4.8</p>
                   <p>👁️ 120</p>
                 </div>
-              </div>
+                </div>
             </div>
           </div>
         </div>
