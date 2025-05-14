@@ -85,6 +85,7 @@ export default function Navbar() {
                 <ul className="dropdown-menu">
                   <li>
                     <button onClick={() => signOut()}>Logout</button>
+                    <button><Link href="/settings">Settings</Link></button>
                   </li>
                 </ul>
               )}

@@ -1,12 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "./node_modules/@prisma/client"
 }
 
 datasource db {
@@ -15,34 +9,36 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  username  String?   @unique
-  email     String?   @unique
-  password  String?   // Optional for OAuth users
-  bio       String?
-  image     String?   // Profile picture URL
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  accounts  Account[]
-  // Future: projects, guides, comments, etc.
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username         String?   @unique
+  email            String?   @unique
+  password         String?
+  bio              String?
+  image            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  tags             String[]  @default([])
+  backgroundImage  String?
+  gradientStartRgb String?   @default("rgb(255, 255, 255)")
+  gradientEndRgb   String?   @default("rgb(0, 0, 0)")
+  backgroundType   String?   @default("gradient")
+  accounts         Account[]
 }
 
 model Account {
-  id                 String   @id @default(uuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  access_token       String?
-  refresh_token      String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id])
+  id                String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId            String  @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String
+  access_token      String?
+  refresh_token     String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
 }

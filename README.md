@@ -16,3 +16,4 @@ Work in progress.
 
 - [Technology icons created by Mayor Icons - Flaticon](https://www.flaticon.com/free-icons/technology "technology icons")
 - [User icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/user "user icons")
+- [Report flag icon by Vectors Market - Noun Project](https://thenounproject.com/icon/report-flag-1045119/ "report flag icon")
