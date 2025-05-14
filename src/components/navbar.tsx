@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Navbar() {
   const [navActive, setNavActive] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { data: session, status } = useSession();
+  const { data: session} = useSession();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = () => {

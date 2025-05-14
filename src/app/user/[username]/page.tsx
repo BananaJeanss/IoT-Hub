@@ -1,18 +1,19 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOptions";
 import Image from "next/image";
 import "./user.css";
 
-export default async function UserPage({
-  params,
-}: {
-  params: { username: string };
-}) {
+interface Props {
+  params: Promise<{ username: string }>;
+}
+
+export default async function UserPage({ params }: Props) {
+  const { username } = await params;
   const session = await getServerSession(authOptions);
   const user = await prisma.user.findUnique({
-    where: { username: params.username },
+    where: { username },
   });
 
   if (!user) return notFound();
@@ -90,10 +91,11 @@ export default async function UserPage({
                     ].map((project, idx) => (
                         <div className="profile-project-card" key={idx}>
                         <Image
-                          src={project.img}
-                          alt={project.title}
-                          width={64}
-                          height={64}
+                          src={user.image ? user.image.startsWith("/") ? user.image : `/${user.image}` : "/assets/logow.png"}
+                          alt="Profile Picture"
+                          width={500}
+                          height={500}
+                          className="profile-img"
                         />
                         <a href="">
                           <h3>{project.title}</h3>

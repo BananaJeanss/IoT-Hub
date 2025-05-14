@@ -1,5 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -35,12 +37,24 @@ export const authOptions = {
   ],
   session: { strategy: "jwt" as const },
   callbacks: {
-    async session({ session, token }: { session: any; token: any }) {
+    async session({
+      session,
+      token,
+    }: {
+      session: Session;
+      token: JWT;
+    }): Promise<Session> {
       if (token) {
-        if (!session.user) session.user = {};
-        session.user.id = token.sub;
+        if (!session.user) {
+          session.user = {} as Session["user"];
+        }
+        (session.user as NonNullable<Session["user"]>).id = token.sub;
       }
-      return session;
+
+      return {
+        ...session,
+        expires: session.expires ?? new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString(), // fallback: 30 days
+      };
     },
   },
 };
