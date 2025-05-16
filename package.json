@@ -9,12 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^6.7.0",
+    "@prisma/client": "^6.8.1",
     "@vercel/analytics": "^1.5.0",
     "bcryptjs": "^3.0.2",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
-    "prisma": "^6.7.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -25,6 +24,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9.26.0",
     "eslint-config-next": "15.3.2",
+    "prisma": "^6.8.1",
     "typescript": "^5"
   },
   "eslintIgnore": [
