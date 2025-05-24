@@ -13,16 +13,16 @@ body {
 }
 
 .auth-container {
-  background: #25282b;
-  padding: 40px 100px;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 40px 100px;
+  background: #25282b;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
   min-width: 340px;
   max-width: fit-content;
-  position: relative;
   overflow: hidden;
 }
 
@@ -30,7 +30,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: url('/assets/logow.png') center/100% no-repeat;
+  background: url("/assets/logow.png") center/100% no-repeat;
   opacity: 0.08;
   z-index: 0;
   pointer-events: none;
@@ -49,10 +49,9 @@ body {
 
 .auth-inner {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   gap: 64px;
   padding: 25px;
+  align-items: center;
 }
 
 .auth-right {
@@ -83,8 +82,8 @@ body {
 }
 
 .auth-left label {
-  font-weight: 500;
   margin-top: 8px;
+  font-weight: 500;
   color: #fff;
 }
 
@@ -92,8 +91,8 @@ body {
 .auth-left input[type="password"],
 .auth-left input[type="email"] {
   padding: 10px 12px;
-  border-radius: 6px;
   border: 1px solid #444;
+  border-radius: 6px;
   background: #1f1f1f;
   color: #fff;
   font-size: 1rem;
@@ -125,8 +124,8 @@ body {
 
 .auth-left p {
   margin-top: 18px;
-  color: #ccc;
   font-size: 0.95rem;
+  color: #ccc;
 }
 
 .auth-left a {
@@ -137,6 +136,23 @@ body {
 
 .auth-left a:hover {
   color: #3498db;
+}
+
+.username-status {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.available {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background: url("/assets/warning.svg") center/contain no-repeat;
+  margin-right: 6px;
+  vertical-align: middle;
+  filter: brightness(0) saturate(100%) invert(92%) sepia(98%) saturate(7492%)
+    hue-rotate(1deg) brightness(104%) contrast(104%);
 }
 
 @media (max-width: 600px) {
@@ -154,20 +170,22 @@ body {
   }
 }
 
-.google-button, .github-button {
+.google-button,
+.github-button,
+.email-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   width: 100%;
   padding: 10px 0;
-  border: none;
-  border-radius: 6px;
   font-size: 1rem;
   font-weight: 600;
-  cursor: pointer;
+  border-radius: 6px;
   margin-bottom: 12px;
+  cursor: pointer;
   transition: background 0.2s, box-shadow 0.2s;
-  justify-content: center;
+  border: none;
 }
 
 .google-button {
@@ -183,7 +201,7 @@ body {
 
 .google-button:hover {
   background: #f5f5f5;
-  box-shadow: 0 2px 8px rgba(66,133,244,0.08);
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.08);
 }
 
 .github-button {
@@ -200,5 +218,31 @@ body {
 
 .github-button:hover {
   background: #444950;
-  box-shadow: 0 2px 8px rgba(36,41,47,0.12);
+  box-shadow: 0 2px 8px rgba(36, 41, 47, 0.12);
+}
+
+.email-button {
+  background: var(--main-color);
+  color: #fff;
+}
+
+.email-button:hover {
+  background: #2980b9;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  color: var(--main-color);
+  cursor: pointer;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  text-align: left;
+  font-weight: 500;
+}
+
+.back-button:hover {
+  background: transparent !important;
+  text-decoration: underline;
 }
