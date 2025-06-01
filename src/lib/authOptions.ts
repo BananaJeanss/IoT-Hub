@@ -1,10 +1,10 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import type { Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 
-const prisma = new PrismaClient();
+
 
 export const authOptions = {
   providers: [
@@ -16,14 +16,14 @@ export const authOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
-        const user = await prisma.user.findUnique({
-          where: { username: credentials.username },
+        const user = await prisma.user.findFirst({
+          where: { OR: [
+            { username: credentials.username },
+            { email: credentials.username },
+          ] },
         });
         if (!user || !user.password) return null;
-        const isValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
+        const isValid = await argon2.verify(user.password, credentials.password);
         if (!isValid) return null;
         return {
           id: user.id,

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+import argon2 from "argon2"
 
-const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,15 +9,22 @@ export async function POST(req: NextRequest) {
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { username } });
+    const existingEmail = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return NextResponse.json(
         { error: "Username already taken." },
         { status: 400 }
       );
     }
+    if (existingEmail) {
+      return NextResponse.json(
+        { error: "Email already registered." },
+        { status: 400 }
+      );
+    }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await argon2.hash(password, { type: argon2.argon2id });
 
     // Create user
     await prisma.user.create({
