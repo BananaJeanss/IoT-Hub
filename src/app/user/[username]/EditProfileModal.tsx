@@ -1,12 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { User } from "@prisma/client";
+import Image from "next/image";
 
 export default function EditProfileModal({
   user,
   onClose,
 }: {
-  user: any;
+  user: User & { tags?: string[] };
   onClose: () => void;
 }) {
   const [bio, setBio] = useState(user.bio ?? "");
@@ -97,7 +99,7 @@ export default function EditProfileModal({
 
     if (res.ok) {
       router.refresh();
-      onClose(); 
+      onClose();
     } else {
       alert(result.error || "Something went wrong");
     }
@@ -113,7 +115,14 @@ export default function EditProfileModal({
 
         <div className="banner-preview">
           {backgroundType === "image" && banner ? (
-            <img src={banner} className="banner-img" alt="banner preview" />
+            <Image
+              src={banner}
+              alt="banner preview"
+              width={600}
+              height={200}
+              className="banner-img"
+              unoptimized
+            />
           ) : (
             <div
               className="banner-gradient"

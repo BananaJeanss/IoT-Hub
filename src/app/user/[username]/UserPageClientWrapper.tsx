@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import EditProfileModal from './EditProfileModal';
 import Image from 'next/image';
+import { User } from "@prisma/client";
 
 export default function UserPageClientWrapper({
   user,
   isOwner,
   bgStyle,
 }: {
-  user: any;
+  user: User & { tags?: string[] };
   isOwner: boolean;
   bgStyle: React.CSSProperties;
 }) {
