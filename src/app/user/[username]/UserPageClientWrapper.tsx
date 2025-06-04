@@ -25,8 +25,8 @@ export default function UserPageClientWrapper({
             <Image
               src={user.image || '/assets/user.png'}
               alt="Profile Picture"
-              width={96}
-              height={96}
+              width={512}
+              height={512}
               className="profile-img"
             />
           </div>

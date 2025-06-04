@@ -66,7 +66,7 @@ export default function Navbar() {
             />
             <span id="username">
               <Link href="/user/">
-                <strong>{session.user.name || "User"}</strong>
+                <strong>@{session.user.name || "User"}</strong>
               </Link>
             </span>
             <div className="navbar-dropdown">
@@ -84,8 +84,9 @@ export default function Navbar() {
               {dropdownOpen && (
                 <ul className="dropdown-menu">
                   <li>
-                    <button onClick={() => signOut()}>Logout</button>
+                    <button><Link href="/user">Your Profile</Link></button>
                     <button><Link href="/settings">Settings</Link></button>
+                    <button onClick={() => signOut()}>Logout</button>
                   </li>
                 </ul>
               )}

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile } from 'fs/promises';
+import { writeFile, access } from 'fs/promises';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 import { mkdirSync, existsSync } from 'fs';
+import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
@@ -15,19 +15,24 @@ export async function POST(req: NextRequest) {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
+  // Compute SHA-256 hash of the file, prevents duplicates
+  const hash = crypto.createHash('sha256').update(buffer).digest('hex');
+  const ext = file.name.split('.').pop();
+  const filename = `${hash}.${ext}`;
   const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+  const filePath = path.join(uploadDir, filename);
 
   if (!existsSync(uploadDir)) {
     mkdirSync(uploadDir, { recursive: true });
   }
 
-  const ext = file.name.split('.').pop();
-  const filename = `${uuidv4()}.${ext}`;
-  const filePath = path.join(uploadDir, filename);
-
-  await writeFile(filePath, buffer);
+  // Only write if file doesn't exist
+  try {
+    await access(filePath);
+  } catch {
+    await writeFile(filePath, buffer);
+  }
 
   const fileUrl = `/uploads/${filename}`;
-
   return NextResponse.json({ url: fileUrl });
 }

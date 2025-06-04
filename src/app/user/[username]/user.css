@@ -379,9 +379,8 @@ textarea.comment-input {
 
 .banner-buttons {
   position: absolute;
-  bottom: 8px;
+  top: 8px;
   left: 8px;
-  right: 8px;
   display: flex;
   gap: 8px;
 }
@@ -437,6 +436,78 @@ textarea.comment-input {
   background-color: #2e7d32;
   color: #fff;
   border-color: #1b5e20;
+}
+
+.banner‐pfp‐wrapper {
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+.banner-preview {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 120px;
+  margin-bottom: 1rem;
+  background-color: #1a1a1a;
+}
+
+.banner-preview .banner-img,
+.banner-preview .banner-gradient {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-buttons {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+  max-height: 35px;
+}
+
+.pfp-upload-container {
+  position: absolute;
+  top: calc(120px - 48px);
+  left: 24px;
+  width: 96px;
+  height: 96px;
+  z-index: 2;
+}
+
+.pfp-preview,
+.pfp-placeholder {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #111;
+  background-color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #666;
+}
+
+.pfp-edit-button {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  background-color: #2e7d32;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  z-index: 3;
+  transition: background-color 0.2s ease;
+}
+
+.pfp-edit-button:hover {
+  background-color: #1b5e20;
 }
 
 .count-1 #cards-list {

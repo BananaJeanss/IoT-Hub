@@ -25,18 +25,23 @@ export default function EditProfileModal({
   const [banner, setBanner] = useState<string | null>(
     user.backgroundImage ?? null
   );
-  const handleRemoveBanner = () => {
-    setBanner(null);
-    setBackgroundType("gradient");
-  };
+
+  const [pfp, setPfp] = useState<string | null>(user.image ?? null);
+
   const router = useRouter();
 
+  // Prevent background scroll while modal is open
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
   }, []);
+
+  const handleRemoveBanner = () => {
+    setBanner(null);
+    setBackgroundType("gradient");
+  };
 
   const toggleTag = (tag: string) => {
     setTags((prev) =>
@@ -61,7 +66,6 @@ export default function EditProfileModal({
   const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const formData = new FormData();
     formData.append("file", file);
 
@@ -69,11 +73,28 @@ export default function EditProfileModal({
       method: "POST",
       body: formData,
     });
-
     const data = await res.json();
     if (res.ok && data.url) {
       setBanner(data.url);
       setBackgroundType("image");
+    } else {
+      alert(data.error || "Upload failed");
+    }
+  };
+
+  const handlePfpUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    if (res.ok && data.url) {
+      setPfp(data.url);
     } else {
       alert(data.error || "Upload failed");
     }
@@ -88,6 +109,7 @@ export default function EditProfileModal({
       body: JSON.stringify({
         bio,
         tags,
+        image: pfp,
         backgroundImage: backgroundType === "image" ? banner : null,
         backgroundType,
         gradientStartRgb: backgroundType === "gradient" ? gradientStart : null,
@@ -96,7 +118,6 @@ export default function EditProfileModal({
     });
 
     const result = await res.json();
-
     if (res.ok) {
       router.refresh();
       onClose();
@@ -113,62 +134,91 @@ export default function EditProfileModal({
         </button>
         <h2>Edit Profile</h2>
 
-        <div className="banner-preview">
-          {backgroundType === "image" && banner ? (
-            <Image
-              src={banner}
-              alt="banner preview"
-              width={600}
-              height={200}
-              className="banner-img"
-              unoptimized
-            />
-          ) : (
-            <div
-              className="banner-gradient"
-              style={{
-                background: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})`,
-              }}
-            />
-          )}
-          <div className="banner-buttons">
-            {banner ? (
-              <button type="button" onClick={handleRemoveBanner}>
-                Remove Banner
-              </button>
+        <div className="banner‐pfp‐wrapper">
+          <div className="banner-preview">
+            {backgroundType === "image" && banner ? (
+              <Image
+                src={banner}
+                alt="banner preview"
+                width={600}
+                height={200}
+                className="banner-img"
+                unoptimized
+                onError={() => {
+                  setBanner(null);
+                  setBackgroundType("gradient");
+                }}
+              />
             ) : (
-              <label>
-                Upload Banner
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleBannerUpload}
-                  hidden
-                />
-              </label>
+              <div
+                className="banner-gradient"
+                style={{
+                  background: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})`,
+                }}
+              />
             )}
-            <button type="button" onClick={() => setBackgroundType("gradient")}>
-              Change Gradient
-            </button>
-            {backgroundType === "gradient" && (
-              <div className="gradient-picker">
-                <input
-                  type="color"
-                  value={gradientStart}
-                  onChange={(e) => setGradientStart(e.target.value)}
-                />
-                <input
-                  type="color"
-                  value={gradientEnd}
-                  onChange={(e) => setGradientEnd(e.target.value)}
-                />
-              </div>
-            )}
+            <div className="banner-buttons">
+              {banner ? (
+                <button type="button" onClick={handleRemoveBanner}>
+                  Remove Banner
+                </button>
+              ) : (
+                <label>
+                  Upload Banner
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleBannerUpload}
+                    hidden
+                  />
+                </label>
+              )}
+              <button
+                type="button"
+                onClick={() => setBackgroundType("gradient")}
+              >
+                Change Gradient
+              </button>
+              {backgroundType === "gradient" && (
+                <div className="gradient-picker">
+                  <input
+                    type="color"
+                    value={gradientStart}
+                    onChange={(e) => setGradientStart(e.target.value)}
+                  />
+                  <input
+                    type="color"
+                    value={gradientEnd}
+                    onChange={(e) => setGradientEnd(e.target.value)}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="pfp-upload-container">
+            <label className="pfp-preview" style={{ cursor: "pointer" }}>
+              <Image
+                src={pfp || "/assets/user.png"}
+                alt="Profile picture"
+                width={96}
+                height={96}
+                className="pfp-preview"
+                unoptimized
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handlePfpUpload}
+                hidden
+              />
+              {!pfp && <span>+</span>}
+            </label>
           </div>
         </div>
 
         <form className="modal-form" onSubmit={handleSubmit}>
-          <input type="text" value={`@${user.username}`} disabled />
+          <input type="text" value={`@${user.username}`} disabled style={{ marginTop: '25px' }} />
 
           <textarea
             maxLength={160}
@@ -179,7 +229,7 @@ export default function EditProfileModal({
           />
           <small>{bio.length}/160</small>
 
-          <h3>Tags:</h3>
+          <h3 style={{ marginBottom: "0px" }}>Tags:</h3>
           <div className="tag-selector">
             {allTags.map((tag) => (
               <button
