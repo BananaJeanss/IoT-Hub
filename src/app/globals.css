@@ -282,6 +282,25 @@ background: radial-gradient(circle, #00fff2 0%, transparent 70%);
   color: #fff;
 }
 
+.dropdown-link {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.dropdown-link:hover {
+  background: #3498db;
+}
+
+
 /* Responsive styles */
 @media (max-width: 900px) {
   /* navbar */

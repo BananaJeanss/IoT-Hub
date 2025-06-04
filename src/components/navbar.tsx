@@ -58,8 +58,8 @@ export default function Navbar() {
               id="nav-pfp"
               src={session.user.image || '/assets/user.png'}
               alt="Profile Picture"
-              width={32}
-              height={32}
+              width={128}
+              height={128}
             />
             <span id="username">
               <Link href="/user/">
@@ -81,13 +81,19 @@ export default function Navbar() {
               {dropdownOpen && (
                 <ul className="dropdown-menu">
                   <li>
-                    <button>
-                      <Link href="/user">Your Profile</Link>
-                    </button>
-                    <button>
-                      <Link href="/settings">Settings</Link>
-                    </button>
-                    <button onClick={() => signOut()}>Logout</button>
+                    <Link href="/user" style={{ width: '100%', display: 'block' }}>
+                      <button style={{ width: '100%' }}>Your Profile</button>
+                    </Link>
+                    <Link href="/settings" style={{ width: '100%', display: 'block' }}>
+                      <button style={{ width: '100%' }}>Settings</button>
+                    </Link>
+                    <Link
+                      href="#"
+                      onClick={() => signOut()}
+                      style={{ width: '100%', display: 'block' }}
+                    >
+                      <button style={{ width: '100%' }}>Logout</button>
+                    </Link>
                   </li>
                 </ul>
               )}

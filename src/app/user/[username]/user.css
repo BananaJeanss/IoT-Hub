@@ -15,6 +15,7 @@
 #left-half {
   flex: 2;
 }
+
 #right-half {
   flex: 1;
 }
@@ -72,14 +73,18 @@
   align-content: center;
 }
 
-#profile-buttons button {
-  background-color: var(--background-color);
-  color: var(--secondary-color);
-  border: none;
+#profile-buttons button,
+.pinnedTextRow button {
   padding: 10px 20px;
   border-radius: 12px;
   font-size: 16px;
   cursor: pointer;
+  border: none;
+}
+
+#profile-buttons button {
+  background-color: var(--background-color);
+  color: var(--secondary-color);
   transition: background-color 0.3s ease;
 }
 
@@ -90,17 +95,12 @@
 .pinnedTextRow button {
   background-color: transparent !important;
   color: var(--secondary-color) !important;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
   border: 2px solid var(--tertiary-color) !important;
   transition: color 0.15s, border 0.15s !important;
 }
 
 .pinnedTextRow button:hover {
-  border: 2px solid var(--main-color) !important;
+  border-color: var(--main-color) !important;
 }
 
 #pfp img {
@@ -203,7 +203,7 @@ button.comment-button {
   color: var(--secondary-color);
   border: 2px solid var(--tertiary-color);
   width: 25%;
-  padding: 10px 10px;
+  padding: 10px;
   border-radius: 12px;
   font-size: 16px;
   cursor: pointer;
@@ -211,7 +211,7 @@ button.comment-button {
 }
 
 button.comment-button:hover {
-  border: 2px solid var(--main-color);
+  border-color: var(--main-color);
 }
 
 textarea.comment-input {
@@ -242,6 +242,12 @@ textarea.comment-input {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+.count-1 #cards-list { grid-template-columns: repeat(1, 1fr); }
+.count-2 #cards-list { grid-template-columns: repeat(2, 1fr); }
+.count-3 #cards-list { grid-template-columns: repeat(3, 1fr); }
+.count-4 #cards-list { grid-template-columns: repeat(4, 1fr); }
+.count-5 #cards-list, .count-gt5 #cards-list { grid-template-columns: repeat(5, 1fr); }
+
 .tag {
   background-color: var(--background-color);
   color: var(--secondary-color);
@@ -269,7 +275,7 @@ textarea.comment-input {
 
 .overlay {
   position: fixed;
-  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
   z-index: 1000;
@@ -292,7 +298,7 @@ textarea.comment-input {
 }
 
 .modal h2 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1rem;
   font-size: 1.6rem;
   font-weight: 600;
   color: #fff;
@@ -361,83 +367,6 @@ textarea.comment-input {
   background-color: #1b5e20;
 }
 
-.banner-preview {
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-  height: 100px;
-  margin-bottom: 1rem;
-  background-color: #1a1a1a;
-}
-
-.banner-gradient,
-.banner-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.banner-buttons {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  display: flex;
-  gap: 8px;
-}
-
-.banner-buttons button,
-.banner-buttons label {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  cursor: pointer;
-  border: none;
-}
-
-.banner-buttons label input[type="file"] {
-  display: none;
-}
-
-.gradient-picker {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.gradient-picker input[type="color"] {
-  width: 32px;
-  height: 32px;
-  border: none;
-  padding: 0;
-  background: none;
-  cursor: pointer;
-}
-
-.tag-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tag-btn {
-  padding: 0.4rem 0.75rem;
-  border: 1px solid #555;
-  border-radius: 999px;
-  background-color: #1a1a1a;
-  color: #ccc;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.tag-btn.selected {
-  background-color: #2e7d32;
-  color: #fff;
-  border-color: #1b5e20;
-}
-
 .banner‐pfp‐wrapper {
   position: relative;
   margin-bottom: 3rem;
@@ -466,6 +395,58 @@ textarea.comment-input {
   display: flex;
   gap: 8px;
   max-height: 35px;
+}
+
+.banner-buttons button,
+.banner-buttons label {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+}
+
+.banner-buttons label input[type="file"] {
+  display: none;
+}
+
+.gradient-picker {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.gradient-picker input[type="color"] {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.tag-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag-btn {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #555;
+  border-radius: 999px;
+  background-color: #1a1a1a;
+  color: #ccc;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tag-btn.selected {
+  background-color: #2e7d32;
+  color: #fff;
+  border-color: #1b5e20;
 }
 
 .pfp-upload-container {
@@ -510,21 +491,9 @@ textarea.comment-input {
   background-color: #1b5e20;
 }
 
-.count-1 #cards-list {
-  grid-template-columns: repeat(1, 1fr);
-}
-.count-2 #cards-list {
-  grid-template-columns: repeat(2, 1fr);
-}
-.count-3 #cards-list {
-  grid-template-columns: repeat(3, 1fr);
-}
-.count-4 #cards-list {
-  grid-template-columns: repeat(4, 1fr);
-}
-.count-5 #cards-list {
-  grid-template-columns: repeat(5, 1fr);
-}
-.count-gt5 #cards-list {
-  grid-template-columns: repeat(5, 1fr);
+.pfp-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }

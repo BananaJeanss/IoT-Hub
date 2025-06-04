@@ -183,7 +183,7 @@ export default function EditProfileModal({
                 alt="Profile picture"
                 width={96}
                 height={96}
-                className="pfp-preview"
+                className="pfp-img"
                 unoptimized
               />
               <input type="file" accept="image/*" onChange={handlePfpUpload} hidden />
