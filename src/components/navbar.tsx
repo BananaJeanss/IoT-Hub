@@ -34,6 +34,7 @@ export default function Navbar() {
 
   return (
     <div className={`navbar-container${navActive ? ' active' : ''}`}>
+      {' '}
       <div id="left-nav">
         <Link href="/">
           <Image src="/assets/logow.png" alt="Logo" width={64} height={64} />
@@ -50,55 +51,60 @@ export default function Navbar() {
         onClick={handleToggle}
       >
         &#9776;
-      </button>
+      </button>{' '}
       <div id="right-nav">
         {session?.user ? (
-          <div id="navbar-userinfo" ref={dropdownRef}>
-            <Image
-              id="nav-pfp"
-              src={session.user.image || '/assets/user.png'}
-              alt="Profile Picture"
-              width={128}
-              height={128}
-            />
-            <span id="username">
-              <Link href="/user/">
-                <strong>@{session.user.name || 'User'}</strong>
-              </Link>
-            </span>
-            <div className="navbar-dropdown">
-              <button
-                className="dropdown-toggle"
-                aria-haspopup="true"
-                aria-expanded={dropdownOpen}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setDropdownOpen((prev: boolean) => !prev);
-                }}
-              >
-                <Image src="/assets/arrow.png" alt="Menu" width={16} height={16} />
-              </button>
-              {dropdownOpen && (
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link href="/user" style={{ width: '100%', display: 'block' }}>
-                      <button style={{ width: '100%' }}>Your Profile</button>
-                    </Link>
-                    <Link href="/settings" style={{ width: '100%', display: 'block' }}>
-                      <button style={{ width: '100%' }}>Settings</button>
-                    </Link>
-                    <Link
-                      href="#"
-                      onClick={() => signOut()}
-                      style={{ width: '100%', display: 'block' }}
-                    >
-                      <button style={{ width: '100%' }}>Logout</button>
-                    </Link>
-                  </li>
-                </ul>
-              )}
+          <>
+            <Link href="/new" className="new-project-btn">
+              New Project
+            </Link>
+            <div id="navbar-userinfo" ref={dropdownRef}>
+              <Image
+                id="nav-pfp"
+                src={session.user.image || '/assets/user.png'}
+                alt="Profile Picture"
+                width={128}
+                height={128}
+              />
+              <span id="username">
+                <Link href="/user/">
+                  <strong>@{session.user.name || 'User'}</strong>
+                </Link>
+              </span>
+              <div className="navbar-dropdown">
+                <button
+                  className="dropdown-toggle"
+                  aria-haspopup="true"
+                  aria-expanded={dropdownOpen}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDropdownOpen((prev: boolean) => !prev);
+                  }}
+                >
+                  <Image src="/assets/arrow.png" alt="Menu" width={16} height={16} />
+                </button>
+                {dropdownOpen && (
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link href="/user" style={{ width: '100%', display: 'block' }}>
+                        <button style={{ width: '100%' }}>Your Profile</button>
+                      </Link>
+                      <Link href="/settings" style={{ width: '100%', display: 'block' }}>
+                        <button style={{ width: '100%' }}>Settings</button>
+                      </Link>
+                      <Link
+                        href="#"
+                        onClick={() => signOut()}
+                        style={{ width: '100%', display: 'block' }}
+                      >
+                        <button style={{ width: '100%' }}>Logout</button>
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </div>
             </div>
-          </div>
+          </>
         ) : (
           // User not logged in
           <>

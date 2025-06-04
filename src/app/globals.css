@@ -69,6 +69,28 @@ body {
   transform: scale(1.08);
 }
 
+/* New Project Button Styling */
+.new-project-btn {
+  background: transparent !important;
+  border: 2px solid var(--main-color) !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  color: var(--main-color) !important;
+  font-weight: 600 !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.new-project-btn:hover {
+  background: var(--main-color) !important;
+  color: var(--secondary-color) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3) !important;
+}
+
 #hero {
   height: 25vh;
   width: 100%;
