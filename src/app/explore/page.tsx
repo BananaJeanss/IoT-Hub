@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+import Image from 'next/image';
 
-import "./explore.css";
+import './explore.css';
 
 export default function CommunityPage() {
   return (
@@ -16,9 +16,7 @@ export default function CommunityPage() {
           <div id="right-half">
             <div className="glow-bg cyan"></div>
             <h1>Explore</h1>
-            <p>
-              Explore recently uploaded, highest rated, or upcoming projects.{" "}
-            </p>
+            <p>Explore recently uploaded, highest rated, or upcoming projects. </p>
           </div>
         </div>
       </div>
@@ -48,10 +46,9 @@ export default function CommunityPage() {
               <h3>Project 1</h3>
             </a>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec
-              lacinia velit. Praesent nec ligula neque. Suspendisse semper nunc
-              quis tristique convallis. Vivamus sed sem quis ipsum ullamcorper
-              tincidunt eget quis sapien.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec lacinia velit.
+              Praesent nec ligula neque. Suspendisse semper nunc quis tristique convallis. Vivamus
+              sed sem quis ipsum ullamcorper tincidunt eget quis sapien.
             </p>
             <div id="stats">
               <div id="stats-left">
@@ -60,18 +57,16 @@ export default function CommunityPage() {
               </div>
               <div id="stats-right">
                 <p id="stats-username">
-                    <Image
+                  <Image
                     id="stats-pfp"
                     src="/assets/user.png"
                     alt="User 1"
                     width={24}
                     height={24}
-                    />
+                  />
                   <strong>Username</strong>
                 </p>
-                <p id="stats-date">
-                  🗓️ Created on 5/10/2025 (Updated 5 hours ago)
-                </p>
+                <p id="stats-date">🗓️ Created on 5/10/2025 (Updated 5 hours ago)</p>
               </div>
             </div>
           </div>

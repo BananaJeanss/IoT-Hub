@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import EditProfileModal from './EditProfileModal';
 import Image from 'next/image';
-import { User } from "@prisma/client";
+import { User } from '@prisma/client';
 
 export default function UserPageClientWrapper({
   user,
@@ -31,11 +31,13 @@ export default function UserPageClientWrapper({
             />
           </div>
           <div id="info">
-            <h2>{`@${user.username ?? "unknown"}`}</h2>
+            <h2>{`@${user.username ?? 'unknown'}`}</h2>
             <p>{user.bio}</p>
             <div id="interest-tags">
               {(user.tags ?? []).map((tag: string) => (
-                <span key={tag} className="tag">{tag}</span>
+                <span key={tag} className="tag">
+                  {tag}
+                </span>
               ))}
             </div>
           </div>
@@ -49,9 +51,7 @@ export default function UserPageClientWrapper({
         )}
       </div>
 
-      {showEditModal && (
-        <EditProfileModal user={user} onClose={() => setShowEditModal(false)} />
-      )}
+      {showEditModal && <EditProfileModal user={user} onClose={() => setShowEditModal(false)} />}
     </>
   );
 }

@@ -1,8 +1,8 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { User } from "@prisma/client";
-import Image from "next/image";
+'use client';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { User } from '@prisma/client';
+import Image from 'next/image';
 
 export default function EditProfileModal({
   user,
@@ -11,20 +11,12 @@ export default function EditProfileModal({
   user: User & { tags?: string[] };
   onClose: () => void;
 }) {
-  const [bio, setBio] = useState(user.bio ?? "");
+  const [bio, setBio] = useState(user.bio ?? '');
   const [tags, setTags] = useState<string[]>(user.tags ?? []);
-  const [backgroundType, setBackgroundType] = useState(
-    user.backgroundType ?? "gradient"
-  );
-  const [gradientStart, setGradientStart] = useState(
-    user.gradientStartRgb ?? "#00b7ff"
-  );
-  const [gradientEnd, setGradientEnd] = useState(
-    user.gradientEndRgb ?? "#b3ffec"
-  );
-  const [banner, setBanner] = useState<string | null>(
-    user.backgroundImage ?? null
-  );
+  const [backgroundType, setBackgroundType] = useState(user.backgroundType ?? 'gradient');
+  const [gradientStart, setGradientStart] = useState(user.gradientStartRgb ?? '#00b7ff');
+  const [gradientEnd, setGradientEnd] = useState(user.gradientEndRgb ?? '#b3ffec');
+  const [banner, setBanner] = useState<string | null>(user.backgroundImage ?? null);
 
   const [pfp, setPfp] = useState<string | null>(user.image ?? null);
 
@@ -32,53 +24,49 @@ export default function EditProfileModal({
 
   // Prevent background scroll while modal is open
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     };
   }, []);
 
   const handleRemoveBanner = () => {
     setBanner(null);
-    setBackgroundType("gradient");
+    setBackgroundType('gradient');
   };
 
   const toggleTag = (tag: string) => {
     setTags((prev) =>
-      prev.includes(tag)
-        ? prev.filter((t) => t !== tag)
-        : prev.length < 5
-        ? [...prev, tag]
-        : prev
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : prev.length < 5 ? [...prev, tag] : prev,
     );
   };
 
   const allTags = [
-    "IoT",
-    "SmartHome",
-    "Automation",
-    "ESP32",
-    "Linux",
-    "3D Printing",
-    "Open Source",
+    'IoT',
+    'SmartHome',
+    'Automation',
+    'ESP32',
+    'Linux',
+    '3D Printing',
+    'Open Source',
   ];
 
   const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
+    const res = await fetch('/api/upload', {
+      method: 'POST',
       body: formData,
     });
     const data = await res.json();
     if (res.ok && data.url) {
       setBanner(data.url);
-      setBackgroundType("image");
+      setBackgroundType('image');
     } else {
-      alert(data.error || "Upload failed");
+      alert(data.error || 'Upload failed');
     }
   };
 
@@ -86,34 +74,34 @@ export default function EditProfileModal({
     const file = e.target.files?.[0];
     if (!file) return;
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
+    const res = await fetch('/api/upload', {
+      method: 'POST',
       body: formData,
     });
     const data = await res.json();
     if (res.ok && data.url) {
       setPfp(data.url);
     } else {
-      alert(data.error || "Upload failed");
+      alert(data.error || 'Upload failed');
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch("/api/user/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const res = await fetch('/api/user/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         bio,
         tags,
         image: pfp,
-        backgroundImage: backgroundType === "image" ? banner : null,
+        backgroundImage: backgroundType === 'image' ? banner : null,
         backgroundType,
-        gradientStartRgb: backgroundType === "gradient" ? gradientStart : null,
-        gradientEndRgb: backgroundType === "gradient" ? gradientEnd : null,
+        gradientStartRgb: backgroundType === 'gradient' ? gradientStart : null,
+        gradientEndRgb: backgroundType === 'gradient' ? gradientEnd : null,
       }),
     });
 
@@ -122,7 +110,7 @@ export default function EditProfileModal({
       router.refresh();
       onClose();
     } else {
-      alert(result.error || "Something went wrong");
+      alert(result.error || 'Something went wrong');
     }
   };
 
@@ -136,7 +124,7 @@ export default function EditProfileModal({
 
         <div className="banner‐pfp‐wrapper">
           <div className="banner-preview">
-            {backgroundType === "image" && banner ? (
+            {backgroundType === 'image' && banner ? (
               <Image
                 src={banner}
                 alt="banner preview"
@@ -146,7 +134,7 @@ export default function EditProfileModal({
                 unoptimized
                 onError={() => {
                   setBanner(null);
-                  setBackgroundType("gradient");
+                  setBackgroundType('gradient');
                 }}
               />
             ) : (
@@ -165,21 +153,13 @@ export default function EditProfileModal({
               ) : (
                 <label>
                   Upload Banner
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleBannerUpload}
-                    hidden
-                  />
+                  <input type="file" accept="image/*" onChange={handleBannerUpload} hidden />
                 </label>
               )}
-              <button
-                type="button"
-                onClick={() => setBackgroundType("gradient")}
-              >
+              <button type="button" onClick={() => setBackgroundType('gradient')}>
                 Change Gradient
               </button>
-              {backgroundType === "gradient" && (
+              {backgroundType === 'gradient' && (
                 <div className="gradient-picker">
                   <input
                     type="color"
@@ -197,21 +177,16 @@ export default function EditProfileModal({
           </div>
 
           <div className="pfp-upload-container">
-            <label className="pfp-preview" style={{ cursor: "pointer" }}>
+            <label className="pfp-preview" style={{ cursor: 'pointer' }}>
               <Image
-                src={pfp || "/assets/user.png"}
+                src={pfp || '/assets/user.png'}
                 alt="Profile picture"
                 width={96}
                 height={96}
                 className="pfp-preview"
                 unoptimized
               />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handlePfpUpload}
-                hidden
-              />
+              <input type="file" accept="image/*" onChange={handlePfpUpload} hidden />
               {!pfp && <span>+</span>}
             </label>
           </div>
@@ -229,12 +204,12 @@ export default function EditProfileModal({
           />
           <small>{bio.length}/160</small>
 
-          <h3 style={{ marginBottom: "0px" }}>Tags:</h3>
+          <h3 style={{ marginBottom: '0px' }}>Tags:</h3>
           <div className="tag-selector">
             {allTags.map((tag) => (
               <button
                 key={tag}
-                className={`tag-btn ${tags.includes(tag) ? "selected" : ""}`}
+                className={`tag-btn ${tags.includes(tag) ? 'selected' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   toggleTag(tag);

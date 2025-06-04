@@ -1,12 +1,11 @@
-import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/authOptions";
-import Image from "next/image";
-import "./user.css";
+import { notFound } from 'next/navigation';
+import { prisma } from '@/lib/prisma';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/authOptions';
+import Image from 'next/image';
+import './user.css';
 
 import UserPageClientWrapper from './UserPageClientWrapper';
-
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -23,19 +22,19 @@ export default async function UserPage({ params }: Props) {
 
   const pins = await prisma.pin.findMany({
     where: { userId: user.id },
-    orderBy: { order: "asc" },
+    orderBy: { order: 'asc' },
     include: { project: true },
   });
 
   const isOwner = session?.user?.email === user.email;
 
   const bgStyle =
-    user.backgroundType === "image"
+    user.backgroundType === 'image'
       ? {
           backgroundImage: `url(${user.backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backdropFilter: "blur(8px)",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backdropFilter: 'blur(8px)',
         }
       : {
           background: `linear-gradient(135deg, ${user.gradientStartRgb}, ${user.gradientEndRgb})`,
@@ -58,9 +57,7 @@ export default async function UserPage({ params }: Props) {
                         <h3>📌 Pinned</h3>
                         {isOwner && (
                           <div id="profile-buttons">
-                            <button className="edit-profile-btn">
-                              Edit Pins
-                            </button>
+                            <button className="edit-profile-btn">Edit Pins</button>
                           </div>
                         )}
                       </div>
@@ -70,9 +67,7 @@ export default async function UserPage({ params }: Props) {
                           ? pins.map((pin) => (
                               <div className="card" key={pin.id}>
                                 <Image
-                                  src={
-                                    pin.project.image || "/assets/project.png"
-                                  }
+                                  src={pin.project.image || '/assets/project.png'}
                                   alt={pin.project.title}
                                   width={150}
                                   height={100}
@@ -83,9 +78,8 @@ export default async function UserPage({ params }: Props) {
                               </div>
                             ))
                           : isOwner && (
-                              <p style={{ textAlign: "center", color: "#888" }}>
-                                You have no pinned projects yet, why not pin
-                                some?
+                              <p style={{ textAlign: 'center', color: '#888' }}>
+                                You have no pinned projects yet, why not pin some?
                               </p>
                             )}
                       </div>

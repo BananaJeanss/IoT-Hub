@@ -13,7 +13,11 @@ const eslintConfig = [
   {
     ignores: ["**/node_modules/**", "**/.next/**", "**/dist/**", "src/generated/**"],
   },
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends(
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:prettier/recommended"
+  ),
 ];
 
 export default eslintConfig;

@@ -8,35 +8,35 @@ export default function HomePage() {
   useEffect(() => {
     const projects = [
       {
-        title: "Smart Garden Monitor",
-        img: "/assets/logow.png",
-        desc: "Monitor your plants remotely with real-time data and alerts.",
-        link: "/project"
+        title: 'Smart Garden Monitor',
+        img: '/assets/logow.png',
+        desc: 'Monitor your plants remotely with real-time data and alerts.',
+        link: '/project',
       },
       {
-        title: "IoT Weather Station",
-        img: "/assets/logow.png",
-        desc: "Track local weather conditions and visualize trends.",
-        link: "/project"
+        title: 'IoT Weather Station',
+        img: '/assets/logow.png',
+        desc: 'Track local weather conditions and visualize trends.',
+        link: '/project',
       },
       {
-        title: "Connected Door Lock",
-        img: "/assets/logow.png",
-        desc: "Secure your home with a smart, app-controlled door lock.",
-        link: "/project"
+        title: 'Connected Door Lock',
+        img: '/assets/logow.png',
+        desc: 'Secure your home with a smart, app-controlled door lock.',
+        link: '/project',
       },
       {
-        title: "Energy Usage Tracker",
-        img: "/assets/logow.png",
-        desc: "Analyze and optimize your household energy consumption.",
-        link: "/project"
+        title: 'Energy Usage Tracker',
+        img: '/assets/logow.png',
+        desc: 'Analyze and optimize your household energy consumption.',
+        link: '/project',
       },
       {
-        title: "Remote Pet Feeder",
-        img: "/assets/logow.png",
-        desc: "Feed your pets from anywhere using your smartphone.",
-        link: "/project"
-      }
+        title: 'Remote Pet Feeder',
+        img: '/assets/logow.png',
+        desc: 'Feed your pets from anywhere using your smartphone.',
+        link: '/project',
+      },
     ];
 
     const getRandomProjects = (arr: typeof projects, n: number) => {
@@ -47,7 +47,7 @@ export default function HomePage() {
     const cardContainer = document.getElementById('card-container');
     if (cardContainer) {
       cardContainer.innerHTML = '';
-      getRandomProjects(projects, 5).forEach(project => {
+      getRandomProjects(projects, 5).forEach((project) => {
         const card = document.createElement('div');
         card.className = 'content-card';
         card.innerHTML = `

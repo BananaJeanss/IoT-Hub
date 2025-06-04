@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import React, { useEffect, useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
-import "./login.css";
+import './login.css';
 
 export default function LoginPage() {
-  const [form, setForm] = useState<"login" | "signup">("login");
+  const [form, setForm] = useState<'login' | 'signup'>('login');
   const [showEmailForm, setShowEmailForm] = useState(false);
   const router = useRouter();
 
-  const [signupPassword, setSignupPassword] = useState("");
+  const [signupPassword, setSignupPassword] = useState('');
   const [passwordStrength, setPasswordStrength] = useState<{
     score: number;
     label: string;
     color: string;
-  }>({ score: 0, label: "Too weak", color: "#e74c3c" });
+  }>({ score: 0, label: 'Too weak', color: '#e74c3c' });
 
   function evaluatePasswordStrength(password: string) {
     let score = 0;
@@ -27,81 +27,81 @@ export default function LoginPage() {
     if (/[^A-Za-z0-9]/.test(password)) score++;
     if (password.length >= 12) score++;
 
-    if (score <= 1) return { score: 20, label: "Too weak", color: "#e74c3c" };
-    if (score === 2) return { score: 40, label: "Weak", color: "#e67e22" };
-    if (score === 3) return { score: 60, label: "Medium", color: "#f1c40f" };
-    if (score === 4) return { score: 80, label: "Strong", color: "#27ae60" };
-    return { score: 100, label: "Very strong", color: "#2ecc71" };
+    if (score <= 1) return { score: 20, label: 'Too weak', color: '#e74c3c' };
+    if (score === 2) return { score: 40, label: 'Weak', color: '#e67e22' };
+    if (score === 3) return { score: 60, label: 'Medium', color: '#f1c40f' };
+    if (score === 4) return { score: 80, label: 'Strong', color: '#27ae60' };
+    return { score: 100, label: 'Very strong', color: '#2ecc71' };
   }
 
   useEffect(() => {
     const handleHash = () => {
-      setForm(window.location.hash === "#signup" ? "signup" : "login");
+      setForm(window.location.hash === '#signup' ? 'signup' : 'login');
       setShowEmailForm(false); // Reset email form visibility when switching tabs
     };
-    window.addEventListener("hashchange", handleHash);
+    window.addEventListener('hashchange', handleHash);
     handleHash();
-    return () => window.removeEventListener("hashchange", handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
   }, []);
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const formData = new FormData(e.currentTarget);
-    const username = formData.get("username") as string;
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const confirm = formData.get("confirm-password") as string;
+    const username = formData.get('username') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const confirm = formData.get('confirm-password') as string;
 
     if (password !== confirm) {
-      alert("Passwords do not match!");
+      alert('Passwords do not match!');
       return;
     }
 
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password }),
     });
 
     if (res.ok) {
-      alert("Signup successful! You can now log in.");
-      window.location.hash = "#login";
+      alert('Signup successful! You can now log in.');
+      window.location.hash = '#login';
       setShowEmailForm(false);
     } else {
       const data = await res.json();
-      alert(data.error || "Signup failed.");
+      alert(data.error || 'Signup failed.');
     }
   };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    const formData = new FormData(e.currentTarget);
-    const username = formData.get("username") as string;
-    const password = formData.get("password") as string;
 
-    const res = await signIn("credentials", {
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get('username') as string;
+    const password = formData.get('password') as string;
+
+    const res = await signIn('credentials', {
       username,
       password,
       redirect: false,
     });
 
     if (res && res.ok) {
-      router.push("/");
+      router.push('/');
     } else {
-      alert("Login failed. Please check your credentials.");
+      alert('Login failed. Please check your credentials.');
     }
   };
 
   return (
-    <div id="main" style={{ marginTop: "5vh" }}>
+    <div id="main" style={{ marginTop: '5vh' }}>
       <div id="login">
         <div className="auth-container">
           <div
             id="login-form"
             className="form-pane"
-            style={{ display: form === "login" ? "block" : "none" }}
+            style={{ display: form === 'login' ? 'block' : 'none' }}
           >
             <h1>Login to IoT Hub</h1>
             <div className="auth-inner">
@@ -109,43 +109,25 @@ export default function LoginPage() {
                 {!showEmailForm ? (
                   // Initial login view with three buttons
                   <>
-                    <button 
-                      className="email-button"
-                      onClick={() => setShowEmailForm(true)}
-                    >
-                      <Image
-                        src="/assets/user.png"
-                        alt="Email Login"
-                        width={24}
-                        height={24}
-                      />
+                    <button className="email-button" onClick={() => setShowEmailForm(true)}>
+                      <Image src="/assets/user.png" alt="Email Login" width={24} height={24} />
                       <span>Sign in with Email</span>
                     </button>
                     <button className="google-button">
-                      <Image
-                        src="/assets/google.png"
-                        alt="Google Logo"
-                        width={24}
-                        height={24}
-                      />
+                      <Image src="/assets/google.png" alt="Google Logo" width={24} height={24} />
                       <span>Sign in with Google</span>
                     </button>
                     <button className="github-button">
-                      <Image
-                        src="/assets/github.png"
-                        alt="GitHub Logo"
-                        width={24}
-                        height={24}
-                      />
+                      <Image src="/assets/github.png" alt="GitHub Logo" width={24} height={24} />
                       <span>Sign in with GitHub</span>
                     </button>
                     <p>
-                      Don&apos;t have an account?{" "}
+                      Don&apos;t have an account?{' '}
                       <a
                         href="#signup"
                         onClick={(e) => {
                           e.preventDefault();
-                          window.location.hash = "#signup";
+                          window.location.hash = '#signup';
                         }}
                       >
                         Sign Up
@@ -155,10 +137,7 @@ export default function LoginPage() {
                 ) : (
                   // Email login form
                   <>
-                    <button 
-                      className="back-button"
-                      onClick={() => setShowEmailForm(false)}
-                    >
+                    <button className="back-button" onClick={() => setShowEmailForm(false)}>
                       ← Back to all sign in options
                     </button>
                     <form onSubmit={handleLogin}>
@@ -189,7 +168,7 @@ export default function LoginPage() {
           <div
             id="signup-form"
             className="form-pane"
-            style={{ display: form === "signup" ? "block" : "none" }}
+            style={{ display: form === 'signup' ? 'block' : 'none' }}
           >
             <h1>Create an Account</h1>
             <div className="auth-inner">
@@ -197,43 +176,25 @@ export default function LoginPage() {
                 {!showEmailForm ? (
                   // Initial signup view with three buttons
                   <>
-                    <button 
-                      className="email-button"
-                      onClick={() => setShowEmailForm(true)}
-                    >
-                      <Image
-                        src="/assets/user.png"
-                        alt="Email Signup"
-                        width={24}
-                        height={24}
-                      />
+                    <button className="email-button" onClick={() => setShowEmailForm(true)}>
+                      <Image src="/assets/user.png" alt="Email Signup" width={24} height={24} />
                       <span>Sign up with Email</span>
                     </button>
                     <button className="google-button">
-                      <Image
-                        src="/assets/google.png"
-                        alt="Google Logo"
-                        width={24}
-                        height={24}
-                      />
+                      <Image src="/assets/google.png" alt="Google Logo" width={24} height={24} />
                       <span>Sign up with Google</span>
                     </button>
                     <button className="github-button">
-                      <Image
-                        src="/assets/github.png"
-                        alt="GitHub Logo"
-                        width={24}
-                        height={24}
-                      />
+                      <Image src="/assets/github.png" alt="GitHub Logo" width={24} height={24} />
                       <span>Sign up with GitHub</span>
                     </button>
                     <p>
-                      Already have an account?{" "}
+                      Already have an account?{' '}
                       <a
                         href="#login"
                         onClick={(e) => {
                           e.preventDefault();
-                          window.location.hash = "#login";
+                          window.location.hash = '#login';
                         }}
                       >
                         Log In
@@ -243,10 +204,7 @@ export default function LoginPage() {
                 ) : (
                   // Email signup form
                   <>
-                    <button 
-                      className="back-button"
-                      onClick={() => setShowEmailForm(false)}
-                    >
+                    <button className="back-button" onClick={() => setShowEmailForm(false)}>
                       ← Back to all sign up options
                     </button>
                     <form onSubmit={handleSignup}>
@@ -276,34 +234,30 @@ export default function LoginPage() {
                         value={signupPassword}
                         onChange={(e) => {
                           setSignupPassword(e.target.value);
-                          setPasswordStrength(
-                            evaluatePasswordStrength(e.target.value)
-                          );
+                          setPasswordStrength(evaluatePasswordStrength(e.target.value));
                         }}
                       />
-                      <div style={{ margin: "8px 0" }}>
+                      <div style={{ margin: '8px 0' }}>
                         <div
                           style={{
-                            height: "8px",
-                            width: "100%",
-                            background: "#333",
-                            borderRadius: "4px",
-                            overflow: "hidden",
-                            marginBottom: "4px",
+                            height: '8px',
+                            width: '100%',
+                            background: '#333',
+                            borderRadius: '4px',
+                            overflow: 'hidden',
+                            marginBottom: '4px',
                           }}
                         >
                           <div
                             style={{
-                              height: "100%",
+                              height: '100%',
                               width: `${passwordStrength.score}%`,
                               background: passwordStrength.color,
-                              transition: "width 0.3s, background 0.3s",
+                              transition: 'width 0.3s, background 0.3s',
                             }}
                           />
                         </div>
-                        <span
-                          style={{ color: passwordStrength.color, fontWeight: 600 }}
-                        >
+                        <span style={{ color: passwordStrength.color, fontWeight: 600 }}>
                           {passwordStrength.label}
                         </span>
                       </div>
@@ -315,15 +269,14 @@ export default function LoginPage() {
                         required
                         autoComplete="new-password"
                       />
-                        <button
-                          type="submit"
-                          disabled={
-                            signupPassword.length === 0 ||
-                            passwordStrength.score < 60 // Require at least "Medium" strength
-                          }
-                        >
-                          Sign Up
-                        </button>
+                      <button
+                        type="submit"
+                        disabled={
+                          signupPassword.length === 0 || passwordStrength.score < 60 // Require at least "Medium" strength
+                        }
+                      >
+                        Sign Up
+                      </button>
                     </form>
                   </>
                 )}
