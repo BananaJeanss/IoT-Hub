@@ -1,0 +1,196 @@
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export default function EditProfileModal({
+  user,
+  onClose,
+}: {
+  user: any;
+  onClose: () => void;
+}) {
+  const [bio, setBio] = useState(user.bio ?? "");
+  const [tags, setTags] = useState<string[]>(user.tags ?? []);
+  const [backgroundType, setBackgroundType] = useState(
+    user.backgroundType ?? "gradient"
+  );
+  const [gradientStart, setGradientStart] = useState(
+    user.gradientStartRgb ?? "#00b7ff"
+  );
+  const [gradientEnd, setGradientEnd] = useState(
+    user.gradientEndRgb ?? "#b3ffec"
+  );
+  const [banner, setBanner] = useState<string | null>(
+    user.backgroundImage ?? null
+  );
+  const handleRemoveBanner = () => {
+    setBanner(null);
+    setBackgroundType("gradient");
+  };
+  const router = useRouter();
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  const toggleTag = (tag: string) => {
+    setTags((prev) =>
+      prev.includes(tag)
+        ? prev.filter((t) => t !== tag)
+        : prev.length < 5
+        ? [...prev, tag]
+        : prev
+    );
+  };
+
+  const allTags = [
+    "IoT",
+    "SmartHome",
+    "Automation",
+    "ESP32",
+    "Linux",
+    "3D Printing",
+    "Open Source",
+  ];
+
+  const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (res.ok && data.url) {
+      setBanner(data.url);
+      setBackgroundType("image");
+    } else {
+      alert(data.error || "Upload failed");
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const res = await fetch("/api/user/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        bio,
+        tags,
+        backgroundImage: backgroundType === "image" ? banner : null,
+        backgroundType,
+        gradientStartRgb: backgroundType === "gradient" ? gradientStart : null,
+        gradientEndRgb: backgroundType === "gradient" ? gradientEnd : null,
+      }),
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      router.refresh();
+      onClose(); 
+    } else {
+      alert(result.error || "Something went wrong");
+    }
+  };
+
+  return (
+    <div className="overlay">
+      <div className="modal">
+        <button className="close-btn" onClick={onClose}>
+          ×
+        </button>
+        <h2>Edit Profile</h2>
+
+        <div className="banner-preview">
+          {backgroundType === "image" && banner ? (
+            <img src={banner} className="banner-img" alt="banner preview" />
+          ) : (
+            <div
+              className="banner-gradient"
+              style={{
+                background: `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})`,
+              }}
+            />
+          )}
+          <div className="banner-buttons">
+            {banner ? (
+              <button type="button" onClick={handleRemoveBanner}>
+                Remove Banner
+              </button>
+            ) : (
+              <label>
+                Upload Banner
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerUpload}
+                  hidden
+                />
+              </label>
+            )}
+            <button type="button" onClick={() => setBackgroundType("gradient")}>
+              Change Gradient
+            </button>
+            {backgroundType === "gradient" && (
+              <div className="gradient-picker">
+                <input
+                  type="color"
+                  value={gradientStart}
+                  onChange={(e) => setGradientStart(e.target.value)}
+                />
+                <input
+                  type="color"
+                  value={gradientEnd}
+                  onChange={(e) => setGradientEnd(e.target.value)}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        <form className="modal-form" onSubmit={handleSubmit}>
+          <input type="text" value={`@${user.username}`} disabled />
+
+          <textarea
+            maxLength={160}
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder="Tell us something cool…"
+            rows={3}
+          />
+          <small>{bio.length}/160</small>
+
+          <h3>Tags:</h3>
+          <div className="tag-selector">
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                className={`tag-btn ${tags.includes(tag) ? "selected" : ""}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleTag(tag);
+                }}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+
+          <button type="submit" className="save-btn">
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}

@@ -9,20 +9,27 @@ datasource db {
 }
 
 model User {
-  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  username         String?   @unique
-  email            String?   @unique
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username         String?  @unique
+  email            String?  @unique
   password         String?
   bio              String?
   image            String?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  tags             String[]  @default([])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  tags             String[] @default([])
   backgroundImage  String?
-  gradientStartRgb String?   @default("rgb(255, 255, 255)")
-  gradientEndRgb   String?   @default("rgb(0, 0, 0)")
-  backgroundType   String?   @default("gradient")
-  accounts         Account[]
+  gradientStartRgb String?  @default("rgb(0, 183, 255)")
+  gradientEndRgb   String?  @default("rgb(179, 255, 236)")
+  backgroundType   String?  @default("gradient")
+
+  accounts Account[]
+  projects Project[]
+  guides   Guide[]
+  stars    Star[]
+  views    View[]
+  comments Comment[]
+  Pin      Pin[]
 }
 
 model Account {
@@ -49,4 +56,93 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Project {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  slug        String   @unique
+  description String?
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String   @db.Uuid
+  pinned      Boolean  @default(false)
+
+  user     User      @relation(fields: [userId], references: [id])
+  stars    Star[]
+  views    View[]
+  comments Comment[]
+  Pin      Pin[]
+}
+
+model Guide {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title     String
+  slug      String   @unique
+  summary   String?
+  content   String // markdown or HTML
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.Uuid
+
+  user     User      @relation(fields: [userId], references: [id])
+  stars    Star[]
+  views    View[]
+  comments Comment[]
+}
+
+model Star {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  projectId String?  @db.Uuid
+  guideId   String?  @db.Uuid
+  createdAt DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id])
+  project Project? @relation(fields: [projectId], references: [id])
+  guide   Guide?   @relation(fields: [guideId], references: [id])
+
+  @@unique([userId, projectId])
+  @@unique([userId, guideId])
+}
+
+model View {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String?  @db.Uuid
+  projectId String?  @db.Uuid
+  guideId   String?  @db.Uuid
+  ip        String?
+  createdAt DateTime @default(now())
+
+  user    User?    @relation(fields: [userId], references: [id])
+  project Project? @relation(fields: [projectId], references: [id])
+  guide   Guide?   @relation(fields: [guideId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  projectId String?  @db.Uuid
+  guideId   String?  @db.Uuid
+  content   String
+  createdAt DateTime @default(now())
+
+  user    User     @relation(fields: [userId], references: [id])
+  project Project? @relation(fields: [projectId], references: [id])
+  guide   Guide?   @relation(fields: [guideId], references: [id])
+}
+
+model Pin {
+  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String @db.Uuid
+  projectId String @db.Uuid
+  order     Int
+
+  user    User    @relation(fields: [userId], references: [id])
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@unique([userId, projectId])
+  @@unique([userId, order])
 }

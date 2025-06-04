@@ -12,13 +12,17 @@
   gap: 40px;
 }
 
-#left-half { flex: 2; }
-#right-half { flex: 1; }
+#left-half {
+  flex: 2;
+}
+#right-half {
+  flex: 1;
+}
 
 .profile-bg-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(30,30,30,0.55);
+  background: #1e1e1e40;
   border-radius: 25px;
   pointer-events: none;
   z-index: 0;
@@ -60,6 +64,12 @@
   padding: 0 35px;
   position: relative;
   z-index: 1;
+  align-content: center;
+}
+
+.pinnedTextRow {
+  display: flex;
+  align-content: center;
 }
 
 #profile-buttons button {
@@ -75,6 +85,22 @@
 
 #profile-buttons button:hover {
   background-color: var(--main-color);
+}
+
+.pinnedTextRow button {
+  background-color: transparent !important;
+  color: var(--secondary-color) !important;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 2px solid var(--tertiary-color) !important;
+  transition: color 0.15s, border 0.15s !important;
+}
+
+.pinnedTextRow button:hover {
+  border: 2px solid var(--main-color) !important;
 }
 
 #pfp img {
@@ -241,9 +267,193 @@ textarea.comment-input {
   margin-top: 10px;
 }
 
-.count-1  #cards-list { grid-template-columns: repeat(1, 1fr); }
-.count-2  #cards-list { grid-template-columns: repeat(2, 1fr); }
-.count-3  #cards-list { grid-template-columns: repeat(3, 1fr); }
-.count-4  #cards-list { grid-template-columns: repeat(4, 1fr); }
-.count-5  #cards-list { grid-template-columns: repeat(5, 1fr); }
-.count-gt5 #cards-list { grid-template-columns: repeat(5, 1fr); }
+.overlay {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background-color: #111;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 520px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+  color: #eaeaea;
+  font-family: sans-serif;
+  position: relative;
+  z-index: 1001;
+}
+
+.modal h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-form input[type="text"],
+.modal-form textarea {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.75rem;
+  color: #eee;
+  font-size: 1rem;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.modal-form input[type="text"]:disabled {
+  opacity: 0.6;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.modal-form textarea {
+  resize: none;
+}
+
+.modal-form small {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-top: -0.5rem;
+  margin-left: 0.25rem;
+}
+
+.save-btn {
+  align-self: flex-end;
+  background-color: #2e7d32;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.save-btn:hover {
+  background-color: #1b5e20;
+}
+
+.banner-preview {
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  height: 100px;
+  margin-bottom: 1rem;
+  background-color: #1a1a1a;
+}
+
+.banner-gradient,
+.banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-buttons {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.banner-buttons button,
+.banner-buttons label {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+}
+
+.banner-buttons label input[type="file"] {
+  display: none;
+}
+
+.gradient-picker {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.gradient-picker input[type="color"] {
+  width: 32px;
+  height: 32px;
+  border: none;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.tag-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag-btn {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #555;
+  border-radius: 999px;
+  background-color: #1a1a1a;
+  color: #ccc;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tag-btn.selected {
+  background-color: #2e7d32;
+  color: #fff;
+  border-color: #1b5e20;
+}
+
+.count-1 #cards-list {
+  grid-template-columns: repeat(1, 1fr);
+}
+.count-2 #cards-list {
+  grid-template-columns: repeat(2, 1fr);
+}
+.count-3 #cards-list {
+  grid-template-columns: repeat(3, 1fr);
+}
+.count-4 #cards-list {
+  grid-template-columns: repeat(4, 1fr);
+}
+.count-5 #cards-list {
+  grid-template-columns: repeat(5, 1fr);
+}
+.count-gt5 #cards-list {
+  grid-template-columns: repeat(5, 1fr);
+}

@@ -5,6 +5,9 @@ import { authOptions } from "@/lib/authOptions";
 import Image from "next/image";
 import "./user.css";
 
+import UserPageClientWrapper from './UserPageClientWrapper';
+
+
 interface Props {
   params: Promise<{ username: string }>;
 }
@@ -17,6 +20,12 @@ export default async function UserPage({ params }: Props) {
   });
 
   if (!user) return notFound();
+
+  const pins = await prisma.pin.findMany({
+    where: { userId: user.id },
+    orderBy: { order: "asc" },
+    include: { project: true },
+  });
 
   const isOwner = session?.user?.email === user.email;
 
@@ -37,77 +46,51 @@ export default async function UserPage({ params }: Props) {
       <div id="profile">
         <div id="profile-container">
           <div id="left-half">
-            <div id="pfp-info-container" style={bgStyle}>
-              <div className="profile-bg-overlay"></div>
-              <div id="public-info-cont">
-                <div id="pfp">
-                  <Image
-                  src={user.image || "/assets/user.png"}
-                  alt="Profile Picture"
-                  width={96}
-                  height={96}
-                  className="profile-img"
-                  />
-                </div>
-                <div id="info">
-                  <h2>{user.username}</h2>
-                  <p>{user.bio}</p>
-                  <div id="interest-tags">
-                    <span className="tag">🤖 IoT</span>
-                    <span className="tag">🤖 SmartHome</span>
-                    <span className="tag">🤖 Automation</span>
-                  </div>
-                </div>
-              </div>
-              {isOwner && (
-                <div id="profile-buttons">
-                  <button className="edit-profile-btn">Edit Profile</button>
-                </div>
-              )}
-            </div>
+            <UserPageClientWrapper user={user} isOwner={isOwner} bgStyle={bgStyle} />
 
             <div id="profile-projects-container">
               <h2>Projects & Guides</h2>
               <div id="profile-projects">
                 <div className="profile-projects-list">
-                  <h3>📌 Pinned</h3>
-                  <div id="cards-list">
-                    {[
-                      {
-                        title: "Smart Home Automation",
-                        img: "../assets/logow.png",
-                        desc: "Lorem ipsum dolor sit amet…",
-                      },
-                      {
-                        title: "Weather Station",
-                        img: "../assets/logow.png",
-                        desc: "Lorem ipsum dolor sit amet…",
-                      },
-                      {
-                        title: "Smart Garden",
-                        img: "../assets/logow.png",
-                        desc: "Lorem ipsum dolor sit amet…",
-                      },
-                    ].map((project, idx) => (
-                        <div className="profile-project-card" key={idx}>
-                        <Image
-                          src={user.image ? user.image.startsWith("/") ? user.image : `/${user.image}` : "/assets/logow.png"}
-                          alt="Profile Picture"
-                          width={500}
-                          height={500}
-                          className="profile-img"
-                        />
-                        <a href="">
-                          <h3>{project.title}</h3>
-                        </a>
-                        <p>{project.desc}</p>
-                        <div className="stats">
-                          <p>⭐ 4.8</p>
-                          <p>👁️ 120</p>
-                        </div>
-                        </div>
-                    ))}
-                  </div>
+                  {(pins.length > 0 || isOwner) && ( // pins
+                    <div>
+                      <div className="pinnedTextRow">
+                        <h3>📌 Pinned</h3>
+                        {isOwner && (
+                          <div id="profile-buttons">
+                            <button className="edit-profile-btn">
+                              Edit Pins
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <div id="cards-list">
+                        {pins.length > 0
+                          ? pins.map((pin) => (
+                              <div className="card" key={pin.id}>
+                                <Image
+                                  src={
+                                    pin.project.image || "/assets/project.png"
+                                  }
+                                  alt={pin.project.title}
+                                  width={150}
+                                  height={100}
+                                  className="project-image"
+                                />
+                                <h3>{pin.project.title}</h3>
+                                <p>{pin.project.description}</p>
+                              </div>
+                            ))
+                          : isOwner && (
+                              <p style={{ textAlign: "center", color: "#888" }}>
+                                You have no pinned projects yet, why not pin
+                                some?
+                              </p>
+                            )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

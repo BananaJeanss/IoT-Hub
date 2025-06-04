@@ -45,3 +45,6 @@ src/generated/prisma/
 
 # Prisma engines
 node_modules/.prisma/
+
+# ignore public uploads, eg banners, avatars, etc.
+/public/uploads/*

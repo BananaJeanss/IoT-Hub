@@ -1,9 +1,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import ClientLayout from "./ClientLayout";
+
 export const metadata: Metadata = {
   title: "IoT Hub",
   description: "Discover projects, learn new skills and share your own.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -13,14 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-      </head>
       <body>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
 }
-
-// Add this import at the top:
