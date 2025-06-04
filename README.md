@@ -1,19 +1,37 @@
 # IoT Hub
 
-An easy to use IoT project sharing platform.
-Work in progress.
+![IoT Hub Logo](public/assets/logow.png)
 
-## To-do list
+A simple and work-in-progress platform for sharing IoT projects. This project is built with Next.js and Prisma, and aims to make it easy for users to share, explore, and manage IoT projects and guides.
 
-- Database
-  - Logins, signups, accounts, etc
-  - Projects
-  - User profiles
-  - Guides
+## Features
+
+- User authentication (login, signup, account management)
+- Project sharing and exploration
+- User profiles
+- Guides and community resources
+- Mobile responsive design (in progress)
+
+## To-Do List
+
+- Implement project/guide creation
+- Email verification
+- UI Polishing
 - Mobile responsiveness
+- 2FA
+- Github/Google login
+- Search functionality
+- More to come
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up your database (see `prisma/schema.prisma`)
+4. Run the development server: `npm run dev`
 
 ## Attributions
 
-- [Technology icons created by Mayor Icons - Flaticon](https://www.flaticon.com/free-icons/technology "technology icons")
-- [User icons created by Freepik - Flaticon](https://www.flaticon.com/free-icons/user "user icons")
-- [Report flag icon by Vectors Market - Noun Project](https://thenounproject.com/icon/report-flag-1045119/ "report flag icon")
+- Technology icons by Mayor Icons (Flaticon)
+- User icons by Freepik (Flaticon)
+- Report flag icon by Vectors Market (Noun Project)
