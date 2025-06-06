@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 
 import './not-found.css';
@@ -11,16 +11,17 @@ export default function NotFound() {
   const [loopNum, setLoopNum] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(150);
 
-  const textArray = ['404', 'four-zero-four', 'not found', 'error'];
+  const textArray = useMemo(() => ['404', 'four-zero-four', 'not found', 'error'], []);
 
   useEffect(() => {
     const handleType = () => {
       const currentIndex = loopNum % textArray.length;
       const fullText = textArray[currentIndex];
 
-      setDisplayText(isDeleting 
-        ? fullText.substring(0, displayText.length - 1)
-        : fullText.substring(0, displayText.length + 1)
+      setDisplayText(
+        isDeleting
+          ? fullText.substring(0, displayText.length - 1)
+          : fullText.substring(0, displayText.length + 1),
       );
 
       setTypingSpeed(isDeleting ? 30 : 150);
