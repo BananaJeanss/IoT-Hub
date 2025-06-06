@@ -9,19 +9,20 @@ datasource db {
 }
 
 model User {
-  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  username         String?  @unique
-  email            String?  @unique
-  password         String?
-  bio              String?
-  image            String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  tags             String[] @default([])
-  backgroundImage  String?
-  gradientStartRgb String?  @default("rgb(0, 183, 255)")
-  gradientEndRgb   String?  @default("rgb(179, 255, 236)")
-  backgroundType   String?  @default("gradient")
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username            String?  @unique
+  email               String?  @unique
+  password            String?
+  bio                 String?
+  image               String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  tags                String[] @default([])
+  backgroundImage     String?
+  gradientStartRgb    String?  @default("rgb(0, 183, 255)")
+  gradientEndRgb      String?  @default("rgb(179, 255, 236)")
+  backgroundType      String?  @default("gradient")
+  wallCommentsPrivacy String?  @default("everyone")
 
   accounts Account[]
   projects Project[]
@@ -30,6 +31,8 @@ model User {
   views    View[]
   comments Comment[]
   Pin      Pin[]
+  authoredPosts WallPost[] @relation("AuthoredPosts")
+  wallPosts     WallPost[] @relation("WallPosts")
 }
 
 model Account {
@@ -161,4 +164,18 @@ model FeaturedPost {
   @@unique([projectId])
   @@unique([guideId])
   @@unique([order])
+}
+
+model WallPost {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content     String
+  authorId    String   @db.Uuid
+  wallOwnerId String   @db.Uuid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  author    User @relation("AuthoredPosts", fields: [authorId], references: [id], onDelete: Cascade)
+  wallOwner User @relation("WallPosts", fields: [wallOwnerId], references: [id], onDelete: Cascade)
+  
+  @@map("wall_posts")
 }

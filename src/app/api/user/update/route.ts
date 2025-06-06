@@ -11,21 +11,35 @@ export async function POST(req: Request) {
 
   const body = await req.json();
 
-  const { bio, tags, backgroundImage, backgroundType, gradientStartRgb, gradientEndRgb, image } =
-    body;
+  const {
+    bio,
+    tags,
+    backgroundImage,
+    backgroundType,
+    gradientStartRgb,
+    gradientEndRgb,
+    image,
+    wallCommentsPrivacy,
+  } = body;
 
   try {
+    const updateData: Record<string, unknown> = {
+      bio,
+      image,
+      tags,
+      backgroundImage,
+      backgroundType,
+      gradientStartRgb,
+      gradientEndRgb,
+    };
+
+    if (wallCommentsPrivacy !== undefined) {
+      updateData.wallCommentsPrivacy = wallCommentsPrivacy;
+    }
+
     await prisma.user.update({
       where: { email: session.user.email },
-      data: {
-        bio,
-        image,
-        tags,
-        backgroundImage,
-        backgroundType,
-        gradientStartRgb,
-        gradientEndRgb,
-      },
+      data: updateData,
     });
 
     return NextResponse.json({ success: true });

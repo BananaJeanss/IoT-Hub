@@ -6,6 +6,7 @@ import Image from 'next/image';
 import './user.css';
 
 import UserPageClientWrapper from './UserPageClientWrapper';
+import WallComponent from './WallComponent';
 
 interface Props {
   params: Promise<{ username: string }>;
@@ -91,19 +92,7 @@ export default async function UserPage({ params }: Props) {
           </div>
 
           <div id="right-half">
-            <div id="activity-container">
-              <h2>User Wall</h2>
-              <div id="activity">
-                <div className="activity-card">
-                  <textarea
-                    className="comment-input"
-                    rows={1}
-                    placeholder="Leave a comment"
-                  ></textarea>
-                  <button className="comment-button">Post</button>
-                </div>
-              </div>
-            </div>
+            <WallComponent wallOwnerId={user.id} isOwner={isOwner} />
           </div>
         </div>
       </div>

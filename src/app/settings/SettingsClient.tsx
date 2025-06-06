@@ -11,6 +11,8 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
     email: user.email || '',
     bio: user.bio || '',
     image: user.image || '/assets/user.png',
+    wallCommentsPrivacy:
+      (user as User & { wallCommentsPrivacy?: string }).wallCommentsPrivacy || 'everyone',
   });
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -43,7 +45,9 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
     return { score: 100, label: 'Very strong', color: '#2ecc71' };
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -150,6 +154,27 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
           <textarea id="bio" name="bio" value={form.bio} onChange={handleChange} maxLength={160} />
           <button type="submit" disabled={loading}>
             Save Profile
+          </button>
+        </form>
+      </div>
+      <div className="settings-section">
+        <h2>Privacy Settings</h2>
+        <form onSubmit={handleProfileSubmit} className="settings-form">
+          <label htmlFor="wallCommentsPrivacy">Wall Comments</label>
+          <select
+            id="wallCommentsPrivacy"
+            name="wallCommentsPrivacy"
+            value={form.wallCommentsPrivacy}
+            onChange={handleChange}
+          >
+            <option value="everyone">Everyone can comment</option>
+            <option value="owner-only">Only I can comment</option>
+          </select>
+          <small style={{ color: '#888', marginTop: '-8px' }}>
+            Control who can leave comments on your user wall
+          </small>
+          <button type="submit" disabled={loading}>
+            Save Privacy Settings
           </button>
         </form>
       </div>
