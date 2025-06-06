@@ -22,6 +22,51 @@ export async function POST(req: Request) {
     wallCommentsPrivacy,
   } = body;
 
+  // Validate tags
+  if (tags && Array.isArray(tags)) {
+    const MAX_TAG_LENGTH = 25;
+    const MAX_TAGS = 5;
+
+    if (tags.length > MAX_TAGS) {
+      return NextResponse.json(
+        { error: `Cannot have more than ${MAX_TAGS} tags` },
+        { status: 400 },
+      );
+    }
+
+    for (const tag of tags) {
+      if (typeof tag !== 'string') {
+        return NextResponse.json({ error: 'All tags must be strings' }, { status: 400 });
+      }
+
+      const trimmedTag = tag.trim();
+      if (trimmedTag.length === 0) {
+        return NextResponse.json({ error: 'Tags cannot be empty' }, { status: 400 });
+      }
+
+      if (trimmedTag.length > MAX_TAG_LENGTH) {
+        return NextResponse.json(
+          { error: `Tag "${trimmedTag}" exceeds maximum length of ${MAX_TAG_LENGTH} characters` },
+          { status: 400 },
+        );
+      }
+
+      // Check for invalid characters (allow alphanumeric, spaces, hyphens, underscores, and emojis)
+      if (!/^[a-zA-Z0-9\s\-_\p{Emoji}\p{Emoji_Modifier}\p{Emoji_Component}]+$/u.test(trimmedTag)) {
+        return NextResponse.json(
+          {
+            error: `Tag "${trimmedTag}" contains invalid characters. Only letters, numbers, spaces, hyphens, underscores, and emojis are allowed.`,
+          },
+          { status: 400 },
+        );
+      }
+    }
+
+    // Remove duplicates and trim whitespace
+    const cleanedTags = [...new Set(tags.map((tag) => tag.trim()).filter((tag) => tag.length > 0))];
+    body.tags = cleanedTags;
+  }
+
   try {
     const updateData: Record<string, unknown> = {
       bio,

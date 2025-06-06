@@ -20,6 +20,10 @@ export default function EditProfileModal({
 
   const [pfp, setPfp] = useState<string | null>(user.image ?? null);
 
+  const [tagSearch, setTagSearch] = useState('');
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
+  const [showTagDropdown, setShowTagDropdown] = useState(false);
+
   const router = useRouter();
 
   // Prevent background scroll while modal is open
@@ -30,26 +34,26 @@ export default function EditProfileModal({
     };
   }, []);
 
+  // Fetch popular/existing tags from API
+  useEffect(() => {
+    const fetchTags = async () => {
+      const res = await fetch('/api/tags/popular');
+      if (res.ok) {
+        const data = await res.json();
+        setAvailableTags(data.tags);
+      }
+    };
+    fetchTags();
+  }, []);
+
+  const filteredTags = availableTags.filter(
+    (tag) => tag.toLowerCase().includes(tagSearch.toLowerCase()) && !tags.includes(tag),
+  );
+
   const handleRemoveBanner = () => {
     setBanner(null);
     setBackgroundType('gradient');
   };
-
-  const toggleTag = (tag: string) => {
-    setTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : prev.length < 5 ? [...prev, tag] : prev,
-    );
-  };
-
-  const allTags = [
-    'IoT',
-    'SmartHome',
-    'Automation',
-    'ESP32',
-    'Linux',
-    '3D Printing',
-    'Open Source',
-  ];
 
   const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -91,6 +95,21 @@ export default function EditProfileModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Client-side validation for tags
+    const MAX_TAG_LENGTH = 25;
+    for (const tag of tags) {
+      if (tag.length > MAX_TAG_LENGTH) {
+        alert(`Tag "${tag}" exceeds maximum length of ${MAX_TAG_LENGTH} characters`);
+        return;
+      }
+      if (!/^[a-zA-Z0-9\s\-_\p{Emoji}\p{Emoji_Modifier}\p{Emoji_Component}]+$/u.test(tag)) {
+        alert(
+          `Tag "${tag}" contains invalid characters. Only letters, numbers, spaces, hyphens, underscores, and emojis are allowed.`,
+        );
+        return;
+      }
+    }
+
     const res = await fetch('/api/user/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -111,6 +130,65 @@ export default function EditProfileModal({
       onClose();
     } else {
       alert(result.error || 'Something went wrong');
+    }
+  };
+
+  // Add custom tag functionality
+  const addCustomTag = () => {
+    const trimmedTag = tagSearch.trim();
+    const MAX_TAG_LENGTH = 25;
+
+    if (!trimmedTag) {
+      return;
+    }
+
+    if (trimmedTag.length > MAX_TAG_LENGTH) {
+      alert(`Tag cannot exceed ${MAX_TAG_LENGTH} characters`);
+      return;
+    }
+
+    // Check for invalid characters
+    if (!/^[a-zA-Z0-9\s\-_\p{Emoji}\p{Emoji_Modifier}\p{Emoji_Component}]+$/u.test(trimmedTag)) {
+      alert('Tags can only contain letters, numbers, spaces, hyphens, underscores, and emojis');
+      return;
+    }
+
+    if (tags.includes(trimmedTag)) {
+      alert('This tag is already added');
+      return;
+    }
+
+    if (tags.length < 5) {
+      setTags([...tags, trimmedTag]);
+      setTagSearch('');
+      setShowTagDropdown(false);
+    }
+  };
+
+  const handleTagInputKeyDown = (e: React.KeyboardEvent) => {
+    const MAX_TAG_LENGTH = 25;
+
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filteredTags.length > 0) {
+        // Add first suggestion
+        const firstTag = filteredTags[0];
+        if (firstTag.length > MAX_TAG_LENGTH) {
+          alert(`Tag cannot exceed ${MAX_TAG_LENGTH} characters`);
+          return;
+        }
+        if (tags.length < 5 && !tags.includes(firstTag)) {
+          setTags([...tags, firstTag]);
+          setTagSearch('');
+          setShowTagDropdown(false);
+        }
+      } else if (tagSearch.trim()) {
+        // Add custom tag
+        addCustomTag();
+      }
+    } else if (e.key === 'Escape') {
+      setShowTagDropdown(false);
+      setTagSearch('');
     }
   };
 
@@ -204,20 +282,85 @@ export default function EditProfileModal({
           />
           <small>{bio.length}/160</small>
 
-          <h3 style={{ marginBottom: '0px' }}>Tags:</h3>
-          <div className="tag-selector">
-            {allTags.map((tag) => (
-              <button
-                key={tag}
-                className={`tag-btn ${tags.includes(tag) ? 'selected' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleTag(tag);
+          <div className="tag-section">
+            <h3 style={{ marginTop: 0 }}>Tags ({tags.length}/5):</h3>
+
+            {/* Selected tags */}
+            <div className="selected-tags">
+              {tags.map((tag) => (
+                <span key={tag} className="selected-tag">
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => setTags(tags.filter((t) => t !== tag))}
+                    className="remove-tag-btn"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+
+            {/* Tag search input */}
+            <div className="tag-input-container">
+              <input
+                type="text"
+                placeholder="Search or add tags..."
+                value={tagSearch}
+                onChange={(e) => {
+                  setTagSearch(e.target.value);
+                  setShowTagDropdown(true);
                 }}
-              >
-                {tag}
-              </button>
-            ))}
+                onFocus={() => setShowTagDropdown(true)}
+                className="tag-search-input"
+                disabled={tags.length >= 5}
+                onKeyDown={handleTagInputKeyDown}
+                maxLength={25}
+              />
+              {tagSearch && (
+                <small style={{ color: tagSearch.length > 25 ? 'red' : '#888', fontSize: '11px' }}>
+                  {tagSearch.length}/25 characters
+                </small>
+              )}
+
+              {/* Dropdown with suggestions */}
+              {showTagDropdown && tagSearch && (
+                <div className="tag-dropdown">
+                  {filteredTags.slice(0, 5).map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => {
+                        const MAX_TAG_LENGTH = 25;
+                        if (tag.length > MAX_TAG_LENGTH) {
+                          alert(`Tag cannot exceed ${MAX_TAG_LENGTH} characters`);
+                          return;
+                        }
+                        if (tags.length < 5 && !tags.includes(tag)) {
+                          setTags([...tags, tag]);
+                          setTagSearch('');
+                          setShowTagDropdown(false);
+                        }
+                      }}
+                      className="tag-suggestion"
+                    >
+                      {tag}
+                    </button>
+                  ))}
+
+                  {/* Add custom tag option */}
+                  {tagSearch.trim() && !availableTags.includes(tagSearch.trim()) && (
+                    <button
+                      type="button"
+                      onClick={addCustomTag}
+                      className="tag-suggestion custom-tag"
+                    >
+                      Add &quot;{tagSearch.trim()}&quot;
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           <button type="submit" className="save-btn">
