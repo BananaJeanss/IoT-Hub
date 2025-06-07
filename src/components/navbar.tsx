@@ -56,7 +56,7 @@ export default function Navbar() {
         {session?.user ? (
           <>
             <Link href="/new" className="new-project-btn">
-              New Project
+              New Post
             </Link>
             <div id="navbar-userinfo" ref={dropdownRef}>
               <Image

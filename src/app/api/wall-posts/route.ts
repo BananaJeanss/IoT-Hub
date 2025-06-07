@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
+import { sanitizeUserContent } from '@/lib/markdownUtils';
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
 
     const wallPost = await prisma.wallPost.create({
       data: {
-        content: content.trim(),
+        content: sanitizeUserContent(content.trim()),
         authorId: author.id,
         wallOwnerId,
       },

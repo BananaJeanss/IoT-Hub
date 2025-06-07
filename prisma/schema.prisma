@@ -62,17 +62,23 @@ model VerificationToken {
 }
 
 model Project {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title       String
-  slug        String   @unique
-  description String?
-  image       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      String   @db.Uuid
-  pinned      Boolean  @default(false)
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title            String
+  slug             String   @unique
+  description      String?
+  content          String
+  image            String?
+  tags             String[] @default([])
+  links            Json     @default("[]") 
+  backgroundType   String   @default("gradient")
+  gradientStart    String   @default("#00b7ff")
+  gradientEnd      String   @default("#b3ffec")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  userId           String   @db.Uuid
+  pinned           Boolean  @default(false)
 
-  user         User          @relation(fields: [userId], references: [id])
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   stars        Star[]
   views        View[]
   comments     Comment[]
@@ -81,17 +87,22 @@ model Project {
 }
 
 model Guide {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title     String
-  slug      String   @unique
-  summary   String?
-  content   String // markdown or HTML
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    String   @db.Uuid
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title            String
+  slug             String   @unique
+  description      String? 
+  content          String
+  image            String?
+  tags             String[] @default([])
+  links            Json     @default("[]")
+  backgroundType   String   @default("gradient")
+  gradientStart    String   @default("#00b7ff")
+  gradientEnd      String   @default("#b3ffec")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  userId           String   @db.Uuid
 
-  user         User          @relation(fields: [userId], references: [id])
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   stars        Star[]
   views        View[]
   comments     Comment[]

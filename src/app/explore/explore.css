@@ -16,7 +16,7 @@
   background-color: var(--tertiary-color);
   border-radius: 12px;
   width: 100%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
   display: flex;
@@ -42,7 +42,7 @@
 }
 
 .explore-card p {
-  margin: 0 16px 16px 16px;
+  margin: 0 16px 16px;
   color: #ccc;
   font-size: 14px;
 }
@@ -52,7 +52,7 @@
 }
 
 #stats {
-  margin: 0 32px 16px 32px;
+  margin: 0 32px 16px;
 }
 
 #stats-left {
@@ -76,8 +76,7 @@
 
 #stats-username {
   display: flex;
-  align-content: center;
-  justify-content: flex-start;
+  place-content: center flex-start;
   align-items: center;
   flex-direction: row;
   margin: 0;
@@ -85,8 +84,7 @@
 
 #stats-date {
   display: flex;
-  align-content: center;
-  justify-content: flex-start;
+  place-content: center flex-start;
   align-items: center;
   flex-direction: row;
   margin: 0;
@@ -113,13 +111,13 @@
   appearance: none;
   outline: none;
   transition: border 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
   cursor: pointer;
 }
 
 .dropdown select:focus {
   border-color: var(--main-color);
-  box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+  box-shadow: 0 0 0 2px rgb(52 152 219 / 20%);
 }
 
 .dropdown option {

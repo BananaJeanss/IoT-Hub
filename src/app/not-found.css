@@ -8,7 +8,7 @@
 }
 
 #foohfo h1 {
-    font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', 'Liberation Mono', 'Courier New', monospace;
+    font-family: 'Fira Mono', Consolas, Menlo, Monaco, 'Liberation Mono', 'Courier New', monospace;
     font-size: 14vh;
     margin: 0;
     min-height: 1.2em;
@@ -22,6 +22,7 @@
     0%, 50% {
         opacity: 1;
     }
+
     51%, 100% {
         opacity: 0;
     }

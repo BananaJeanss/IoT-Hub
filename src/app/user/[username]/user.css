@@ -56,8 +56,6 @@
   gap: 20px;
   padding: 25px;
   background-color: transparent;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-radius: 25px;
 }
 
@@ -68,13 +66,42 @@
   align-content: center;
 }
 
-.pinnedTextRow {
+.pinned-text-row {
   display: flex;
   align-content: center;
 }
 
-#profile-buttons button,
-.pinnedTextRow button {
+.pinned-text-row button {
+  background-color: transparent !important;
+  color: var(--secondary-color) !important;
+  border: 2px solid var(--tertiary-color) !important;
+  transition:
+    color 0.15s,
+    border 0.15s !important;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 16px;  cursor: pointer;
+}
+
+.banner-buttons button,
+.banner-buttons label {
+  background-color: rgb(0 0 0 / 60%);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+}
+
+.pinned-text-row button:hover {
+  border-color: var(--main-color) !important;
+}
+
+#profile-buttons button {
+  background-color: var(--background-color);
+  color: var(--secondary-color);
+  transition: background-color 0.3s ease;
   padding: 10px 20px;
   border-radius: 12px;
   font-size: 16px;
@@ -82,52 +109,8 @@
   border: none;
 }
 
-#profile-buttons button {
-  background-color: var(--background-color);
-  color: var(--secondary-color);
-  transition: background-color 0.3s ease;
-}
-
 #profile-buttons button:hover {
   background-color: var(--main-color);
-}
-
-.pinnedTextRow button {
-  background-color: transparent !important;
-  color: var(--secondary-color) !important;
-  border: 2px solid var(--tertiary-color) !important;
-  transition:
-    color 0.15s,
-    border 0.15s !important;
-}
-
-.pinnedTextRow button:hover {
-  border-color: var(--main-color) !important;
-}
-
-#pfp img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-#info h2 {
-  margin: 0 0 10px;
-}
-
-#profile-projects-container {
-  background-color: var(--tertiary-color);
-  padding: 25px;
-  border-radius: 25px;
-  margin-top: 30px;
-}
-
-.profile-projects-list {
-  background-color: var(--background-color);
-  border-radius: 25px;
-  padding: 15px;
-  margin-bottom: 20px;
 }
 
 .profile-project-card {
@@ -139,7 +122,7 @@
   width: 100%;
   box-sizing: border-box;
   gap: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.37);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 37%);
   transform: scale(1);
   transition: transform 0.2s;
 }
@@ -153,6 +136,13 @@
   height: 120px;
   object-fit: cover;
   border-radius: 6px;
+}
+
+#pfp img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .profile-project-card a {
@@ -179,6 +169,13 @@
   background-color: var(--tertiary-color);
   padding: 16px;
   border-radius: 25px;
+}
+
+.modal h2 {
+  margin: 0 0 1rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fff;
 }
 
 #activity-container h2 {
@@ -250,15 +247,19 @@ textarea.comment-input {
 .count-1 #cards-list {
   grid-template-columns: repeat(1, 1fr);
 }
+
 .count-2 #cards-list {
   grid-template-columns: repeat(2, 1fr);
 }
+
 .count-3 #cards-list {
   grid-template-columns: repeat(3, 1fr);
 }
+
 .count-4 #cards-list {
   grid-template-columns: repeat(4, 1fr);
 }
+
 .count-5 #cards-list,
 .count-gt5 #cards-list {
   grid-template-columns: repeat(5, 1fr);
@@ -292,7 +293,7 @@ textarea.comment-input {
 .overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgb(0 0 0 / 70%);
   backdrop-filter: blur(8px);
   z-index: 1000;
   display: flex;
@@ -306,18 +307,11 @@ textarea.comment-input {
   width: 100%;
   max-width: 520px;
   padding: 1.5rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 80%);
   color: #eaeaea;
   font-family: sans-serif;
   position: relative;
   z-index: 1001;
-}
-
-.modal h2 {
-  margin: 0 0 1rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #fff;
 }
 
 .close-btn {
@@ -383,7 +377,7 @@ textarea.comment-input {
   background-color: #1b5e20;
 }
 
-.banner‐pfp‐wrapper {
+.banner-pfp-wrapper {
   position: relative;
   margin-bottom: 3rem;
 }
@@ -413,16 +407,7 @@ textarea.comment-input {
   max-height: 35px;
 }
 
-.banner-buttons button,
-.banner-buttons label {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  cursor: pointer;
-  border: none;
-}
+
 
 .banner-buttons label input[type='file'] {
   display: none;
@@ -572,6 +557,10 @@ textarea.comment-input {
   word-wrap: break-word;
 }
 
+.post-content p {
+  margin: 0;
+}
+
 .delete-btn {
   background: none;
   border: none;
@@ -584,7 +573,7 @@ textarea.comment-input {
 }
 
 .delete-btn:hover {
-  background-color: #ff4444;
+  background-color: #f44;
   color: white;
 }
 
@@ -630,7 +619,7 @@ textarea.comment-input {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .post-header {
     flex-direction: column;
     gap: 8px;
@@ -701,7 +690,7 @@ textarea.comment-input {
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 25%);
 }
 
 .tag-suggestion {
