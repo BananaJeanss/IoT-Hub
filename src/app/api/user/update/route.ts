@@ -83,7 +83,7 @@ export async function POST(req: Request) {
     }
 
     await prisma.user.update({
-      where: { email: session.user.email },
+      where: { email: session.user.id },
       data: updateData,
     });
 

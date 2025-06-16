@@ -13,7 +13,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     const { id } = await params;
 
     const author = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { email: session.user.id },
     });
 
     if (!author) {

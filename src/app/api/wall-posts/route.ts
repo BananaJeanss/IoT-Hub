@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     }
 
     const author = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { email: session.user.id },
     });
 
     if (!author) {

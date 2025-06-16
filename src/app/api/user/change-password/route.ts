@@ -41,7 +41,7 @@ export async function POST(req: Request) {
   try {
     const hashedPassword = await argon2.hash(password, { type: argon2.argon2id });
     await prisma.user.update({
-      where: { email: session.user.email },
+      where: { email: session.user.id },
       data: { password: hashedPassword },
     });
     return NextResponse.json({ success: true });
