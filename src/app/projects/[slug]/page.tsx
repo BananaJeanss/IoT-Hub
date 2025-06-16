@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { markdownToSafeHtml } from '@/lib/markdownUtils';
-import './project.css';
+import '../../project/project.css';
 
 interface Project {
   id: string;

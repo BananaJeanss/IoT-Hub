@@ -33,7 +33,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
     } // Record view (only if user is logged in and not the owner)
     if (session?.user?.email) {
       const user = await prisma.user.findUnique({
-        where: { email: session.user.id },
+        where: { email: session.user.email },
       });
 
       if (user && user.id !== guide.userId) {

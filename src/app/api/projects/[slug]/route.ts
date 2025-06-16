@@ -30,12 +30,10 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
 
     if (!project) {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });
-    }
-
-    // Record view (only if user is logged in and not the owner)
-    if (session?.user?.id) {
+    } // Record view (only if user is logged in and not the owner)
+    if (session?.user?.email) {
       const user = await prisma.user.findUnique({
-        where: { id: session.user.id },
+        where: { email: session.user.email },
       });
 
       if (user && user.id !== project.userId) {

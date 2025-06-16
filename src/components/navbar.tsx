@@ -40,8 +40,8 @@ export default function Navbar() {
           <Image src="/assets/logow.png" alt="Logo" width={64} height={64} />
         </Link>
         <Link href="/explore">Explore</Link>
-        <Link href="/projects">Projects</Link>
         <Link href="/guides">Guides</Link>
+        <Link href="/popular">Popular</Link>
         <Link href="/community">Community</Link>
       </div>
       <button
@@ -68,7 +68,7 @@ export default function Navbar() {
               />
               <span id="username">
                 <Link href="/user/">
-                  <strong>@{session.user.username || 'User'}</strong>
+                  <strong>@{session.user.name || 'User'}</strong>
                 </Link>
               </span>
               <div className="navbar-dropdown">
