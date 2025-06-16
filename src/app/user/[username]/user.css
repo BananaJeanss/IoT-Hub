@@ -468,8 +468,8 @@ textarea.comment-input {
 
 .pfp-upload-container {
   position: absolute;
-  top: calc(120px - 48px);
-  left: 24px;
+  top: calc(120px - 38px);
+  left: 50px;
   width: 96px;
   height: 96px;
   z-index: 2;
