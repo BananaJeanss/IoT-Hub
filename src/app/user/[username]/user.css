@@ -113,6 +113,20 @@
   background-color: var(--main-color);
 }
 
+#profile-projects-container {
+  background-color: var(--tertiary-color);
+  padding: 25px;
+  border-radius: 25px;
+  margin-top: 30px;
+}
+
+.profile-projects-list {
+  background-color: var(--background-color);
+  border-radius: 25px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
 .profile-project-card {
   background-color: var(--tertiary-color);
   border-radius: 12px;

@@ -58,7 +58,7 @@ export default async function UserPage({ params }: Props) {
                         <h3>📌 Pinned</h3>
                         {isOwner && (
                           <div id="profile-buttons">
-                            <button className="edit-profile-btn">Edit Pins</button>
+                            <button className="edit-profile-btn" style={{backgroundColor: 'var(--tertiary-color)'}}>Edit Pins</button>
                           </div>
                         )}
                       </div>
