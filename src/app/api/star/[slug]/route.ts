@@ -3,8 +3,9 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 import { prisma } from '@/lib/prisma';
 
-export async function POST(req: Request, { params }: { params: { slug: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params;
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -12,7 +13,7 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
 
     // Find the project by slug
     const project = await prisma.project.findUnique({
-      where: { slug: params.slug },
+      where: { slug },
     });
 
     if (!project) {
@@ -53,13 +54,14 @@ export async function POST(req: Request, { params }: { params: { slug: string } 
   }
 }
 
-export async function GET(req: Request, { params }: { params: { slug: string } }) {
+export async function GET(req: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params;
     const session = await getServerSession(authOptions);
 
     // Find the project by slug
     const project = await prisma.project.findUnique({
-      where: { slug: params.slug },
+      where: { slug },
       include: {
         _count: {
           select: {
