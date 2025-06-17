@@ -648,6 +648,7 @@ textarea.comment-input {
 
 .tag-section {
   margin: 1rem 0;
+  margin-bottom: 5px;
 }
 
 .selected-tags {
@@ -720,9 +721,15 @@ textarea.comment-input {
 
 .tag-suggestion:hover {
   background: #3498db;
+  
 }
 
 .tag-suggestion.custom-tag {
   font-style: italic;
   color: #3498db;
+  transition: color 0.2s;
+}
+
+.tag-suggestion.custom-tag:hover {
+  color: white;
 }

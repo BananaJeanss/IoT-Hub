@@ -223,6 +223,7 @@ export default function EditProfileModal({
                 }}
               />
             )}
+            <div className="profile-bg-overlay" style={{ borderRadius: 0 }}></div>
             <div className="banner-buttons">
               {banner ? (
                 <button type="button" onClick={handleRemoveBanner}>
