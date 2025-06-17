@@ -8,6 +8,14 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
     const { slug } = await params;
     const session = await getServerSession(authOptions);
 
+    // Always fetch the user if session exists
+    let user = null;
+    if (session?.user?.email) {
+      user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+      });
+    }
+
     const project = await prisma.project.findUnique({
       where: { slug },
       include: {
@@ -62,6 +70,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
       views: project._count.views,
       user: undefined,
       _count: undefined,
+      isOwner: session?.user?.email && user && user.id === project.userId,
     };
 
     return NextResponse.json(response);

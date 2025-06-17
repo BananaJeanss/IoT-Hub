@@ -33,6 +33,7 @@ export default function ProjectPage() {
   const params = useParams();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
     async function fetchProject() {
@@ -41,6 +42,7 @@ export default function ProjectPage() {
         if (response.ok) {
           const data = await response.json();
           setProject(data);
+          setIsOwner(data.isOwner); // <-- set ownership
         }
       } catch (error) {
         console.error('Error fetching project:', error);
@@ -114,17 +116,19 @@ export default function ProjectPage() {
                 />
                 Star <div id="star-count">0</div>
               </button>
-              <button id="edit-project-button" className="project-button">
-                <Image
-                  src="/assets/pencil.png"
-                  id="pencil-icon"
-                  alt="Star"
-                  width={20}
-                  height={20}
-                  style={{ verticalAlign: 'middle', marginRight: 4 }}
-                />
-                Edit Project
-              </button>
+              {isOwner && (
+                <button id="edit-project-button" className="project-button">
+                  <Image
+                    src="/assets/pencil.png"
+                    id="pencil-icon"
+                    alt="Star"
+                    width={20}
+                    height={20}
+                    style={{ verticalAlign: 'middle', marginRight: 4 }}
+                  />
+                  Edit Project
+                </button>
+              )}
             </div>
           </div>
         </div>
