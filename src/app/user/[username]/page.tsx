@@ -54,7 +54,7 @@ export default async function UserPage({ params }: Props) {
                 <div className="profile-projects-list">
                   {(pins.length > 0 || isOwner) && ( // pins
                     <div>
-                      <div className="pinnedTextRow">
+                      <div className="pinned-text-row">
                         <h3>📌 Pinned</h3>
                         {isOwner && (
                           <div id="profile-buttons">

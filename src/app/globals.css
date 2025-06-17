@@ -1,4 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@font-face {
+  font-family: "Funnel Sans";
+  src: url("/fonts/FunnelSans-VariableFont_wght.ttf");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --main-color: #3498db;

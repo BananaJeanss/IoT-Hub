@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { notFound, useParams } from 'next/navigation';
 import { markdownToSafeHtml } from '@/lib/markdownUtils';
 import './project.css';
@@ -91,16 +92,39 @@ export default function ProjectPage() {
     <div id="project-container">
       <div id="project-cont2">
         <div id="project-header">
-          <div id="project-upper-header" style={backgroundStyle}>
-            {/* Background handled by style */}
-          </div>
+          <div id="project-upper-header" style={backgroundStyle}></div>
           <div id="project-lower-header">
-            <h1>{project.title}</h1>
-            <p>{project.description}</p>
+            <h1 id="project-title">{project.title}</h1>
+            <p id="project-description">{project.description}</p>
             <div id="tags">
               {project.tags.map((tag, index) => (
                 <p key={index}>{tag}</p>
               ))}
+            </div>
+            <hr id="project-overview-hr" />
+            <div id="buttons-row">
+              <button id="star-button" className="project-button">
+                <Image
+                  src="/assets/roundedstar.png"
+                  id="star-icon"
+                  alt="Star"
+                  width={20}
+                  height={20}
+                  style={{ verticalAlign: 'middle', marginRight: 4 }}
+                />
+                Star <div id="star-count">0</div>
+              </button>
+              <button id="edit-project-button" className="project-button">
+                <Image
+                  src="/assets/pencil.png"
+                  id="pencil-icon"
+                  alt="Star"
+                  width={20}
+                  height={20}
+                  style={{ verticalAlign: 'middle', marginRight: 4 }}
+                />
+                Edit Project
+              </button>
             </div>
           </div>
         </div>
