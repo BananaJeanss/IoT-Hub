@@ -1,0 +1,32 @@
+footer {
+    margin-top: auto;
+    padding: 20px;
+}
+
+footer ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 12px;
+}
+
+footer ul li {
+    list-style: none;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: #575757;
+}
+
+footer ul li a {
+    list-style: none;
+    text-decoration: none;
+    color: #575757;
+    transition: color 0.3s;
+}
+
+footer ul li a:hover {
+    color: white;
+}

@@ -23,6 +23,9 @@ body {
   background-color: var(--background-color);
   color: var(--secondary-color);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 * {
@@ -246,6 +249,7 @@ background: radial-gradient(circle, #00fff2 0%, transparent 70%);
   border: 2px solid black;
   box-shadow: 0 0 0 4px var(--background-color);
   margin-right: 10px;
+  object-fit: cover;
 }
 
 #navbar-toggle {
