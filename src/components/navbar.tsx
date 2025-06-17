@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 
+import './navbar.css'
+
 export default function Navbar() {
   const [navActive, setNavActive] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
