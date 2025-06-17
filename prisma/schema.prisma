@@ -23,6 +23,7 @@ model User {
   gradientEndRgb      String?  @default("rgb(179, 255, 236)")
   backgroundType      String?  @default("gradient")
   wallCommentsPrivacy String?  @default("everyone")
+  isEmailVerified     Boolean  @default(false)
 
   accounts Account[]
   projects Project[]
@@ -189,4 +190,14 @@ model WallPost {
   wallOwner User @relation("WallPosts", fields: [wallOwnerId], references: [id], onDelete: Cascade)
   
   @@map("wall_posts")
+}
+
+model EmailVerificationToken {
+  id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email   String
+  token   String   @unique
+  expires DateTime
+  createdAt DateTime @default(now())
+
+  @@unique([email, token])
 }

@@ -1,6 +1,7 @@
 # IoT Hub
 
-![IoT Hub Logo](public/assets/logow.png)
+<img src="public/assets/logow.png" alt="IoT Hub Logo" width="120" />
+
 
 A simple and work-in-progress platform for sharing IoT projects. This project is built with Next.js and Prisma, and aims to make it easy for users to share, explore, and manage IoT projects and guides.
 

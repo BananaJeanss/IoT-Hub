@@ -140,10 +140,6 @@ body {
   background: radial-gradient(circle, #00fff2 0%, transparent 70%);
 }
 
-#content {
-  padding: 40px 0;
-}
-
 .content-container {
   max-width: 1600px;
   margin: 0 auto;
@@ -197,8 +193,6 @@ body {
   font-size: 14px;
   color: #aaa;
 }
-
-
 
 .dropdown-menu {
   position: absolute;

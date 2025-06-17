@@ -41,7 +41,7 @@ export default function CommunityPage() {
         </div>
         <div id="explore-list">
           <div className="explore-card">
-            <Image src="/assets/logow.png" alt="Project 1" width={64} height={64} />
+            <Image src="/assets/logow.png" alt="Project 1" width={500} height={500} />
             <a href="">
               <h3>Project 1</h3>
             </a>
