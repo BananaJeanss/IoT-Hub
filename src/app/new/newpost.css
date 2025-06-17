@@ -1,3 +1,9 @@
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .content-container {
   display: flex;
   width: 100%;
@@ -166,6 +172,11 @@
   justify-content: center;
 }
 
+.link-item span {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+}
+
 .guide-button .button-features span {
   color: #f1c40f;
 }
@@ -211,6 +222,14 @@
 .form-group textarea {
   min-height: 120px;
   resize: vertical;
+}
+
+.tag-input-row input {
+  flex: 1;
+}
+
+.link-input-row input {
+  flex: 1;
 }
 
 .form-group input:focus,
@@ -311,12 +330,6 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
   color: var(--secondary-color);
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Image Upload */
@@ -499,9 +512,44 @@
   object-fit: cover;
 }
 
+.markdown-content p {
+  color: var(--secondary-color);
+  margin: 10px 0;
+}
+
 .project-preview #project-lower-header {
   padding: 20px 30px;
   color: var(--secondary-color);
+}
+
+.markdown-content h1 {
+  color: var(--secondary-color);
+  border-bottom: 2px solid var(--main-color);
+  padding-bottom: 10px;
+  margin: 30px 0 20px;
+}
+
+.markdown-content h2 {
+  margin: 25px 0 15px;
+}
+
+.markdown-content h3 {
+  color: var(--secondary-color);
+  margin: 20px 0 10px;
+}
+
+.markdown-content pre h1,
+.markdown-content pre h2,
+.markdown-content pre h3,
+.markdown-content pre h4,
+.markdown-content pre h5,
+.markdown-content pre h6 {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .project-preview #project-lower-header h1 {
@@ -515,32 +563,10 @@
   opacity: 0.9;
 }
 
-/* Prevent styling leakage in code blocks */
-.markdown-content pre h1,
-.markdown-content pre h2,
-.markdown-content pre h3,
-.markdown-content pre h4,
-.markdown-content pre h5,
-.markdown-content pre h6 {
-  font-size: inherit !important;
-  font-weight: inherit !important;
-  color: inherit !important;
-}
-
 /* Markdown Content Styling */
 .markdown-content {
   line-height: 1.6;
 }
-
-.markdown-content h1 {
-  color: var(--secondary-color);
-  border-bottom: 2px solid var(--main-color);
-  padding-bottom: 10px;
-  margin: 30px 0 20px;
-}
-
-.markdown-content h2 {
-  margin: 25px 0 15px;
 
 .project-preview #tags {
   display: flex;
@@ -651,16 +677,6 @@
   object-fit: cover;
 }
 
-.markdown-content h3 {
-  color: var(--secondary-color);
-  margin: 20px 0 10px;
-}
-
-.markdown-content p {
-  color: var(--secondary-color);
-  margin: 10px 0;
-}
-
 .markdown-content ul {
   color: var(--secondary-color);
   margin: 10px 0;
@@ -703,28 +719,6 @@
   white-space: pre;
 }
 
-  border: 1px solid #444 !important;
-  border-radius: 4px !important;
-  padding: 2px 6px !important;
-  font-family: 'Courier New', monospace !important;
-  font-size: 0.9em !important;
-    color: var(--main-color) !important;
-}
-
-.markdown-content pre h1,
-.markdown-content pre h2,
-.markdown-content pre h3,
-.markdown-content pre h4,
-.markdown-content pre h5,
-.markdown-content pre h6 {
-  font-size: inherit !important;
-  font-weight: inherit !important;
-  color: inherit !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
 .markdown-content pre strong,
 .markdown-content pre em {
   font-weight: inherit !important;
@@ -739,19 +733,11 @@
   align-items: center;
 }
 
-.tag-input-row input {
-  flex: 1;
-}
-
 .link-input-row {
   display: flex;
   gap: 8px;
   align-items: center;
   margin-top: 8px;
-}
-
-.link-input-row input {
-  flex: 1;
 }
 
 .link-item {
@@ -765,15 +751,18 @@
   border: 1px solid #444;
 }
 
-.link-item span {
-  color: var(--secondary-color);
-  font-size: 0.9rem;
-}
-
 .markdown-editor {
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   line-height: 1.5;
+}
+
+.gradient-picker label {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0 0 0 0.5rem;
+  white-space: nowrap;
 }
 
 /* Banner and Gradient Styles */
@@ -843,14 +832,6 @@
   flex-wrap: wrap;
 }
 
-.gradient-picker label {
-  color: var(--secondary-color);
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin: 0 0 0 0.5rem;
-  white-space: nowrap;
-}
-
 .gradient-picker input[type='color'] {
   width: 50px;
   height: 40px;
@@ -883,91 +864,6 @@
   border-radius: 4px;
 }
 
-/* Responsive Design */
-@media (width <= 1200px) {
-  .live-editor-container {
-    flex-direction: column;
-    height: auto;
-  }
-  
-  .editor-panel,
-  .preview-panel {
-    flex: none;
-    min-height: 600px;
-  }
-  
-  .preview-panel {
-    max-height: 800px;
-  }
-}
-
-@media (width <= 768px) {
-  .content-container {
-    padding: 16px;
-  }
-  
-  .new-post-form {
-    padding: 20px;
-  }
-
-    .post-type-button {
-    padding: 24px 20px;
-    min-height: 220px;
-    margin: 8px 0;
-  }
-
-    .drafts-button {
-    padding: 16px 20px;
-    min-height: 100px;
-    margin-top: 16px;
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .drafts-button .button-icon {
-    font-size: 1.8rem;
-  }
-
-    .drafts-button h2 {
-    font-size: 1.1rem;
-  }
-
-    .drafts-button p {
-    font-size: 0.85rem;
-  }
-  
-  .post-type-button h2 {
-    font-size: 1.3rem;
-  }
-  
-  .post-type-button p {
-    font-size: 0.95rem;
-  }
-  
-  .live-editor-container {
-    gap: 15px;
-    padding: 0 10px;
-  }
-  
-  .editor-panel,
-  .preview-panel {
-    padding: 15px;
-    border-radius: 8px;
-  }
-  
-  .project-preview #project-contents {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .project-preview #project-contents hr {
-    width: 100%;
-    height: 3px;
-    margin: 0;
-  }
-}
-
-/* Editor Scrollbar Styling */
 .editor-panel::-webkit-scrollbar,
 .preview-panel::-webkit-scrollbar {
   width: 8px;
@@ -988,4 +884,88 @@
 .editor-panel::-webkit-scrollbar-thumb:hover,
 .preview-panel::-webkit-scrollbar-thumb:hover {
   background: #2980b9;
+}
+
+/* Responsive Design */
+@media (width <=1200px) {
+  .live-editor-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .editor-panel,
+  .preview-panel {
+    flex: none;
+    min-height: 600px;
+  }
+
+  .preview-panel {
+    max-height: 800px;
+  }
+}
+
+@media (width <=768px) {
+  .content-container {
+    padding: 16px;
+  }
+
+  .new-post-form {
+    padding: 20px;
+  }
+
+  .post-type-button {
+    padding: 24px 20px;
+    min-height: 220px;
+    margin: 8px 0;
+  }
+
+  .drafts-button {
+    padding: 16px 20px;
+    min-height: 100px;
+    margin-top: 16px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .drafts-button .button-icon {
+    font-size: 1.8rem;
+  }
+
+  .drafts-button h2 {
+    font-size: 1.1rem;
+  }
+
+  .drafts-button p {
+    font-size: 0.85rem;
+  }
+
+  .post-type-button h2 {
+    font-size: 1.3rem;
+  }
+
+  .post-type-button p {
+    font-size: 0.95rem;
+  }
+
+  .live-editor-container {
+    gap: 15px;
+    padding: 0 10px;
+  }
+
+  .editor-panel,
+  .preview-panel {
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .project-preview #project-contents {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .project-preview #project-contents hr {
+    width: 100%;
+    height: 3px;
+    margin: 0;
+  }
 }
