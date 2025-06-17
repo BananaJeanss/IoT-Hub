@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 
-import './navbar.css'
+import './navbar.css';
 
 export default function Navbar() {
   const [navActive, setNavActive] = useState(false);
