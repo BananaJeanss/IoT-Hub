@@ -4,7 +4,7 @@
 }
 
 #project-description {
-    margin-bottom: 0;
+    margin: 10px 0 20px;
 }
 
 #project-overview-hr {
@@ -13,6 +13,7 @@
     height: 2px;
     background-color: var(--background-color);
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 #project-container {
@@ -21,6 +22,7 @@
     position: relative;
     z-index: 1;
     padding: 40px 100px;
+    padding-top: 20px;
 
 }
 
@@ -47,20 +49,55 @@
 
 #tags {
     display: flex;
+    flex-flow: row wrap;
+    justify-content: left;
     gap: 5px;
+    margin-top: 10px;
+}
+
+#project-contents-details a {
+  color: var(--main-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+#project-contents-details p {
+    margin: 5px;
+    padding: 15px;
+    background-color: var(--tertiary-color);
+    border-radius: 15px;
+}
+
+#project-contents-details p a {
+    color: var(--main-color);
+    text-decoration: none;
 }
 
 #tags p {
-    background-color: color-mix(in srgb, var(--main-color) 85%, black 15%);
-    color: var(--secondary-color);
-    padding: 4px 14px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 300;
-    display: inline-block;
-    border: 1px solid #444;
-    text-align: center;
-    white-space: nowrap;
+  background-color: color-mix(in srgb, var(--main-color) 85%, black 15%);
+  color: var(--secondary-color);
+  padding: 8px 14px !important;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 300;
+  display: inline-block;
+  border: 1px solid #444;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0 !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+#tags p:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
+}
+
+.details-hr {
+    width: 100%;
+    height: 2px;
+    background-color: var(--main-color);
     margin: 20px 0;
 }
 
@@ -184,6 +221,7 @@
     background-color: var(--tertiary-color);
     border-radius: 0 0 25px 25px;
     padding: 25px;
+    padding-top: 5px;
 }
 
 #project-contents-left {
@@ -209,11 +247,23 @@ hr.horizontal {
     width: calc(100% - 150px);
     height: 4px;
     background-color: var(--background-color);
-    margin: 0 75px;
+    margin: 0 50px;
     border-radius: 4px;
     display: block;
 }
 
+.update-date {
+  margin: 0;
+  padding: 0;
+  padding-top: 2px;
+  color: #999;
+  font-weight: 100;
+  font-size: 0.9rem;
+}
+
+#project-contents-details a:hover {
+  color: var(--secondary-color);
+}
 
 #project-content-horizontal-separator {
     height: 4px;
@@ -232,26 +282,3 @@ hr.horizontal {
     padding: 25px;
 }
 
-#project-contents-details p {
-    margin: 5px;
-    padding: 15px;
-    background-color: var(--tertiary-color);
-    border-radius: 15px;
-}
-
-#project-contents-details p a {
-    color: var(--main-color);
-    text-decoration: none;
-}
-
-#github-logo-link {
-    display: inline-block;
-    background-image: url('/assets/github.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 23px;
-    height: 23px;
-    vertical-align: middle;
-    filter: invert(1);
-}

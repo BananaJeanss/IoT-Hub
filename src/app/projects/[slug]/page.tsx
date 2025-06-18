@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { markdownToSafeHtml } from '@/lib/markdownUtils';
 import './project.css';
@@ -140,6 +141,13 @@ export default function ProjectPage() {
 
   return (
     <div id="project-container">
+      <Link
+        href="/projects"
+        id="back-to-projects"
+        style={{ textDecoration: 'none', color: 'var(--main-color)', paddingBottom: '15px' }}
+      >
+        ← Back to Projects
+      </Link>
       <div id="project-cont2">
         <div id="project-header">
           <div id="project-upper-header" style={backgroundStyle}></div>
@@ -199,7 +207,8 @@ export default function ProjectPage() {
         <hr className="horizontal" />
         <div id="project-contents">
           <div id="project-contents-left">
-            <h2>Description</h2>
+            <h2 style={{ marginTop: '0', marginBottom: '20px' }}>Description</h2>
+            <hr style={{ minHeight: '2px', width: '75%', marginLeft: '0' }} />
             <div
               className="markdown-content"
               dangerouslySetInnerHTML={{ __html: markdownToSafeHtml(project.content) }}
@@ -209,24 +218,45 @@ export default function ProjectPage() {
           <div id="project-contents-right">
             <div id="project-contents-details">
               <h2>Details</h2>
-              <p>👤 {project.author.username || 'Anonymous'}</p>
+              <p style={{ display: 'flex', alignItems: 'center' }}>
+                <Link
+                  href={`/user/${project.author.username || project.author.id}`}
+                  style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
+                >
+                  <Image
+                    src={project.author.image || '/assets/default-avatar.png'}
+                    alt={project.author.username || 'Unknown User'}
+                    width={28}
+                    height={28}
+                    style={{ borderRadius: '50%', marginRight: '10px' }}
+                  />
+                  <span style={{ color: 'var(--main-color)' }}>
+                    {project.author.username || 'Unknown User'}
+                  </span>
+                </Link>
+              </p>
+
               <p>👁️ {project.views} views</p>
               <p>
                 📅 Uploaded on {new Date(project.createdAt).toLocaleDateString()}
                 <br />
-                (Updated {new Date(project.updatedAt).toLocaleDateString()})
+                <span className="update-date">
+                  (Updated {new Date(project.updatedAt).toLocaleDateString()})
+                </span>
               </p>
+
               <div id="tags">
                 {project.tags.map((tag, index) => (
                   <p key={index}>{tag}</p>
                 ))}
               </div>
+              <hr className="details-hr" />
               {project.links.length > 0 && (
                 <>
-                  <h3>Links</h3>
+                  <h3 style={{ marginTop: '0', marginBottom: '10px' }}>Links</h3>
                   {project.links.map((link, index) => (
                     <p key={index}>
-                      <span id="github-logo-link"></span>
+                      <span>🔗 </span>
                       <a href={link.url} target="_blank" rel="noopener noreferrer">
                         {link.name}
                       </a>
