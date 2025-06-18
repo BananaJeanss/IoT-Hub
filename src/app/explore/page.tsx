@@ -27,6 +27,22 @@ export default function CommunityPage() {
             <h2>🔍 Explore</h2>
           </div>
           <div id="explore-top-right">
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search projects, guides, or users..."
+                aria-label="Search"
+              />
+              <button type="submit" aria-label="Search Button">
+                <Image
+                  src="/assets/magnifier.png"
+                  alt="Search Icon"
+                  width={18}
+                  height={18}
+                  className="search-icon"
+                />
+              </button>
+            </div>
             <div className="dropdown">
               <select defaultValue="">
                 <option value="" disabled>

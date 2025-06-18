@@ -29,6 +29,17 @@ export default async function UserPage({ params }: Props) {
 
   const isOwner = session?.user?.email === user.email;
 
+  const userProjects = await prisma.project.findMany({
+    where: { userId: user.id },
+    select: { id: true },
+  });
+  const userGuides = await prisma.guide.findMany({
+    where: { userId: user.id },
+    select: { id: true },
+  });
+
+  const hasUploads = userProjects.length > 0 || userGuides.length > 0;
+
   const bgStyle =
     user.backgroundType === 'image'
       ? {
@@ -51,47 +62,57 @@ export default async function UserPage({ params }: Props) {
             <div id="profile-projects-container">
               <h2>Projects & Guides</h2>
               <div id="profile-projects">
-                <div className="profile-projects-list">
-                  {(pins.length > 0 || isOwner) && ( // pins
-                    <div>
-                      <div className="pinned-text-row">
-                        <h3>📌 Pinned</h3>
-                        {isOwner && (
-                          <div id="profile-buttons">
-                            <button
-                              className="edit-profile-btn"
-                              style={{ backgroundColor: 'var(--tertiary-color)' }}
-                            >
-                              Edit Pins
-                            </button>
-                          </div>
-                        )}
-                      </div>
+                <hr style={{ minHeight: '2px', marginBottom: '20px' }} />
+                {hasUploads && (
+                  <div className="profile-projects-list">
+                    {(pins.length > 0 || isOwner) && ( // pins
+                      <div>
+                        <div className="pinned-text-row">
+                          <h3>📌 Pinned</h3>
+                          {isOwner && (
+                            <div id="profile-buttons">
+                              <button
+                                className="edit-profile-btn"
+                                style={{ backgroundColor: 'var(--tertiary-color)' }}
+                              >
+                                Edit Pins
+                              </button>
+                            </div>
+                          )}
+                        </div>
 
-                      <div id="cards-list">
-                        {pins.length > 0
-                          ? pins.map((pin) => (
-                              <div className="card" key={pin.id}>
-                                <Image
-                                  src={pin.project.image || '/assets/project.png'}
-                                  alt={pin.project.title}
-                                  width={150}
-                                  height={100}
-                                  className="project-image"
-                                />
-                                <h3>{pin.project.title}</h3>
-                                <p>{pin.project.description}</p>
-                              </div>
-                            ))
-                          : isOwner && (
-                              <p style={{ textAlign: 'center', color: '#888' }}>
-                                You have no pinned projects yet, why not pin some?
-                              </p>
-                            )}
+                        <div id="cards-list">
+                          {pins.length > 0
+                            ? pins.map((pin) => (
+                                <div className="card" key={pin.id}>
+                                  <Image
+                                    src={pin.project.image || '/assets/project.png'}
+                                    alt={pin.project.title}
+                                    width={150}
+                                    height={100}
+                                    className="project-image"
+                                  />
+                                  <h3>{pin.project.title}</h3>
+                                  <p>{pin.project.description}</p>
+                                </div>
+                              ))
+                            : isOwner && (
+                                <p style={{ textAlign: 'center', color: '#888' }}>
+                                  You have no pinned projects yet, why not pin some?
+                                </p>
+                              )}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
+                {!hasUploads && (
+                  <p style={{ textAlign: 'center', color: '#888', paddingTop: '25px' }}>
+                    {isOwner
+                      ? 'You have no projects or guides yet, why not create some?'
+                      : `${user.username} has no projects or guides yet.`}
+                  </p>
+                )}
               </div>
             </div>
           </div>

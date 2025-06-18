@@ -38,3 +38,4 @@ A simple and work-in-progress platform for sharing IoT projects. This project is
 - Report flag icon by Vectors Market (Noun Project)
 - Pencil icons created by Pixel perfect - Flaticon
 - Flag icons created by Smashicons - Flaticon
+- Search icons created by Chanut - Flaticon

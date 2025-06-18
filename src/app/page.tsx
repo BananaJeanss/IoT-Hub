@@ -1,69 +1,52 @@
-// src/app/page.tsx
 'use client';
 
-import { useEffect } from 'react';
-import Image from 'next/image'; // Add this import
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+
+interface ProjectOrGuide {
+  id: string;
+  title: string;
+  description: string;
+  slug: string;
+  image: string | null;
+  views: number;
+  type: 'project' | 'guide';
+}
 
 export default function HomePage() {
+  const [recentItems, setRecentItems] = useState<ProjectOrGuide[]>([]);
+
   useEffect(() => {
-    const projects = [
-      {
-        title: 'Smart Garden Monitor',
-        img: '/assets/logow.png',
-        desc: 'Monitor your plants remotely with real-time data and alerts.',
-        link: '/project',
-      },
-      {
-        title: 'IoT Weather Station',
-        img: '/assets/logow.png',
-        desc: 'Track local weather conditions and visualize trends.',
-        link: '/project',
-      },
-      {
-        title: 'Connected Door Lock',
-        img: '/assets/logow.png',
-        desc: 'Secure your home with a smart, app-controlled door lock.',
-        link: '/project',
-      },
-      {
-        title: 'Energy Usage Tracker',
-        img: '/assets/logow.png',
-        desc: 'Analyze and optimize your household energy consumption.',
-        link: '/project',
-      },
-      {
-        title: 'Remote Pet Feeder',
-        img: '/assets/logow.png',
-        desc: 'Feed your pets from anywhere using your smartphone.',
-        link: '/project',
-      },
-    ];
+    async function fetchRecent() {
+      try {
+        const [projectsRes, guidesRes] = await Promise.all([
+          fetch('/api/projects?limit=5&sort=latest'),
+          fetch('/api/guides?limit=5&sort=latest'),
+        ]);
+        const projectsData = projectsRes.ok ? await projectsRes.json() : { projects: [] };
+        const guidesData = guidesRes.ok ? await guidesRes.json() : { guides: [] };
 
-    const getRandomProjects = (arr: typeof projects, n: number) => {
-      const shuffled = arr.slice().sort(() => 0.5 - Math.random());
-      return shuffled.slice(0, n);
-    };
+        const projects = (projectsData.projects || []).map((p: ProjectOrGuide) => ({
+          ...p,
+          type: 'project' as const,
+        }));
+        const guides = (guidesData.guides || []).map((g: ProjectOrGuide) => ({
+          ...g,
+          type: 'guide' as const,
+        }));
 
-    const cardContainer = document.getElementById('card-container');
-    if (cardContainer) {
-      cardContainer.innerHTML = '';
-      getRandomProjects(projects, 5).forEach((project) => {
-        const card = document.createElement('div');
-        card.className = 'content-card';
-        card.innerHTML = `
-          <Image src="${project.img}" alt="${project.title}" width="150" height="150" />
-          <a href="${project.link}">
-            <h3>${project.title}</h3>
-          </a>
-          <p>${project.desc}</p>
-          <div id="stats">
-            <p>⭐ ${(Math.random() * 1.2 + 3.8).toFixed(1)}</p>
-            <p>👁️ ${Math.floor(Math.random() * 200 + 50)}</p>
-          </div>
-        `;
-        cardContainer.appendChild(card);
-      });
+        // Merge and sort by createdAt descending (most recent first)
+        const merged = [...projects, ...guides].sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
+
+        setRecentItems(merged.slice(0, 5));
+      } catch (error) {
+        console.error('Error fetching recent items:', error);
+        setRecentItems([]);
+      }
     }
+    fetchRecent();
   }, []);
 
   return (
@@ -83,8 +66,33 @@ export default function HomePage() {
       <div id="content">
         <div className="content-container">
           <div id="content-class">
-            <h2>⭐ Featured</h2>
-            <div id="card-container"></div>
+            <h2>🕒 Recent Posts</h2>
+            <div id="card-container">
+              {recentItems.map((item) => (
+                <div className="content-card" key={item.type + '-' + item.id}>
+                  <Image
+                    src={item.image || '/assets/logow.png'}
+                    alt={item.title}
+                    width={1024}
+                    height={1024}
+                    style={{ width: '100%', height: 160, objectFit: 'cover' }}
+                  />
+                  <a href={`/${item.type === 'project' ? 'projects' : 'guides'}/${item.slug}`}>
+                    <h3>
+                      {item.title}
+                      <span style={{ fontSize: 14, marginLeft: 8, color: '#888' }}>
+                        {item.type === 'guide' ? '📚' : '🔧'}
+                      </span>
+                    </h3>
+                  </a>
+                  <p>{item.description}</p>
+                  <div id="stats">
+                    <p>⭐ {(Math.random() * 1.2 + 3.8).toFixed(1)}</p>
+                    <p>👁️ {item.views}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
