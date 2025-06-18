@@ -63,6 +63,20 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
       });
     }
 
+    // check if page viewer has starred the project
+    let isStarred = false;
+    if (user) {
+      const existingStar = await prisma.star.findUnique({
+        where: {
+          userId_projectId: {
+            userId: user.id,
+            projectId: project.id,
+          },
+        },
+      });
+      isStarred = !!existingStar;
+    }
+
     // Transform the response to match frontend expectations
     const response = {
       ...project,
@@ -70,6 +84,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
       views: project._count.views,
       user: undefined,
       _count: undefined,
+      stars: project._count.stars,
+      isStarred,
       isOwner: session?.user?.email && user && user.id === project.userId,
     };
 

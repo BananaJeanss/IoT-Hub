@@ -85,19 +85,72 @@
     margin-bottom: 20px;
 }
 
-#star-button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 5px;
-}
-
 #star-icon {
     filter: grayscale(100%) brightness(0.5);
 }
 
 #pencil-icon {
-    filter: invert(1) grayscale(1) brightness(0.5);
+    filter: grayscale(100%) brightness(0.5);
+}
+
+#report-icon {
+    filter: grayscale(100%) brightness(0.5);
+}
+
+#star-button, #edit-project-button, #report-button {
+    transition: border-color 0.3s ease;
+}
+
+#star-button:hover {
+    border-color: darkgoldenrod;
+}
+
+#star-button:hover #star-icon {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(10000%) hue-rotate(0deg) brightness(0.9) contrast(2);
+}
+
+#edit-project-button:hover {
+    border-color: var(--main-color);
+}
+
+#edit-project-button:hover #pencil-icon {
+    filter: brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(2000%) hue-rotate(200deg) brightness(1.2);
+}
+
+#report-button:hover {
+    border-color: red;
+}
+
+#report-button:hover #report-icon {
+    filter: brightness(0) saturate(100%) invert(25%) sepia(100%) saturate(7500%) hue-rotate(0deg) brightness(1.5);
+}
+
+#star-button.starred {
+    border-color: #FFD700 !important;
+    background-color: color(srgb 1 0.843 0 / 10%);
+}
+
+#star-button.starred:hover {
+    border-color: #FFA500 !important;
+    background-color: color(srgb 1 0.843 0 / 20%);
+}
+
+#star-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#star-button:disabled:hover {
+    transform: none;
+    border-color: inherit;
+}
+
+#star-button.starred #star-icon {
+    filter: brightness(0) saturate(100%) invert(77%) sepia(86%) saturate(1919%) hue-rotate(3deg) brightness(106%) contrast(101%) !important;
+}
+
+#star-button.starred:hover #star-icon {
+    filter: brightness(0) saturate(100%) invert(92%) sepia(98%) saturate(1919%) hue-rotate(3deg) brightness(120%) contrast(101%) !important;
 }
 
 #star-count {

@@ -37,3 +37,4 @@ A simple and work-in-progress platform for sharing IoT projects. This project is
 - User icons by Freepik (Flaticon)
 - Report flag icon by Vectors Market (Noun Project)
 - Pencil icons created by Pixel perfect - Flaticon
+- Flag icons created by Smashicons - Flaticon

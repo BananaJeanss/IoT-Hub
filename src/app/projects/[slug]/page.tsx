@@ -19,6 +19,7 @@ interface Project {
   gradientStart: string | null;
   gradientEnd: string | null;
   views: number;
+  stars: number;
   published: boolean;
   createdAt: string;
   updatedAt: string;
@@ -34,6 +35,9 @@ export default function ProjectPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
+  const [isStarred, setIsStarred] = useState(false);
+  const [starCount, setStarCount] = useState(0);
+  const [isStarring, setIsStarring] = useState(false);
 
   useEffect(() => {
     async function fetchProject() {
@@ -42,7 +46,9 @@ export default function ProjectPage() {
         if (response.ok) {
           const data = await response.json();
           setProject(data);
-          setIsOwner(data.isOwner); // <-- set ownership
+          setIsOwner(data.isOwner);
+          setIsStarred(data.isStarred || false);
+          setStarCount(data.stars || 0);
         }
       } catch (error) {
         console.error('Error fetching project:', error);
@@ -55,6 +61,48 @@ export default function ProjectPage() {
       fetchProject();
     }
   }, [params.slug]);
+
+  const handleStarToggle = async () => {
+    if (isStarring) return;
+
+    const previousStarred = isStarred;
+    const previousCount = starCount;
+
+    setIsStarred(!isStarred);
+    setStarCount((prev) => (isStarred ? prev - 1 : prev + 1));
+    setIsStarring(true);
+
+    try {
+      const response = await fetch(`/api/star/${params.slug}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setIsStarred(data.starred);
+        setStarCount(data.starCount || (data.starred ? previousCount + 1 : previousCount - 1));
+      } else {
+        setIsStarred(previousStarred);
+        setStarCount(previousCount);
+
+        if (response.status === 401) {
+          alert('Please log in to star projects');
+        } else {
+          throw new Error('Failed to toggle star');
+        }
+      }
+    } catch (error) {
+      setIsStarred(previousStarred);
+      setStarCount(previousCount);
+      console.error('Error toggling star:', error);
+      alert('Failed to star project. Please try again.');
+    } finally {
+      setIsStarring(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -105,16 +153,21 @@ export default function ProjectPage() {
             </div>
             <hr id="project-overview-hr" />
             <div id="buttons-row">
-              <button id="star-button" className="project-button">
+              <button
+                id="star-button"
+                className={`project-button ${isStarred ? 'starred' : ''}`}
+                onClick={handleStarToggle}
+                disabled={isStarring}
+              >
                 <Image
                   src="/assets/roundedstar.png"
                   id="star-icon"
                   alt="Star"
                   width={20}
                   height={20}
-                  style={{ verticalAlign: 'middle', marginRight: 4 }}
                 />
-                Star <div id="star-count">0</div>
+                {isStarred ? 'Starred' : 'Star'}
+                <div id="star-count">{starCount}</div>
               </button>
               {isOwner && (
                 <button id="edit-project-button" className="project-button">
@@ -129,6 +182,17 @@ export default function ProjectPage() {
                   Edit Project
                 </button>
               )}
+              <button id="report-button" className="project-button">
+                <Image
+                  src="/assets/finish.png"
+                  id="report-icon"
+                  alt="Report"
+                  width={20}
+                  height={20}
+                  style={{ verticalAlign: 'middle', marginRight: 4 }}
+                />
+                Report
+              </button>
             </div>
           </div>
         </div>
