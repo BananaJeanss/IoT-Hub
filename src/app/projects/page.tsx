@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import ContentCard from '@/components/ContentCard';
 
 interface Project {
   id: string;
@@ -14,6 +15,7 @@ interface Project {
   gradientStart: string | null;
   gradientEnd: string | null;
   views: number;
+  stars: number;
   createdAt: string;
   author: {
     username: string | null;
@@ -61,23 +63,17 @@ export default function ProjectsPage() {
             <h2 style={{ marginTop: '60px' }}>🕒 Latest Projects</h2>
             <div id="latest-card-container">
               {latestProjects.slice(0, 5).map((project) => (
-                <div className="content-card" key={project.id}>
-                  <Image
-                    src={project.image || '/assets/logow.png'}
-                    alt={project.title}
-                    width={1024}
-                    height={1024}
-                    style={{ width: '100%', height: 160, objectFit: 'cover' }}
-                  />
-                  <a href={`/projects/${project.slug}`}>
-                    <h3>{project.title}</h3>
-                  </a>
-                  <p>{project.description}</p>
-                  <div id="stats">
-                    <p>⭐ {(Math.random() * 1.2 + 3.8).toFixed(1)}</p>
-                    <p>👁️ {project.views}</p>
-                  </div>
-                </div>
+                <ContentCard
+                  key={project.id}
+                  id={project.id}
+                  title={project.title}
+                  description={project.description}
+                  image={project.image}
+                  slug={project.slug}
+                  type="project"
+                  views={project.views}
+                  stars={project.stars}
+                />
               ))}
             </div>
           </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import ContentCard from '@/components/ContentCard';
 
 interface ProjectOrGuide {
   id: string;
@@ -70,28 +71,17 @@ export default function HomePage() {
             <h2>🕒 Recent Posts</h2>
             <div id="card-container">
               {recentItems.map((item) => (
-                <div className="content-card" key={item.type + '-' + item.id}>
-                  <Image
-                    src={item.image || '/assets/logow.png'}
-                    alt={item.title}
-                    width={1024}
-                    height={1024}
-                    style={{ width: '100%', height: 160, objectFit: 'cover' }}
-                  />
-                  <a href={`/${item.type === 'project' ? 'projects' : 'guides'}/${item.slug}`}>
-                    <h3>
-                      {item.title}
-                      <span style={{ fontSize: 14, marginLeft: 8, color: '#888' }}>
-                        {item.type === 'guide' ? '📚' : '🔧'}
-                      </span>
-                    </h3>
-                  </a>
-                  <p>{item.description}</p>
-                  <div id="stats">
-                    <p>⭐ {item.stars || 0}</p>
-                    <p>👁️ {item.views}</p>
-                  </div>
-                </div>
+                <ContentCard
+                  key={`${item.type}-${item.id}`}
+                  id={item.id}
+                  title={item.title}
+                  description={item.description}
+                  image={item.image}
+                  slug={item.slug}
+                  type={item.type}
+                  views={item.views}
+                  stars={item.stars}
+                />
               ))}
             </div>
           </div>

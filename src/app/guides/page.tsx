@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import ContentCard from '@/components/ContentCard';
 
 interface Guide {
   id: string;
@@ -10,6 +11,7 @@ interface Guide {
   slug: string;
   image: string | null;
   views: number;
+  stars: number;
   createdAt: string;
   author: {
     username: string | null;
@@ -55,23 +57,17 @@ export default function GuidesPage() {
             <div id="latest-card-container">
               {latestGuides.length === 0 && <p>No guides found.</p>}
               {latestGuides.map((guide) => (
-                <div className="content-card" key={guide.id}>
-                  <Image
-                    src={guide.image || '/assets/logow.png'}
-                    alt={guide.title}
-                    width={1024}
-                    height={1024}
-                    style={{ width: '100%', height: 160, objectFit: 'cover' }}
-                  />
-                  <a href={`/guides/${guide.slug}`}>
-                    <h3>{guide.title}</h3>
-                  </a>
-                  <p>{guide.description}</p>
-                  <div id="stats">
-                    <p>⭐ {(Math.random() * 1.2 + 3.8).toFixed(1)}</p>
-                    <p>👁️ {guide.views}</p>
-                  </div>
-                </div>
+                <ContentCard
+                  key={guide.id}
+                  id={guide.id}
+                  title={guide.title}
+                  description={guide.description}
+                  image={guide.image || null}
+                  slug={guide.slug}
+                  type="guide"
+                  views={guide.views}
+                  stars={guide.stars}
+                />
               ))}
             </div>
           </div>

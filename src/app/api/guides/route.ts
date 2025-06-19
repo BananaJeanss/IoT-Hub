@@ -230,6 +230,7 @@ export async function GET(req: Request) {
       author: guide.user,
       views: guide._count.views,
       user: undefined,
+      stars: guide._count.stars,
       _count: undefined,
     }));
 
