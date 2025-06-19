@@ -10,6 +10,7 @@ interface ProjectOrGuide {
   slug: string;
   image: string | null;
   views: number;
+  stars: number;
   type: 'project' | 'guide';
 }
 
@@ -87,7 +88,7 @@ export default function HomePage() {
                   </a>
                   <p>{item.description}</p>
                   <div id="stats">
-                    <p>⭐ {(Math.random() * 1.2 + 3.8).toFixed(1)}</p>
+                    <p>⭐ {item.stars || 0}</p>
                     <p>👁️ {item.views}</p>
                   </div>
                 </div>

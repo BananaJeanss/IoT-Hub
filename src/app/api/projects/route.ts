@@ -229,6 +229,7 @@ export async function GET(req: Request) {
       ...project,
       author: project.user,
       views: project._count.views,
+      stars: project._count.stars,
       user: undefined,
       _count: undefined,
     }));
