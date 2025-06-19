@@ -51,7 +51,7 @@ export default function ProjectsPage() {
             <Image src="/assets/logow.png" height={150} width={150} alt="IoT Hub Logo" />
           </div>
           <div id="right-half">
-            <div className="glow-bg purple"></div>
+            <div className="glow-bg cyan"></div>
             <h1>IoT Projects</h1>
             <p>Discover amazing projects, learn new skills and share your own creations.</p>
           </div>
@@ -73,6 +73,9 @@ export default function ProjectsPage() {
                   type="project"
                   views={project.views}
                   stars={project.stars}
+                  gradientStart={project.gradientStart}
+                  gradientEnd={project.gradientEnd}
+                  backgroundType={project.backgroundType}
                 />
               ))}
             </div>

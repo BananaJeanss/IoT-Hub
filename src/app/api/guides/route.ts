@@ -200,28 +200,35 @@ export async function GET(req: Request) {
 
     const where = userId ? { userId } : {};
 
-    const guides = await prisma.guide.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy,
-      include: {
-        user: {
-          select: {
-            id: true,
-            username: true,
-            image: true,
+    let guides = [];
+    try {
+      guides = await prisma.guide.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy,
+        include: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+              image: true,
+            },
+          },
+          _count: {
+            select: {
+              stars: true,
+              views: true,
+              comments: true,
+            },
           },
         },
-        _count: {
-          select: {
-            stars: true,
-            views: true,
-            comments: true,
-          },
-        },
-      },
-    });
+      });
+    } catch (err) {
+      console.error('Failed to fetch guides from database:', err);
+      return NextResponse.json({ error: 'Failed to fetch guides from database' }, { status: 500 });
+    }
+
     const total = await prisma.guide.count({ where });
 
     // Transform the response to match frontend expectations

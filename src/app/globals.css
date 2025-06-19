@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Funnel Sans";
-  src: url("/fonts/FunnelSans-VariableFont_wght.ttf");
+  font-family: 'Funnel Sans';
+  src: url('/fonts/FunnelSans-VariableFont_wght.ttf');
   font-weight: 300 800;
   font-style: normal;
   font-display: swap;
@@ -29,10 +29,9 @@ body {
 }
 
 * {
-  font-family: "Funnel Sans", sans-serif;
+  font-family: 'Funnel Sans', sans-serif;
   box-sizing: inherit;
 }
-
 
 .content-card img {
   width: 100%;
@@ -47,8 +46,6 @@ body {
 .content-card a {
   text-decoration: none;
 }
-
-
 
 /* New Project Button Styling */
 .new-project-btn {
@@ -155,28 +152,6 @@ body {
   flex-flow: column wrap;
   gap: 20px;
   place-content: flex-start flex-start;
-}
-
-.content-card {
-  background-color: var(--tertiary-color);
-  border-radius: 12px;
-  width: 280px;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
-  overflow: hidden;
-  transition: transform 0.2s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.content-card:hover {
-  transform: scale(1.03);
-}
-
-.content-card h3 {
-  margin: 16px;
-  font-size: 20px;
-  color: #72b4e0;
 }
 
 #card-container,

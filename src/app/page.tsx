@@ -13,6 +13,9 @@ interface ProjectOrGuide {
   views: number;
   stars: number;
   type: 'project' | 'guide';
+  gradientStart?: string | null;
+  gradientEnd?: string | null;
+  backgroundType?: 'image' | 'gradient';
 }
 
 export default function HomePage() {
@@ -81,6 +84,9 @@ export default function HomePage() {
                   type={item.type}
                   views={item.views}
                   stars={item.stars}
+                  gradientStart={item.gradientStart}
+                  gradientEnd={item.gradientEnd}
+                  backgroundType={item.backgroundType || 'gradient'}
                 />
               ))}
             </div>

@@ -232,7 +232,7 @@ export default function ProjectPage() {
                   style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
                 >
                   <Image
-                    src={project.author.image || '/assets/default-avatar.png'}
+                    src={project.author.image || '/assets/user.png'}
                     alt={project.author.username || 'Unknown User'}
                     width={28}
                     height={28}

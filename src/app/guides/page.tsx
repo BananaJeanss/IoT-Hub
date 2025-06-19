@@ -13,6 +13,9 @@ interface Guide {
   views: number;
   stars: number;
   createdAt: string;
+  backgroundType: 'image' | 'gradient';
+  gradientStart: string | null;
+  gradientEnd: string | null;
   author: {
     username: string | null;
   };
@@ -67,6 +70,9 @@ export default function GuidesPage() {
                   type="guide"
                   views={guide.views}
                   stars={guide.stars}
+                  gradientStart={guide.gradientStart}
+                  gradientEnd={guide.gradientEnd}
+                  backgroundType={guide.backgroundType}
                 />
               ))}
             </div>
