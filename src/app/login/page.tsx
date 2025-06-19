@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ToastContext';
 import Image from 'next/image';
 
 import './login.css';
@@ -10,6 +11,7 @@ import './login.css';
 export default function LoginPage() {
   const [form, setForm] = useState<'login' | 'signup'>('login');
   const [showEmailForm, setShowEmailForm] = useState(false);
+  const { showToast } = useToast();
   const router = useRouter();
 
   const [signupPassword, setSignupPassword] = useState('');
@@ -54,7 +56,10 @@ export default function LoginPage() {
     const confirm = formData.get('confirm-password') as string;
 
     if (password !== confirm) {
-      alert('Passwords do not match!');
+      showToast({
+        message: 'Passwords do not match!',
+        type: 'error',
+      });
       return;
     }
 
@@ -65,12 +70,18 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      alert('Signup successful! You can now log in.');
+      showToast({
+        message: 'Signup successful! You can now log in.',
+        type: 'success',
+      });
       window.location.hash = '#login';
       setShowEmailForm(false);
     } else {
       const data = await res.json();
-      alert(data.error || 'Signup failed.');
+      showToast({
+        message: data.error || 'Signup failed. Please try again.',
+        type: 'error',
+      });
     }
   };
 
@@ -88,9 +99,16 @@ export default function LoginPage() {
     });
 
     if (res && res.ok) {
+      showToast({
+        message: 'Login successful!',
+        type: 'success',
+      });
       router.push('/');
     } else {
-      alert('Login failed. Please check your credentials.');
+      showToast({
+        message: res?.error || 'Login failed. Please check your credentials.',
+        type: 'error',
+      });
     }
   };
 

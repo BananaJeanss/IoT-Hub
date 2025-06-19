@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { markdownToSafeHtml, sanitizeUserContent } from '@/lib/markdownUtils';
 import './ProjectForm.css';
+import { useToast } from '@/components/ToastContext';
 
 interface ProjectData {
   title: string;
@@ -38,6 +39,7 @@ export default function ProjectForm() {
   const [showPreview] = useState(true);
   const [contentCharCount, setContentCharCount] = useState(projectData.content.length);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { showToast } = useToast();
 
   // Enhanced validation function
   const validateForm = () => {
@@ -138,23 +140,35 @@ export default function ProjectForm() {
     }
 
     if (trimmedTag.length > MAX_TAG_LENGTH) {
-      alert(`Tag cannot exceed ${MAX_TAG_LENGTH} characters`);
+      showToast({
+        message: `Tag "${trimmedTag}" exceeds maximum length of ${MAX_TAG_LENGTH} characters`,
+        type: 'error',
+      });
       return;
     }
 
     // Check for invalid characters
     if (!/^[a-zA-Z0-9\s\-_\p{Emoji}\p{Emoji_Modifier}\p{Emoji_Component}]+$/u.test(trimmedTag)) {
-      alert('Tags can only contain letters, numbers, spaces, hyphens, underscores, and emojis');
+      showToast({
+        message: `Tag "${trimmedTag}" contains invalid characters. Only letters, numbers, spaces, hyphens, underscores, and emojis are allowed.`,
+        type: 'error',
+      });
       return;
     }
 
     if (projectData.tags.includes(trimmedTag)) {
-      alert('This tag is already added');
+      showToast({
+        message: `Tag "${trimmedTag}" is already added`,
+        type: 'error',
+      });
       return;
     }
 
     if (projectData.tags.length >= MAX_TAGS) {
-      alert(`Maximum ${MAX_TAGS} tags allowed`);
+      showToast({
+        message: `A maximum of ${MAX_TAGS} tags can be added.`,
+        type: 'error',
+      });
       return;
     }
 
@@ -175,16 +189,25 @@ export default function ProjectForm() {
       try {
         const url = new URL(newLinkUrl.trim());
         if (!['http:', 'https:'].includes(url.protocol)) {
-          alert('URL must use http:// or https://');
+          showToast({
+            message: `URL "${newLinkUrl}" must use http:// or https://`,
+            type: 'error',
+          });
           return;
         }
       } catch {
-        alert('Please enter a valid URL');
+        showToast({
+          message: `Please use a valid URL: ${newLinkUrl}`,
+          type: 'error',
+        });
         return;
       }
 
       if (newLinkName.trim().length > 50) {
-        alert('Link name must be 50 characters or less');
+        showToast({
+          message: `Link name "${newLinkName}" is too long (max 50 characters)`,
+          type: 'error',
+        });
         return;
       }
 
@@ -195,7 +218,11 @@ export default function ProjectForm() {
       setNewLinkName('');
       setNewLinkUrl('');
     } else {
-      alert('Please enter both link name and URL');
+      showToast({
+        // todo: maybe automate link name if only url is provided
+        message: 'Both link name and URL are required',
+        type: 'error',
+      });
     }
   };
 

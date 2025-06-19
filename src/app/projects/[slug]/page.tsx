@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { markdownToSafeHtml } from '@/lib/markdownUtils';
+import { useToast } from '@/components/ToastContext';
 import './project.css';
 
 interface Project {
@@ -33,6 +34,7 @@ interface Project {
 
 export default function ProjectPage() {
   const params = useParams();
+  const { showToast } = useToast();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
@@ -90,7 +92,10 @@ export default function ProjectPage() {
         setStarCount(previousCount);
 
         if (response.status === 401) {
-          alert('Please log in to star projects');
+          showToast({
+            message: 'You must be logged in to star projects.',
+            type: 'error',
+          });
         } else {
           throw new Error('Failed to toggle star');
         }
@@ -99,7 +104,10 @@ export default function ProjectPage() {
       setIsStarred(previousStarred);
       setStarCount(previousCount);
       console.error('Error toggling star:', error);
-      alert('Failed to star project. Please try again.');
+      showToast({
+        message: 'Failed to toggle star. Please try again later.',
+        type: 'error',
+      });
     } finally {
       setIsStarring(false);
     }

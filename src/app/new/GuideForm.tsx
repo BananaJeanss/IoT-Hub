@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { markdownToSafeHtml, sanitizeUserContent } from '@/lib/markdownUtils';
+import { useToast } from '@/components/ToastContext';
 
 interface GuideData {
   title: string;
@@ -37,6 +38,7 @@ export default function GuideForm() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { showToast } = useToast();
 
   // Validation function
   const validateForm = () => {
@@ -135,7 +137,10 @@ export default function GuideForm() {
       const result = await response.json();
 
       if (isDraft) {
-        alert('Guide saved as draft successfully!');
+        showToast({
+          message: 'Guide saved as draft successfully!',
+          type: 'success',
+        });
       } else {
         // Generate slug from title if not provided by API
         const slug =
@@ -148,7 +153,10 @@ export default function GuideForm() {
       }
     } catch (error) {
       console.error('Error saving guide:', error);
-      alert(error instanceof Error ? error.message : 'Failed to save guide');
+      showToast({
+        message: error instanceof Error ? error.message : 'Failed to save guide',
+        type: 'error',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -188,23 +196,35 @@ export default function GuideForm() {
     }
 
     if (trimmedTag.length > MAX_TAG_LENGTH) {
-      alert(`Tag cannot exceed ${MAX_TAG_LENGTH} characters`);
+      showToast({
+        message: `Tag cannot exceed ${MAX_TAG_LENGTH} characters`,
+        type: 'error',
+      });
       return;
     }
 
     // Check for invalid characters
     if (!/^[a-zA-Z0-9\s\-_\p{Emoji}\p{Emoji_Modifier}\p{Emoji_Component}]+$/u.test(trimmedTag)) {
-      alert('Tags can only contain letters, numbers, spaces, hyphens, underscores, and emojis');
+      showToast({
+        message: 'Tags can only contain letters, numbers, spaces, hyphens, underscores, and emojis',
+        type: 'error',
+      });
       return;
     }
 
     if (guideData.tags.includes(trimmedTag)) {
-      alert('This tag is already added');
+      showToast({
+        message: 'This tag is already added',
+        type: 'error',
+      });
       return;
     }
 
     if (guideData.tags.length >= MAX_TAGS) {
-      alert(`Maximum ${MAX_TAGS} tags allowed`);
+      showToast({
+        message: `Maximum ${MAX_TAGS} tags allowed`,
+        type: 'error',
+      });
       return;
     }
 
@@ -222,7 +242,10 @@ export default function GuideForm() {
   const addLink = () => {
     if (newLink.name.trim() && newLink.url.trim()) {
       if (!/^https?:\/\/.+\..+/.test(newLink.url)) {
-        alert('Please enter a valid URL (must start with http:// or https://)');
+        showToast({
+          message: 'Please enter a valid URL (must start with http:// or https://)',
+          type: 'error',
+        });
         return;
       }
       handleInputChange('links', [...guideData.links, { ...newLink }]);

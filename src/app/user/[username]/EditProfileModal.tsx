@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { User } from '@prisma/client';
 import Image from 'next/image';
+import { useToast } from '@/components/ToastContext';
 
 export default function EditProfileModal({
   user,
@@ -23,6 +24,8 @@ export default function EditProfileModal({
   const [tagSearch, setTagSearch] = useState('');
   const [availableTags, setAvailableTags] = useState<string[]>([]);
   const [showTagDropdown, setShowTagDropdown] = useState(false);
+
+  const { showToast } = useToast();
 
   const router = useRouter();
 
@@ -70,7 +73,10 @@ export default function EditProfileModal({
       setBanner(data.url);
       setBackgroundType('image');
     } else {
-      alert(data.error || 'Upload failed');
+      showToast({
+        message: data.error || 'Banner upload failed, try again later.',
+        type: 'error',
+      });
     }
   };
 
@@ -88,7 +94,10 @@ export default function EditProfileModal({
     if (res.ok && data.url) {
       setPfp(data.url);
     } else {
-      alert(data.error || 'Upload failed');
+      showToast({
+        message: data.error || 'Profile picture upload failed, try again later.',
+        type: 'error',
+      });
     }
   };
 
@@ -99,13 +108,17 @@ export default function EditProfileModal({
     const MAX_TAG_LENGTH = 25;
     for (const tag of tags) {
       if (tag.length > MAX_TAG_LENGTH) {
-        alert(`Tag "${tag}" exceeds maximum length of ${MAX_TAG_LENGTH} characters`);
+        showToast({
+          message: `Tag "${tag}" cannot exceed ${MAX_TAG_LENGTH} characters.`,
+          type: 'error',
+        });
         return;
       }
       if (!/^[a-zA-Z0-9\s\-_\p{Emoji}\p{Emoji_Modifier}\p{Emoji_Component}]+$/u.test(tag)) {
-        alert(
-          `Tag "${tag}" contains invalid characters. Only letters, numbers, spaces, hyphens, underscores, and emojis are allowed.`,
-        );
+        showToast({
+          message: `Tag "${tag}" contains invalid characters. Only letters, numbers, spaces, hyphens, underscores, and emojis are allowed.`,
+          type: 'error',
+        });
         return;
       }
     }
@@ -129,7 +142,10 @@ export default function EditProfileModal({
       router.refresh();
       onClose();
     } else {
-      alert(result.error || 'Something went wrong');
+      showToast({
+        message: result.error || 'Failed to update profile. Please try again later.',
+        type: 'error',
+      });
     }
   };
 
@@ -143,18 +159,27 @@ export default function EditProfileModal({
     }
 
     if (trimmedTag.length > MAX_TAG_LENGTH) {
-      alert(`Tag cannot exceed ${MAX_TAG_LENGTH} characters`);
+      showToast({
+        message: `Tag cannot exceed ${MAX_TAG_LENGTH} characters`,
+        type: 'error',
+      });
       return;
     }
 
     // Check for invalid characters
     if (!/^[a-zA-Z0-9\s\-_\p{Emoji}\p{Emoji_Modifier}\p{Emoji_Component}]+$/u.test(trimmedTag)) {
-      alert('Tags can only contain letters, numbers, spaces, hyphens, underscores, and emojis');
+      showToast({
+        message: `Tag "${trimmedTag}" contains invalid characters. Only letters, numbers, spaces, hyphens, underscores, and emojis are allowed.`,
+        type: 'error',
+      });
       return;
     }
 
     if (tags.includes(trimmedTag)) {
-      alert('This tag is already added');
+      showToast({
+        message: `Tag "${trimmedTag}" is already added.`,
+        type: 'error',
+      });
       return;
     }
 
@@ -174,7 +199,10 @@ export default function EditProfileModal({
         // Add first suggestion
         const firstTag = filteredTags[0];
         if (firstTag.length > MAX_TAG_LENGTH) {
-          alert(`Tag cannot exceed ${MAX_TAG_LENGTH} characters`);
+          showToast({
+            message: `Tag "${firstTag}" cannot exceed ${MAX_TAG_LENGTH} characters`,
+            type: 'error',
+          });
           return;
         }
         if (tags.length < 5 && !tags.includes(firstTag)) {
@@ -334,7 +362,10 @@ export default function EditProfileModal({
                       onClick={() => {
                         const MAX_TAG_LENGTH = 25;
                         if (tag.length > MAX_TAG_LENGTH) {
-                          alert(`Tag cannot exceed ${MAX_TAG_LENGTH} characters`);
+                          showToast({
+                            message: `Tag "${tag}" cannot exceed ${MAX_TAG_LENGTH} characters`,
+                            type: 'error',
+                          });
                           return;
                         }
                         if (tags.length < 5 && !tags.includes(tag)) {

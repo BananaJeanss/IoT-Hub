@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
+import { useToast } from '@/components/ToastContext';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -23,6 +24,7 @@ interface WallComponentProps {
 }
 
 export default function WallComponent({ wallOwnerId, isOwner }: WallComponentProps) {
+  const { showToast } = useToast();
   const [posts, setPosts] = useState<WallPost[]>([]);
   const [newPost, setNewPost] = useState('');
   const [loading, setLoading] = useState(false);
@@ -85,11 +87,17 @@ export default function WallComponent({ wallOwnerId, isOwner }: WallComponentPro
         setNewPost('');
       } else {
         const error = await res.json();
-        alert(error.error || 'Failed to post');
+        showToast({
+          message: error.error || 'Failed to post comment.',
+          type: 'error',
+        });
       }
     } catch (error) {
       console.error('Failed to submit post:', error);
-      alert('Failed to post');
+      showToast({
+        message: 'Failed to submit post. Please try again later.',
+        type: 'error',
+      });
     } finally {
       setSubmitting(false);
     }
@@ -107,11 +115,17 @@ export default function WallComponent({ wallOwnerId, isOwner }: WallComponentPro
         setPosts(posts.filter((post) => post.id !== postId));
       } else {
         const error = await res.json();
-        alert(error.error || 'Failed to delete post');
+        showToast({
+          message: error.error || 'Failed to delete post.',
+          type: 'error',
+        });
       }
     } catch (error) {
       console.error('Failed to delete post:', error);
-      alert('Failed to delete post');
+      showToast({
+        message: 'Failed to delete post. Please try again later.',
+        type: 'error',
+      });
     }
   };
 
