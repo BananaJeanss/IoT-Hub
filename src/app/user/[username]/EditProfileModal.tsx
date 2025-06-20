@@ -15,8 +15,20 @@ export default function EditProfileModal({
   const [bio, setBio] = useState(user.bio ?? '');
   const [tags, setTags] = useState<string[]>(user.tags ?? []);
   const [backgroundType, setBackgroundType] = useState(user.backgroundType ?? 'gradient');
-  const [gradientStart, setGradientStart] = useState(user.gradientStartRgb ?? '#00b7ff');
-  const [gradientEnd, setGradientEnd] = useState(user.gradientEndRgb ?? '#b3ffec');
+  const [gradientStart, setGradientStart] = useState(
+    user.gradientStartRgb
+      ? user.gradientStartRgb.startsWith('#')
+        ? user.gradientStartRgb
+        : rgbToHex(user.gradientStartRgb)
+      : '#00b7ff',
+  );
+  const [gradientEnd, setGradientEnd] = useState(
+    user.gradientEndRgb
+      ? user.gradientEndRgb.startsWith('#')
+        ? user.gradientEndRgb
+        : rgbToHex(user.gradientEndRgb)
+      : '#b3ffec',
+  );
   const [banner, setBanner] = useState<string | null>(user.backgroundImage ?? null);
 
   const [pfp, setPfp] = useState<string | null>(user.image ?? null);
@@ -220,6 +232,19 @@ export default function EditProfileModal({
     }
   };
 
+  // turn rgb to hex for gradient picker
+  function rgbToHex(rgb: string) {
+    const result = rgb.match(/\d+/g);
+    if (!result) return '#000000';
+    return (
+      '#' +
+      result
+        .slice(0, 3)
+        .map((x) => (+x).toString(16).padStart(2, '0'))
+        .join('')
+    );
+  }
+
   return (
     <div className="overlay">
       <div className="modal">
@@ -294,7 +319,7 @@ export default function EditProfileModal({
                 unoptimized
               />
               <input type="file" accept="image/*" onChange={handlePfpUpload} hidden />
-              {!pfp && <span>+</span>}
+              <span id="plus-span">+</span>
             </label>
           </div>
         </div>
