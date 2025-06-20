@@ -1,0 +1,9 @@
+.verify-page {
+  margin: 10vh auto;
+  padding: 20px;
+  border-radius: 25px;
+  text-align: center;
+  background-color: var(--tertiary-color);
+  width: 500px;
+  height: 250px;
+}

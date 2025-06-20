@@ -26,12 +26,20 @@ export async function sendVerificationMail(email: string, baseUrl: string) {
     secure: false,
   });
 
-  const verificationUrl = `${baseUrl}/api/auth/verify?token=${token}`;
+  const verificationUrl = `${baseUrl}/verify?token=${token}`;
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_FROM,
-    to: email,
-    subject: 'Verify your email address',
-    html: `<p>Click <a href="${verificationUrl}">here</a> to verify your email address.</p>`,
-  });
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: '[IoT-Hub] Verify your email address',
+      html: `<p>Click <a href="${verificationUrl}">here</a> to verify your email address.</p>
+    <p>This link will expire in 30 minutes.</p>
+    <br />
+    <p>If you did not create an account, you can ignore this email.</p>
+    `,
+    });
+  } catch (error) {
+    console.error('Error sending verification email:', error);
+  }
 }

@@ -77,17 +77,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // send verification email
-    try {
-      const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-      await sendVerificationMail(email, baseUrl);
-    } catch (emailError) {
-      console.error('Failed to send verification email:', emailError);
-      return NextResponse.json(
-        { error: 'User created, but failed to send verification email.' },
-        { status: 500 },
-      );
-    }
+    /* send verification email
+    don't await since it's not critical to the signup process
+    and to avoid long response times
+    let sendVerificationMail handle error handling and yadayada */
+
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+    sendVerificationMail(email, baseUrl);
 
     return NextResponse.json({ success: true });
   } catch (error) {
