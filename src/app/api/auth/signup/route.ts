@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import argon2 from 'argon2';
+import { sendVerificationMail } from './sendVerificationMail';
 
 // random gradient generation
 function randomPastelRgb(): string {
@@ -75,6 +76,18 @@ export async function POST(req: NextRequest) {
         gradientEndRgb,
       },
     });
+
+    // send verification email
+    try {
+      const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+      await sendVerificationMail(email, baseUrl);
+    } catch (emailError) {
+      console.error('Failed to send verification email:', emailError);
+      return NextResponse.json(
+        { error: 'User created, but failed to send verification email.' },
+        { status: 500 },
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

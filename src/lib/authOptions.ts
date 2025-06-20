@@ -1,10 +1,13 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
+import EmailProvider from 'next-auth/providers/email'; // Add this import
 import { prisma } from '@/lib/prisma';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { Session } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import argon2 from 'argon2';
 
 export const authOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -28,7 +31,12 @@ export const authOptions = {
         };
       },
     }),
-    // Add Google/GitHub providers here later
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+    }),
+    // !!
+    // TODO: Add Google/GitHub providers here later
   ],
   session: { strategy: 'jwt' as const },
   callbacks: {
