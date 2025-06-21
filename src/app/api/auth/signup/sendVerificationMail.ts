@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import nodemailer from 'nodemailer';
+import VerificationHtml from './VerificationHtml';
 
 export async function sendVerificationMail(email: string, baseUrl: string) {
   // Generate a token
@@ -33,11 +34,7 @@ export async function sendVerificationMail(email: string, baseUrl: string) {
       from: process.env.EMAIL_FROM,
       to: email,
       subject: '[IoT-Hub] Verify your email address',
-      html: `<p>Click <a href="${verificationUrl}">here</a> to verify your email address.</p>
-    <p>This link will expire in 30 minutes.</p>
-    <br />
-    <p>If you did not create an account, you can ignore this email.</p>
-    `,
+      html: VerificationHtml(verificationUrl),
     });
   } catch (error) {
     console.error('Error sending verification email:', error);
