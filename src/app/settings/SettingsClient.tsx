@@ -3,9 +3,12 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { User } from '@prisma/client';
+import { useToast } from '@/components/ToastContext';
 type UserWithTags = User & { tags?: string[] };
 
 export default function SettingsClient({ user }: { user: UserWithTags }) {
+  const { showToast } = useToast();
+
   const [form, setForm] = useState({
     username: user.username || '',
     email: user.email || '',
@@ -21,7 +24,7 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
     label: '',
     color: '#e74c3c',
   });
-  const [message, setMessage] = useState('');
+
   const [loading, setLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteInput, setDeleteInput] = useState('');
@@ -54,27 +57,24 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
     const res = await fetch('/api/user/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...form }),
     });
-    const data = await res.json();
     setLoading(false);
-    if (res.ok) setMessage('Profile updated!');
-    else setMessage(data.error || 'Update failed');
+    if (res.ok) showToast({ type: 'success', message: 'Profile updated successfully!' });
+    else showToast({ type: 'error', message: 'Profile update failed, try again later.' });
   };
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage('');
     if (password !== password2) {
-      setMessage('Passwords do not match');
+      showToast({ type: 'error', message: 'Passwords do not match!' });
       return;
     }
     if (passwordStrength.score < 40) {
-      setMessage('Password too weak');
+      showToast({ type: 'error', message: 'Password is too weak' });
       return;
     }
     setLoading(true);
@@ -83,10 +83,9 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password }),
     });
-    const data = await res.json();
     setLoading(false);
-    if (res.ok) setMessage('Password changed!');
-    else setMessage(data.error || 'Password change failed');
+    if (res.ok) showToast({ type: 'success', message: 'Password changed successfully!' });
+    else showToast({ type: 'error', message: 'Password change failed' });
     setPassword('');
     setPassword2('');
   };
@@ -115,6 +114,39 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
     } catch {
       setLoading(false);
       setDeleteError('An error occurred. Please try again.');
+    }
+  };
+
+  const resendVerificationEmail = async () => {
+    setLoading(true);
+    const res = await fetch('/api/auth/resend-verification', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: user.email }),
+    });
+    const data = await res.json();
+    setLoading(false);
+    if (res.ok) {
+      showToast({
+        type: 'success',
+        message: 'Verification email sent! Please check your inbox.',
+      });
+    } else if (res.status === 400) {
+      showToast({
+        type: 'error',
+        message:
+          data.error || 'A verification email has already been sent. Please check your inbox.',
+      });
+    } else if (res.status === 404) {
+      showToast({
+        type: 'error',
+        message: 'Email not registered. Please sign up first.',
+      });
+    } else {
+      showToast({
+        type: 'error',
+        message: 'Failed to send verification email. Please try again later.',
+      });
     }
   };
 
@@ -174,23 +206,33 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
                   Email Verified
                 </span>
               ) : (
-                <span
-                  className="not-verified"
-                  style={{ display: 'flex', alignItems: 'center', color: '#e6b822' }}
-                >
-                  <Image
-                    src="/assets/warning.png"
-                    alt="Warning"
-                    width={18}
-                    height={18}
-                    style={{
-                      margin: '0 8px 0 4px',
-                      filter:
-                        'brightness(0) saturate(100%) invert(85%) sepia(95%) saturate(2500%) hue-rotate(5deg) brightness(105%) contrast(101%)',
-                    }}
-                  />
-                  Email Not Verified
-                </span>
+                <div>
+                  <span
+                    className="not-verified"
+                    style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                  >
+                    <Image
+                      src="/assets/warning.png"
+                      alt="Warning"
+                      width={18}
+                      height={18}
+                      style={{
+                        margin: '0 8px 0 4px',
+                        filter:
+                          'brightness(0) saturate(100%) invert(85%) sepia(95%) saturate(2500%) hue-rotate(5deg) brightness(105%) contrast(101%)',
+                      }}
+                    />
+                    <p style={{ color: '#e6b822' }}>Email Not Verified</p>
+                    <p style={{ padding: '0 8px 0 8px' }}>|</p>
+                    <a
+                      href="#"
+                      onClick={resendVerificationEmail}
+                      style={{ color: 'var(--main-color)', textDecoration: 'none' }}
+                    >
+                      Resend Verification
+                    </a>
+                  </span>
+                </div>
               )}
             </span>
           </div>
@@ -263,7 +305,6 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
           </button>
         </form>
       </div>
-      {message && <div className="settings-message">{message}</div>}
       <div className="settings-section danger-zone">
         <h2 className="danger-title">Danger Zone</h2>
         <p className="danger-desc">

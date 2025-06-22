@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import argon2 from 'argon2';
-import { sendVerificationMail } from './sendVerificationMail';
+import { sendVerificationMail } from '@/lib/verificationMail/sendVerificationMail';
 
 // random gradient generation
 function randomPastelRgb(): string {
