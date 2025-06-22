@@ -17,10 +17,5 @@ export default async function SettingsPage() {
   if (!user) {
     redirect('/login');
   }
-  return (
-    <div id="settings-container">
-      <h1>Settings</h1>
-      <SettingsClient user={user} />
-    </div>
-  );
+  return <SettingsClient user={user} />;
 }
