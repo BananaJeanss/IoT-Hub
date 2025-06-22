@@ -23,7 +23,8 @@ model User {
   gradientEndRgb      String?  @default("rgb(179, 255, 236)")
   backgroundType      String?  @default("gradient")
   wallCommentsPrivacy String?  @default("everyone")
-  isEmailVerified     DateTime?
+  isEmailVerified     Boolean @default(false)
+  whenEmailVerified   DateTime?
 
   accounts Account[]
   projects Project[]

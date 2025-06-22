@@ -1,11 +1,17 @@
+import type { DefaultSession, DefaultUser } from 'next-auth';
+
 declare module 'next-auth' {
-  interface Session {
-    user?: {
-      id?: string;
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
+  // extend the default Session for custom properties
+  // has image, name, and email by default
+  interface Session extends DefaultSession {
+    user: DefaultSession['user'] & {
+      id: string;
+      isEmailVerified?: boolean;
     };
-    expires: string;
+  }
+
+  // extend the default User for custom properties
+  interface User extends DefaultUser {
+    isEmailVerified?: boolean;
   }
 }

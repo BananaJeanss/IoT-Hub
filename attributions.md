@@ -8,3 +8,5 @@
 - Search icons created by Chanut - Flaticon
 - Info icons created by Freepik - Flaticon
 - Email icons created by Freepik - Flaticon
+- Error icons created by Gregor Cresnar - Flaticon
+- Tick icons created by Maxim Basinski Premium - Flaticon

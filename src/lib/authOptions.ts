@@ -45,7 +45,18 @@ export const authOptions = {
         if (!session.user) {
           session.user = {} as Session['user'];
         }
-        (session.user as NonNullable<Session['user']>).id = token.sub;
+        if (token.sub) {
+          (session.user as NonNullable<Session['user']>).id = token.sub;
+        }
+        // Fetch user from DB to get isEmailVerified
+        if (session.user && session.user.email) {
+          const user = await prisma.user.findUnique({
+            where: { email: session.user.email },
+            select: { isEmailVerified: true },
+          });
+          (session.user as NonNullable<Session['user']>).isEmailVerified =
+            user?.isEmailVerified ?? false;
+        }
       }
 
       return {

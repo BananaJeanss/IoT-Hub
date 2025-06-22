@@ -142,14 +142,58 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
             disabled
           />
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            disabled
-          />
+          <div
+            className="settings-email-info"
+            style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
+          >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              disabled
+            />
+            <span className="settings-email-status">
+              {user.isEmailVerified ? (
+                <span
+                  className="verified"
+                  style={{ display: 'flex', alignItems: 'center', color: '#1c8a00' }}
+                >
+                  <Image
+                    src="/assets/check.png"
+                    alt="Check"
+                    width={18}
+                    height={18}
+                    style={{
+                      margin: '0 8px 0 4px',
+                      filter:
+                        'brightness(0) saturate(100%) invert(47%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)',
+                    }}
+                  />
+                  Email Verified
+                </span>
+              ) : (
+                <span
+                  className="not-verified"
+                  style={{ display: 'flex', alignItems: 'center', color: '#e6b822' }}
+                >
+                  <Image
+                    src="/assets/warning.png"
+                    alt="Warning"
+                    width={18}
+                    height={18}
+                    style={{
+                      margin: '0 8px 0 4px',
+                      filter:
+                        'brightness(0) saturate(100%) invert(85%) sepia(95%) saturate(2500%) hue-rotate(5deg) brightness(105%) contrast(101%)',
+                    }}
+                  />
+                  Email Not Verified
+                </span>
+              )}
+            </span>
+          </div>
           <label htmlFor="bio">Bio</label>
           <textarea id="bio" name="bio" value={form.bio} onChange={handleChange} maxLength={160} />
           <button type="submit" disabled={loading}>

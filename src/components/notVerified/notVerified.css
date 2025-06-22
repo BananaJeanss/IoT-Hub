@@ -1,0 +1,14 @@
+#not-verified-banner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background-color: rgb(77 77 0);
+    border-bottom: 2px solid rgb(170 170 0);
+}
+
+#not-verified-banner a {
+    color: var(--main-color);
+    text-decoration: none;
+}

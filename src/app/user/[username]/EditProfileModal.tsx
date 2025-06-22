@@ -86,7 +86,7 @@ export default function EditProfileModal({
       setBackgroundType('image');
     } else {
       showToast({
-        message: data.error || 'Banner upload failed, try again later.',
+        message: 'Banner upload failed, try again later.',
         type: 'error',
       });
     }
@@ -107,7 +107,7 @@ export default function EditProfileModal({
       setPfp(data.url);
     } else {
       showToast({
-        message: data.error || 'Profile picture upload failed, try again later.',
+        message: 'Profile picture upload failed, try again later.',
         type: 'error',
       });
     }
@@ -149,13 +149,12 @@ export default function EditProfileModal({
       }),
     });
 
-    const result = await res.json();
     if (res.ok) {
       router.refresh();
       onClose();
     } else {
       showToast({
-        message: result.error || 'Failed to update profile. Please try again later.',
+        message: 'Failed to update profile. Please try again later.',
         type: 'error',
       });
     }

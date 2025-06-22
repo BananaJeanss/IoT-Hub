@@ -19,7 +19,10 @@ export async function GET(req: NextRequest) {
   // Mark user as verified
   await prisma.user.update({
     where: { email: record.email },
-    data: { isEmailVerified: new Date() },
+    data: {
+      isEmailVerified: true,
+      whenEmailVerified: new Date(),
+    },
   });
 
   // Delete the token

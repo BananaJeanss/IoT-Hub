@@ -86,9 +86,8 @@ export default function WallComponent({ wallOwnerId, isOwner }: WallComponentPro
         setPosts([post, ...posts]);
         setNewPost('');
       } else {
-        const error = await res.json();
         showToast({
-          message: error.error || 'Failed to post comment.',
+          message: 'Failed to post comment.',
           type: 'error',
         });
       }
@@ -114,9 +113,8 @@ export default function WallComponent({ wallOwnerId, isOwner }: WallComponentPro
       if (res.ok) {
         setPosts(posts.filter((post) => post.id !== postId));
       } else {
-        const error = await res.json();
         showToast({
-          message: error.error || 'Failed to delete post.',
+          message: 'Failed to delete post.',
           type: 'error',
         });
       }

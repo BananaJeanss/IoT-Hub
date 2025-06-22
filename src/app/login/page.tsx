@@ -77,9 +77,8 @@ export default function LoginPage() {
       window.location.hash = '#login';
       setShowEmailForm(false);
     } else {
-      const data = await res.json();
       showToast({
-        message: data.error || 'Signup failed. Please try again.',
+        message: 'Signup failed. Please try again.',
         type: 'error',
       });
     }
@@ -106,7 +105,7 @@ export default function LoginPage() {
       router.push('/');
     } else {
       showToast({
-        message: res?.error || 'Login failed. Please check your credentials.',
+        message: 'Login failed. Please check your credentials.',
         type: 'error',
       });
     }
@@ -121,7 +120,7 @@ export default function LoginPage() {
             className="form-pane"
             style={{ display: form === 'login' ? 'block' : 'none' }}
           >
-            <h1>Login to IoT Hub</h1>
+            <h1 style={{ marginBottom: 0 }}>Login to IoT Hub</h1>
             <div className="auth-inner">
               <div className="auth-left">
                 {!showEmailForm ? (
@@ -188,7 +187,7 @@ export default function LoginPage() {
             className="form-pane"
             style={{ display: form === 'signup' ? 'block' : 'none' }}
           >
-            <h1>Create an Account</h1>
+            <h1 style={{ marginBottom: 0 }}>Create an Account</h1>
             <div className="auth-inner">
               <div className="auth-left">
                 {!showEmailForm ? (

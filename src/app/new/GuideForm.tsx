@@ -154,7 +154,7 @@ export default function GuideForm() {
     } catch (error) {
       console.error('Error saving guide:', error);
       showToast({
-        message: error instanceof Error ? error.message : 'Failed to save guide',
+        message: 'Failed to save guide',
         type: 'error',
       });
     } finally {
