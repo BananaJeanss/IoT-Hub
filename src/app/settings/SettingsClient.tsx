@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { User } from '@prisma/client';
 import { useToast } from '@/components/ToastContext';
@@ -11,10 +11,18 @@ import PrivacyPage from './pages/privacy';
 import DangerZone from './pages/dangerZone';
 import UnsavedChanges from './pages/unsavedChanges';
 
+type UserForm = {
+  username: string;
+  email: string;
+  bio: string;
+  image: string;
+  wallCommentsPrivacy: string;
+};
+
 export default function SettingsClient({ user }: { user: UserWithTags }) {
   const { showToast } = useToast();
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<UserForm>({
     username: user.username || '',
     email: user.email || '',
     bio: user.bio || '',
@@ -22,13 +30,51 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
     wallCommentsPrivacy:
       (user as User & { wallCommentsPrivacy?: string }).wallCommentsPrivacy || 'everyone',
   });
+  // Keep a ref to the initial form to compare for unsaved changes
+  const initialForm = useRef(form);
 
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const newForm = { ...form, [e.target.name]: e.target.value };
+    setForm(newForm);
+    // Compare newForm to initialForm to determine unsaved changes
+    const noChanges = Object.keys(newForm).every(
+      (key) => newForm[key as keyof UserForm] === initialForm.current[key as keyof UserForm],
+    );
+    setHasUnsavedChanges(!noChanges);
+  };
+
+  // Add saveChanges function to persist settings
+  const saveChanges = async () => {
+    setLoading(true);
+    const res = await fetch('/api/user/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    });
+    setLoading(false);
+    if (res.ok) {
+      showToast({ type: 'success', message: 'Settings saved successfully!' });
+      setHasUnsavedChanges(false);
+    } else {
+      showToast({ type: 'error', message: 'Failed to save settings. Please try again.' });
+    }
+  };
+
+  // Add discardChanges to reset form to initial values
+  const discardChanges = () => {
+    setForm({
+      username: user.username || '',
+      email: user.email || '',
+      bio: user.bio || '',
+      image: user.image || '/assets/user.png',
+      wallCommentsPrivacy:
+        (user as User & { wallCommentsPrivacy?: string }).wallCommentsPrivacy || 'everyone',
+    });
+    setHasUnsavedChanges(false);
   };
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
@@ -168,13 +214,9 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
         </div>
       </div>
       <UnsavedChanges
-        unsavedChanges={false}
-        saveChanges={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-        discardChanges={function (): void {
-          throw new Error('Function not implemented.');
-        }}
+        unsavedChanges={hasUnsavedChanges}
+        saveChanges={saveChanges}
+        discardChanges={discardChanges}
       />
     </div>
   );

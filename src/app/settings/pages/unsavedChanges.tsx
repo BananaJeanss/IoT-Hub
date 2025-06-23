@@ -16,7 +16,7 @@ export default function UnsavedChanges({
   discardChanges,
 }: UnsavedChangesProps) {
   return (
-    <div className="unsaved-changes-banner">
+    <div className={`unsaved-changes-banner ${unsavedChanges ? 'visible' : ''}`}>
       <p>You have unsaved changes!</p>
       <button onClick={discardChanges} className="discard-button">
         Discard Changes
