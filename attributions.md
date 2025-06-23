@@ -11,3 +11,4 @@
 - Error icons created by Gregor Cresnar - Flaticon
 - Tick icons created by Maxim Basinski Premium - Flaticon
 - User icons created by Freepik - Flaticon
+- Lock icons created by Those Icons - Flaticon

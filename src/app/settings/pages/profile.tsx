@@ -19,35 +19,38 @@ interface ProfilePageProps {
     gradientEndRgb?: string;
   };
   form: {
-    username: string;
-    email: string;
     bio: string;
-    image: string;
-    wallCommentsPrivacy: string;
   };
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => void;
   handleProfileSubmit: (e: React.FormEvent) => void;
   loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   resendVerificationEmail: () => void;
 }
 
-export default function ProfilePage({ user }: ProfilePageProps) {
+export default function ProfilePage({
+  user,
+  form,
+  handleChange,
+  loading,
+  resendVerificationEmail,
+}: ProfilePageProps) {
   return (
     <div className="settings-page">
       <h2>Profile</h2>
-      <hr />
+      <hr id="settings-hr" />
 
       <div
         id="profile-banner-container"
         style={{
           backgroundImage:
-            user.backgroundType === 'image' ? `url(${user.backgroundImage})` : 'none',
-          backgroundColor:
-            user.backgroundType === 'gradient'
-              ? `linear-gradient(${user.gradientStartRgb}, ${user.gradientEndRgb})`
-              : 'transparent',
+            user.backgroundType === 'image'
+              ? `url(${user.backgroundImage})`
+              : user.backgroundType === 'gradient'
+                ? `linear-gradient(135deg, ${user.gradientStartRgb}, ${user.gradientEndRgb})`
+                : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -56,7 +59,7 @@ export default function ProfilePage({ user }: ProfilePageProps) {
           <div id="profile-banner-content">
             <div id="profile-image-container">
               <Image
-                src={user.image}
+                src={user.image || '/assets/user.png'}
                 alt="Profile Image"
                 width={100}
                 height={100}
@@ -67,17 +70,74 @@ export default function ProfilePage({ user }: ProfilePageProps) {
               <h3 className="profile-username">@{user.username}</h3>
               <p className="profile-bio">{user.bio}</p>
               <div className="profile-tags">
-                {user.tags && user.tags.length > 0 ? (
-                  user.tags.map((tag, index) => (
-                    <span key={index} className="profile-tag">
-                      {tag}
-                    </span>
-                  ))
-                ) : (
-                  <span className="profile-tag">No tags</span>
-                )}
+                {user.tags?.map((tag, index) => (
+                  <span key={index} className="profile-tag">
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="profile-settings-containers">
+        <div id="profile-settings-container" style={{ height: '25%' }}>
+          <div className="profile-setting-field">
+            <p>Username:</p>
+            <input
+              type="text"
+              value={user.username}
+              className="profile-input"
+              title="Username"
+              disabled
+            />
+            <hr />
+          </div>
+          <div className="profile-setting-field">
+            <div className="profile-email-container">
+              <p>Email:</p>
+              <p
+                className="email-ver-status"
+                style={{ color: user.isEmailVerified ? 'green' : 'orange' }}
+              >
+                <Image
+                  src={user.isEmailVerified ? '/assets/check.png' : '/assets/warning.png'}
+                  alt={user.isEmailVerified ? 'Verified' : 'Not Verified'}
+                  width={14}
+                  height={14}
+                  className="email-verification-icon"
+                />
+                {user.isEmailVerified ? 'Verified' : 'Not Verified'}
+              </p>
+            </div>
+            <input type="email" value={user.email} className="profile-input" disabled />
+            {!user.isEmailVerified && (
+              <button
+                className="resend-verification-button"
+                disabled={loading}
+                onClick={resendVerificationEmail}
+              >
+                Resend Verification Email
+              </button>
+            )}
+            <hr />
+          </div>
+          <div className="profile-setting-field">
+            <p>Password:</p>
+            <input type="password" value="********" className="profile-input" disabled />
+            <hr />
+          </div>
+        </div>
+        <div className="profile-settings-container" style={{ height: '25%' }}>
+          <div className="profile-setting-field" style={{ maxWidth: '40%', height: '100%' }}>
+            <p>Bio:</p>
+            <textarea
+              name="bio"
+              value={form.bio}
+              className="profile-textarea"
+              style={{ height: '100%' }}
+              onChange={handleChange}
+            />
           </div>
         </div>
       </div>
