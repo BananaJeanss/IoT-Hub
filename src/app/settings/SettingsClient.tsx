@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { User } from '@prisma/client';
 import { useToast } from '@/components/ToastContext';
-type UserWithTags = User & { tags?: string[] };
+import { signOut } from 'next-auth/react';
 
 // Components
 import ProfilePage from './pages/profile';
@@ -18,6 +18,8 @@ type UserForm = {
   image: string;
   wallCommentsPrivacy: string;
 };
+
+type UserWithTags = User & { tags?: string[] };
 
 export default function SettingsClient({ user }: { user: UserWithTags }) {
   const { showToast } = useToast();
@@ -123,6 +125,25 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
     }
   };
 
+  const deleteAccount = async () => {
+    setLoading(true);
+    const res = await fetch('/api/user/delete', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: user.username }),
+    });
+    setLoading(false);
+    if (res.ok) {
+      showToast({ type: 'success', message: 'Account deleted successfully!' });
+      await signOut({ callbackUrl: '/' });
+    } else {
+      showToast({
+        type: 'error',
+        message: 'Failed to delete account. Try again later.',
+      });
+    }
+  };
+
   const [currentPage, setCurrentPage] = useState<'profile' | 'privacy' | 'dangerZone'>('profile');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
@@ -134,19 +155,28 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
           <hr />
           <ul>
             <li>
-              <button onClick={() => setCurrentPage('profile')}>
+              <button
+                className={currentPage === 'profile' ? 'active' : ''}
+                onClick={() => setCurrentPage('profile')}
+              >
                 <Image src="/assets/profile.png" alt="Profile Icon" width={24} height={24} />
                 Profile
               </button>
             </li>
             <li>
-              <button onClick={() => setCurrentPage('privacy')}>
+              <button
+                className={currentPage === 'privacy' ? 'active' : ''}
+                onClick={() => setCurrentPage('privacy')}
+              >
                 <Image src="/assets/lock.png" alt="Privacy Icon" width={24} height={24} />
                 Privacy
               </button>
             </li>
             <li>
-              <button onClick={() => setCurrentPage('dangerZone')}>
+              <button
+                className={currentPage === 'dangerZone' ? 'active' : ''}
+                onClick={() => setCurrentPage('dangerZone')}
+              >
                 <Image src="/assets/warning.png" alt="Danger Zone Icon" width={24} height={24} />
                 Danger Zone
               </button>
@@ -191,25 +221,7 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
             />
           )}
           {currentPage === 'dangerZone' && (
-            <DangerZone
-              deleteAccount={async () => {
-                setLoading(true);
-                const res = await fetch('/api/user/delete', {
-                  method: 'DELETE',
-                });
-                setLoading(false);
-                if (res.ok) {
-                  showToast({ type: 'success', message: 'Account deleted successfully!' });
-                  // Redirect to home or login page
-                  window.location.href = '/';
-                } else {
-                  showToast({
-                    type: 'error',
-                    message: 'Failed to delete account. Try again later.',
-                  });
-                }
-              }}
-            />
+            <DangerZone username={user.username ?? ''} deleteAccount={deleteAccount} />
           )}
         </div>
       </div>

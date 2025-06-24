@@ -123,6 +123,7 @@
     color: var(--secondary-color);
     font-size: 1em;
     resize: vertical;
+    transition: border-color 0.3s ease;
 }
 
 .profile-setting-field textarea:focus {
