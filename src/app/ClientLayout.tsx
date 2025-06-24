@@ -2,6 +2,7 @@
 
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
+import Head from 'next/head';
 import NotVerifiedBanner from '@/components/notVerified/notVerified';
 import { Analytics } from '@vercel/analytics/next';
 import { SessionProvider, useSession } from 'next-auth/react';
@@ -16,6 +17,19 @@ function NotVerifiedBannerWrapper() {
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              url: 'https://iot-hub-two.vercel.app',
+              name: 'IoT Hub',
+            }),
+          }}
+        />
+      </Head>
       <div id="navbar">
         <Navbar />
       </div>
