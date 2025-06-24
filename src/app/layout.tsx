@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import ClientLayout from './ClientLayout';
 import { ToastProvider } from '../components/ToastContext';
+import NProgressBar from '@/components/NProgress';
 
 export const metadata: Metadata = {
   title: 'IoT Hub',
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <NProgressBar />
         <ToastProvider>
           <ClientLayout>{children}</ClientLayout>
         </ToastProvider>
