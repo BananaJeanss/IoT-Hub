@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, access } from 'fs/promises';
-import path from 'path';
-import { mkdirSync, existsSync } from 'fs';
-import crypto from 'crypto';
+import { uploadToBlob, deleteFromBlob } from '@/lib/blobClient';
 
+// POST: Upload a file to Vercel Blob
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const file = formData.get('file') as File;
@@ -12,27 +10,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
   }
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+  const { url, key } = await uploadToBlob(file);
+  return NextResponse.json({ url, key });
+}
 
-  // Compute SHA-256 hash of the file, prevents duplicates
-  const hash = crypto.createHash('sha256').update(buffer).digest('hex');
-  const ext = file.name.split('.').pop();
-  const filename = `${hash}.${ext}`;
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-  const filePath = path.join(uploadDir, filename);
-
-  if (!existsSync(uploadDir)) {
-    mkdirSync(uploadDir, { recursive: true });
+// DELETE: Remove a file from Vercel Blob
+export async function DELETE(req: NextRequest) {
+  const { key } = await req.json();
+  if (!key) {
+    return NextResponse.json({ error: 'Missing key' }, { status: 400 });
   }
 
-  // Only write if file doesn't exist
-  try {
-    await access(filePath);
-  } catch {
-    await writeFile(filePath, buffer);
-  }
-
-  const fileUrl = `/uploads/${filename}`;
-  return NextResponse.json({ url: fileUrl });
+  await deleteFromBlob(key);
+  return NextResponse.json({ success: true });
 }
