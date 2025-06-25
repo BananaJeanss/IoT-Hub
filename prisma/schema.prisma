@@ -137,6 +137,9 @@ model View {
   user    User?    @relation(fields: [userId], references: [id])
   project Project? @relation(fields: [projectId], references: [id])
   guide   Guide?   @relation(fields: [guideId], references: [id])
+
+  @@unique([userId, projectId])
+  @@unique([userId, guideId])
 }
 
 model Comment {

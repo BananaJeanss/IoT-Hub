@@ -37,11 +37,12 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
       });
 
       if (user && user.id !== guide.userId) {
-        await prisma.view.create({
+        await prisma.view.createMany({
           data: {
             userId: user.id,
             guideId: guide.id,
           },
+          skipDuplicates: true, // Prevent duplicate views from the same user
         });
       }
     } else {
