@@ -17,7 +17,6 @@ export async function uploadToBlob(file: File): Promise<{ url: string }> {
   const { url } = await put(key, buf, {
     access: 'public',
     token: TOKEN,
-    metadata: { originalName: file.name },
   });
   return { url };
 }

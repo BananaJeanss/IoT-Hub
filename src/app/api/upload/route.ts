@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
   }
 
-  const { url, key } = await uploadToBlob(file);
-  return NextResponse.json({ url, key });
+  const { url } = await uploadToBlob(file);
+  return NextResponse.json({ url });
 }
 
 // DELETE: Remove a file from Vercel Blob
