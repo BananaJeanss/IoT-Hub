@@ -229,6 +229,7 @@ body {
   border: none;
 }
 
+
 .google-button {
   background: #fff;
   color: black;
@@ -270,6 +271,24 @@ body {
 .email-button:hover {
   background: #2980b9;
   box-shadow: 0 2px 8px rgb(52 152 219 / 20%);
+}
+
+
+.google-button:disabled,
+.github-button:disabled,
+.email-button:disabled {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+
+.google-button:disabled:hover,
+.github-button:disabled:hover,
+.email-button:disabled:hover {
+  background: #ccc !important;
+  box-shadow: none !important;
 }
 
 .back-button {

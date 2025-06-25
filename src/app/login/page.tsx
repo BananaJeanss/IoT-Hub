@@ -170,11 +170,7 @@ export default function LoginPage() {
                       <Image src="/assets/user.png" alt="Email Login" width={24} height={24} />
                       <span>Sign in with Email</span>
                     </button>
-                    <button className="google-button">
-                      <Image src="/assets/google.png" alt="Google Logo" width={24} height={24} />
-                      <span>Sign in with Google</span>
-                    </button>
-                    <button className="github-button">
+                    <button className="github-button" disabled>
                       <Image src="/assets/github.png" alt="GitHub Logo" width={24} height={24} />
                       <span>Sign in with GitHub</span>
                     </button>
@@ -239,11 +235,7 @@ export default function LoginPage() {
                       <Image src="/assets/user.png" alt="Email Signup" width={24} height={24} />
                       <span>Sign up with Email</span>
                     </button>
-                    <button className="google-button">
-                      <Image src="/assets/google.png" alt="Google Logo" width={24} height={24} />
-                      <span>Sign up with Google</span>
-                    </button>
-                    <button className="github-button">
+                    <button className="github-button" disabled>
                       <Image src="/assets/github.png" alt="GitHub Logo" width={24} height={24} />
                       <span>Sign up with GitHub</span>
                     </button>
