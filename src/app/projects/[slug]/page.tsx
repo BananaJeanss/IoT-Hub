@@ -7,6 +7,7 @@ import { notFound, useParams } from 'next/navigation';
 import { markdownToSafeHtml } from '@/lib/markdownUtils';
 import { useToast } from '@/components/ToastContext';
 import './project.css';
+import { Flag, Pencil, Star } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -175,36 +176,24 @@ export default function ProjectPage() {
                 onClick={handleStarToggle}
                 disabled={isStarring}
               >
-                <Image
-                  src="/assets/roundedstar.png"
-                  id="star-icon"
-                  alt="Star"
-                  width={20}
-                  height={20}
-                />
+                <Star size={20} id="star-icon" />
                 {isStarred ? 'Starred' : 'Star'}
                 <div id="star-count">{starCount}</div>
               </button>
               {isOwner && (
                 <button id="edit-project-button" className="project-button">
-                  <Image
-                    src="/assets/pencil.png"
+                  <Pencil
+                    size={20}
                     id="pencil-icon"
-                    alt="Star"
-                    width={20}
-                    height={20}
                     style={{ verticalAlign: 'middle', marginRight: 4 }}
                   />
                   Edit Project
                 </button>
               )}
               <button id="report-button" className="project-button">
-                <Image
-                  src="/assets/finish.png"
+                <Flag
+                  size={20}
                   id="report-icon"
-                  alt="Report"
-                  width={20}
-                  height={20}
                   style={{ verticalAlign: 'middle', marginRight: 4 }}
                 />
                 Report

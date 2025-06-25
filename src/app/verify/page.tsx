@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+
+import { Mail } from 'lucide-react';
 
 import './verify.css';
 
@@ -46,7 +47,7 @@ export default function VerifyPage() {
 
   return (
     <div className="verify-page">
-      <Image src="/assets/mail.png" alt="Verification Email" width={100} height={100} />
+      <Mail size={100} />
       <h1>Email Verification</h1>
       {status === 'verifying' && <p>Verifying your email...</p>}
       {status === 'success' && <p style={{ color: 'green' }}>{message}</p>}

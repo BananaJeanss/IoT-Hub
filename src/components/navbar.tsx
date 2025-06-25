@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
+import { ChevronDown } from 'lucide-react';
 
 import './navbar.css';
 
@@ -83,7 +84,7 @@ export default function Navbar() {
                     setDropdownOpen((prev: boolean) => !prev);
                   }}
                 >
-                  <Image src="/assets/arrow.png" alt="Menu" width={16} height={16} />
+                  <ChevronDown size={16} />
                 </button>
                 {dropdownOpen && (
                   <ul className="dropdown-menu">

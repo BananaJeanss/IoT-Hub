@@ -3,6 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 
+import { Search } from 'lucide-react';
+
 import './explore.css';
 
 export default function CommunityPage() {
@@ -34,13 +36,7 @@ export default function CommunityPage() {
                 aria-label="Search"
               />
               <button type="submit" aria-label="Search Button">
-                <Image
-                  src="/assets/magnifier.png"
-                  alt="Search Icon"
-                  width={18}
-                  height={18}
-                  className="search-icon"
-                />
+                <Search size={18} className="search-icon" style={{ color: 'white' }} />
               </button>
             </div>
             <div className="dropdown">

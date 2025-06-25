@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import React from 'react';
+import { Check, AlertTriangle } from 'lucide-react';
 
 import './profile.css';
 
@@ -100,13 +101,11 @@ export default function ProfilePage({
                 className="email-ver-status"
                 style={{ color: user.isEmailVerified ? 'green' : 'orange' }}
               >
-                <Image
-                  src={user.isEmailVerified ? '/assets/check.png' : '/assets/warning.png'}
-                  alt={user.isEmailVerified ? 'Verified' : 'Not Verified'}
-                  width={14}
-                  height={14}
-                  className="email-verification-icon"
-                />
+                {user.isEmailVerified ? (
+                  <Check size={16} className="email-verification-icon" />
+                ) : (
+                  <AlertTriangle size={16} className="email-verification-icon" />
+                )}
                 {user.isEmailVerified ? 'Verified' : 'Not Verified'}
               </p>
             </div>

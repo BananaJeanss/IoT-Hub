@@ -1,9 +1,10 @@
 'use client';
 import { useState, useRef } from 'react';
-import Image from 'next/image';
 import { User } from '@prisma/client';
 import { useToast } from '@/components/ToastContext';
 import { signOut } from 'next-auth/react';
+
+import { Shield, UserRound, TriangleAlert } from 'lucide-react';
 
 // Components
 import ProfilePage from './pages/profile';
@@ -159,7 +160,7 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
                 className={currentPage === 'profile' ? 'active' : ''}
                 onClick={() => setCurrentPage('profile')}
               >
-                <Image src="/assets/profile.png" alt="Profile Icon" width={24} height={24} />
+                <UserRound size={24} />
                 Profile
               </button>
             </li>
@@ -168,7 +169,7 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
                 className={currentPage === 'privacy' ? 'active' : ''}
                 onClick={() => setCurrentPage('privacy')}
               >
-                <Image src="/assets/lock.png" alt="Privacy Icon" width={24} height={24} />
+                <Shield size={24} />
                 Privacy
               </button>
             </li>
@@ -177,7 +178,7 @@ export default function SettingsClient({ user }: { user: UserWithTags }) {
                 className={currentPage === 'dangerZone' ? 'active' : ''}
                 onClick={() => setCurrentPage('dangerZone')}
               >
-                <Image src="/assets/warning.png" alt="Danger Zone Icon" width={24} height={24} />
+                <TriangleAlert size={24} />
                 Danger Zone
               </button>
             </li>
