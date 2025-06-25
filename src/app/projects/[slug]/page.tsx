@@ -215,8 +215,6 @@ export default function ProjectPage() {
         <hr className="horizontal" />
         <div id="project-contents">
           <div id="project-contents-left">
-            <h2 style={{ marginTop: '0', marginBottom: '20px' }}>Description</h2>
-            <hr style={{ minHeight: '2px', width: '75%', marginLeft: '0' }} />
             <div
               className="markdown-content"
               dangerouslySetInnerHTML={{ __html: markdownToSafeHtml(project.content) }}

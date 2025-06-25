@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  max-width: 1600px;
+  max-width: 100vmax;
   margin: 0 auto;
   padding: 2rem;
   min-height: calc(100vh - var(--navbar-height));
@@ -350,15 +350,19 @@
   border: 2px solid #333;
 }
 
-/* Import project styles for preview */
+/* Update the project preview styles to match current layout */
 .project-preview #project-container {
   padding: 0;
-}
-
-.project-preview #project-cont2 {
   background-color: var(--tertiary-color);
   border-radius: 12px;
   overflow: hidden;
+  height: 100%;
+}
+
+.project-preview #project-cont2 {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .project-preview #project-header {
@@ -375,72 +379,8 @@
   background-position: center;
 }
 
-.project-preview .markdown-content h1,
-.project-preview .markdown-content h2,
-.project-preview .markdown-content h3 {
-  color: var(--secondary-color);
-  margin: 1.5rem 0 1rem;
-}
-
-.project-preview .markdown-content h1 {
-  font-size: 2rem;
-  border-bottom: 2px solid var(--main-color);
-  padding-bottom: 0.5rem;
-}
-
-.project-preview .markdown-content h2 {
-  font-size: 1.5rem;
-}
-
-.project-preview .markdown-content h3 {
-  font-size: 1.25rem;
-}
-
-.project-preview .markdown-content p {
-  margin: 1rem 0;
-  color: #ccc;
-}
-
 .project-preview #project-lower-header {
   padding: 1rem 1.5rem;
-}
-
-.project-preview #project-lower-header h1 {
-  margin: 0 0 0.5rem;
-  font-size: 1.5rem;
-  color: var(--secondary-color);
-}
-
-.project-preview #project-lower-header p {
-  margin: 0 0 1rem;
-  color: #ccc;
-  font-size: 1rem;
-}
-
-.project-preview #tags {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.project-preview #tags p {
-  background-color: var(--background-color);
-  color: var(--secondary-color);
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin: 0;
-  border: 1px solid #444;
-}
-
-.project-preview .horizontal {
-  width: calc(100% - 3rem);
-  height: 3px;
-  background-color: var(--background-color);
-  margin: 0 1.5rem;
-  border-radius: 2px;
-  border: none;
 }
 
 .project-preview #project-contents {
@@ -449,15 +389,11 @@
   border-radius: 0 0 12px 12px;
   padding: 1.5rem;
   gap: 1.5rem;
+  flex: 1;
 }
 
 .project-preview #project-contents-left {
-  flex: none;
-
-  /* Remove flex grow */
-  width: 50%;
-
-  /* Fixed percentage width */
+  flex: 1;
   padding: 0;
   background: none;
   border-radius: 0;
@@ -468,17 +404,10 @@
 
 .project-preview #project-contents-right {
   flex: none;
-
-  /* Remove flex grow */
   width: 35%;
-
-  /* Fixed percentage width */
   padding: 0;
   background: none;
   border-radius: 0;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  overflow: hidden;
 }
 
 .project-preview #project-contents hr {
@@ -489,6 +418,15 @@
   border-radius: 2px;
   border: none;
   align-self: stretch;
+}
+
+.project-preview .horizontal {
+  width: calc(100% - 3rem);
+  height: 3px;
+  background-color: var(--background-color);
+  margin: 0 1.5rem;
+  border-radius: 2px;
+  border: none;
 }
 
 .project-preview #project-contents-details {

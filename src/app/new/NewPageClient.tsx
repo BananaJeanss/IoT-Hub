@@ -5,9 +5,11 @@ import './newpost.css';
 import ProjectForm from './ProjectForm';
 import GuideForm from './GuideForm';
 import TypeSelector from './TypeSelector';
+import { useSession } from 'next-auth/react';
 
 export default function NewPageClient() {
   const [selectedType, setSelectedType] = useState<'project' | 'guide' | 'post'>('post');
+  const { data: session } = useSession();
 
   const handleTypeSelection = (type: 'project' | 'guide') => {
     setSelectedType(type);
@@ -47,7 +49,11 @@ export default function NewPageClient() {
               ← Back to Selection
             </button>
           </div>
-          {selectedType === 'project' ? <ProjectForm /> : <GuideForm />}
+          {selectedType === 'project' ? (
+            <ProjectForm name={session?.user?.name || ''} image={session?.user?.image || ''} />
+          ) : (
+            <GuideForm username={session?.user?.name || ''} image={session?.user?.image || ''} />
+          )}
         </div>
       </div>
     );

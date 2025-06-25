@@ -18,7 +18,7 @@ interface ProjectData {
   gradientEnd: string;
 }
 
-export default function ProjectForm() {
+export default function ProjectForm(user: { name: string; image: string }) {
   const [projectData, setProjectData] = useState<ProjectData>({
     title: '',
     description: '',
@@ -44,6 +44,21 @@ export default function ProjectForm() {
   // Enhanced validation function
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
+
+    // Sanitize user input
+    const sanitizedContent = sanitizeUserContent(projectData.content);
+    setProjectData((prev) => ({ ...prev, content: sanitizedContent }));
+    const sanitizedTitle = sanitizeUserContent(projectData.title);
+    setProjectData((prev) => ({ ...prev, title: sanitizedTitle }));
+    const sanitizedDescription = sanitizeUserContent(projectData.description);
+    setProjectData((prev) => ({ ...prev, description: sanitizedDescription }));
+    const sanitizedTags = projectData.tags.map((tag) => sanitizeUserContent(tag));
+    setProjectData((prev) => ({ ...prev, tags: sanitizedTags }));
+    const sanitizedLinks = projectData.links.map((link) => ({
+      name: sanitizeUserContent(link.name),
+      url: sanitizeUserContent(link.url),
+    }));
+    setProjectData((prev) => ({ ...prev, links: sanitizedLinks }));
 
     if (!projectData.title.trim()) {
       newErrors.title = 'Project title is required';
@@ -112,11 +127,6 @@ export default function ProjectForm() {
     field: keyof ProjectData,
     value: string | string[] | null | { name: string; url: string }[],
   ) => {
-    // Only sanitize markdown content, not title/description
-    if (typeof value === 'string' && field === 'content') {
-      value = sanitizeUserContent(value);
-    }
-
     setProjectData((prev) => ({ ...prev, [field]: value }));
 
     // Update character count for content
@@ -310,7 +320,7 @@ export default function ProjectForm() {
     <div className="live-editor-container">
       <div className="editor-panel">
         <div className="editor-section">
-          <h3>Project Details</h3>
+          <h3>New Project</h3>
           <div className="form-group">
             <label>Project Title</label>
             <input
@@ -610,7 +620,7 @@ export default function ProjectForm() {
                     }}
                   >
                     {/* Image content handled by background */}
-                  </div>{' '}
+                  </div>
                   <div id="project-lower-header">
                     <h1>{projectData.title || 'Untitled Project'}</h1>
                     <p>{projectData.description || 'No description provided.'}</p>
@@ -625,7 +635,6 @@ export default function ProjectForm() {
                 </div>
                 <hr className="horizontal" />
                 <div id="project-contents">
-                  {' '}
                   <div id="project-contents-left">
                     {projectData.content ? (
                       <div
@@ -644,10 +653,10 @@ export default function ProjectForm() {
                   <div id="project-contents-right">
                     <div id="project-contents-details">
                       <h2>Details</h2>
-                      <p>👤 Your Username</p>
+                      <p>👤 {user?.name ? `@${user.name}` : 'Your Username'}</p>
                       <p>⭐ New Project</p>
                       <p>👁️ 0 views</p>
-                      <p>📅 {new Date().toLocaleDateString()}</p>{' '}
+                      <p>📅 {new Date().toLocaleDateString()}</p>
                       <div id="tags">
                         {projectData.tags.length > 0 ? (
                           projectData.tags.map((tag, index) => <p key={index}>{tag}</p>)

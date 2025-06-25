@@ -18,7 +18,7 @@ interface GuideData {
   gradientEnd: string;
 }
 
-export default function GuideForm() {
+export default function GuideForm(user: { username: string; image: string | null }) {
   const router = useRouter();
   const [guideData, setGuideData] = useState<GuideData>({
     title: '',
@@ -461,13 +461,6 @@ export default function GuideForm() {
                 placeholder="Link name (e.g., GitHub Repository)"
                 className="link-name-input"
               />
-              <input
-                type="url"
-                value={newLink.url}
-                onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
-                placeholder="https://example.com"
-                className="link-url-input"
-              />
               <button
                 type="button"
                 onClick={addLink}
@@ -596,7 +589,16 @@ export default function GuideForm() {
                   color: '#888',
                 }}
               >
-                <span>👤 Your Username</span>
+                <span style={{ display: 'flex', alignItems: 'center' }}>
+                  <Image
+                    src={user.image || '/assets/user.png'}
+                    alt={user.username || 'User Avatar'}
+                    width={24}
+                    height={24}
+                    style={{ borderRadius: '50%', marginRight: '8px' }}
+                  />
+                  {user.username || 'Unknown User'}
+                </span>
                 <span>📅 {new Date().toLocaleDateString()}</span>
                 <span>👁️ 0 views</span>
               </div>
