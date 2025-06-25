@@ -71,12 +71,27 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      showToast({
-        message: 'Signup successful! You can now log in.',
-        type: 'success',
+      // Auto-login after successful signup
+      const loginRes = await signIn('credentials', {
+        username,
+        password,
+        redirect: false,
       });
-      window.location.hash = '#login';
-      setShowEmailForm(false);
+
+      if (loginRes && loginRes.ok) {
+        showToast({
+          message: 'Signup successful! You are now logged in.',
+          type: 'success',
+        });
+        router.push('/');
+      } else {
+        showToast({
+          message: 'Signup successful! Please log in.',
+          type: 'success',
+        });
+        window.location.hash = '#login';
+        setShowEmailForm(false);
+      }
     } else {
       showToast({
         message: 'Signup failed. Please try again.',
