@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ToastContext';
 import Image from 'next/image';
+import { CircleAlert } from 'lucide-react';
 
 import './login.css';
 
@@ -111,8 +112,42 @@ export default function LoginPage() {
     }
   };
 
+  const passwordMatchCheck = () => {
+    const passwordField = document.getElementById('signup-password') as HTMLInputElement;
+    const confirmField = document.getElementById('signup-confirm') as HTMLInputElement;
+    const passwordNotMatch = document.getElementById('password-not-match') as HTMLDivElement;
+
+    // Only check if both fields have values
+    if (!passwordField.value || !confirmField.value) {
+      // Hide the mismatch message if either field is empty
+      passwordNotMatch.className = 'password-mismatch hide';
+      setTimeout(() => {
+        if (passwordNotMatch.className.includes('hide')) {
+          passwordNotMatch.style.display = 'none';
+        }
+      }, 300);
+      return;
+    }
+
+    if (confirmField.value !== passwordField.value) {
+      // Show with blob-in animation
+      passwordNotMatch.style.display = 'flex';
+      passwordNotMatch.className = 'password-mismatch';
+    } else {
+      // Hide with blob-out animation
+      passwordNotMatch.className = 'password-mismatch hide';
+
+      // Hide element after animation completes
+      setTimeout(() => {
+        if (passwordNotMatch.className.includes('hide')) {
+          passwordNotMatch.style.display = 'none';
+        }
+      }, 300); // Match animation duration
+    }
+  };
+
   return (
-    <div id="main" style={{ marginTop: '5vh' }}>
+    <div id="main">
       <div id="login">
         <div className="auth-container">
           <div
@@ -120,7 +155,12 @@ export default function LoginPage() {
             className="form-pane"
             style={{ display: form === 'login' ? 'block' : 'none' }}
           >
-            <h1 style={{ marginBottom: 0 }}>Login to IoT Hub</h1>
+            {showEmailForm && (
+              <button className="back-button" onClick={() => setShowEmailForm(false)}>
+                ← Back to all sign in options
+              </button>
+            )}
+            <h1 className="loginh1">Login to IoT Hub</h1>
             <div className="auth-inner">
               <div className="auth-left">
                 {!showEmailForm ? (
@@ -154,9 +194,6 @@ export default function LoginPage() {
                 ) : (
                   // Email login form
                   <>
-                    <button className="back-button" onClick={() => setShowEmailForm(false)}>
-                      ← Back to all sign in options
-                    </button>
                     <form onSubmit={handleLogin}>
                       <label htmlFor="login-username">Username:</label>
                       <input
@@ -187,7 +224,12 @@ export default function LoginPage() {
             className="form-pane"
             style={{ display: form === 'signup' ? 'block' : 'none' }}
           >
-            <h1 style={{ marginBottom: 0 }}>Create an Account</h1>
+            {showEmailForm && (
+              <button className="back-button" onClick={() => setShowEmailForm(false)}>
+                ← Back to all sign up options
+              </button>
+            )}
+            <h1 className="loginh1">Create an Account</h1>
             <div className="auth-inner">
               <div className="auth-left">
                 {!showEmailForm ? (
@@ -221,9 +263,6 @@ export default function LoginPage() {
                 ) : (
                   // Email signup form
                   <>
-                    <button className="back-button" onClick={() => setShowEmailForm(false)}>
-                      ← Back to all sign up options
-                    </button>
                     <form onSubmit={handleSignup}>
                       <label htmlFor="signup-username">Username:</label>
                       <input
@@ -252,6 +291,7 @@ export default function LoginPage() {
                         onChange={(e) => {
                           setSignupPassword(e.target.value);
                           setPasswordStrength(evaluatePasswordStrength(e.target.value));
+                          setTimeout(passwordMatchCheck, 0);
                         }}
                       />
                       <div style={{ margin: '8px 0' }}>
@@ -285,7 +325,16 @@ export default function LoginPage() {
                         name="confirm-password"
                         required
                         autoComplete="new-password"
+                        onChange={passwordMatchCheck}
                       />
+                      <div
+                        id="password-not-match"
+                        className="password-mismatch"
+                        style={{ display: 'none' }}
+                      >
+                        <CircleAlert size={16} />
+                        Passwords do not match!
+                      </div>
                       <button
                         type="submit"
                         disabled={
