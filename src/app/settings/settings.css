@@ -10,13 +10,13 @@
   flex-direction: row;
 }
 
-h1 {
+.left-navbar h1 {
   font-size: 2em;
   font-weight: 800;
   margin: 20px 0;
 }
 
-h2 {
+.settings-page h2 {
   font-size: 2em;
   font-weight: 800;
   margin: 20px 0;

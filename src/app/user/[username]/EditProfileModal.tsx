@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { User } from '@prisma/client';
 import Image from 'next/image';
 import { useToast } from '@/components/ToastContext';
+import { useSession } from 'next-auth/react';
 
 export default function EditProfileModal({
   user,
@@ -13,6 +14,7 @@ export default function EditProfileModal({
   onClose: () => void;
 }) {
   const [bio, setBio] = useState(user.bio ?? '');
+  const { update } = useSession();
   const [tags, setTags] = useState<string[]>(user.tags ?? []);
   const [backgroundType, setBackgroundType] = useState(user.backgroundType ?? 'gradient');
   const [gradientStart, setGradientStart] = useState(
@@ -150,6 +152,7 @@ export default function EditProfileModal({
     });
 
     if (res.ok) {
+      await update();
       router.refresh();
       onClose();
     } else {

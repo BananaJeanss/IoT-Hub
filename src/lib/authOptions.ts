@@ -1,12 +1,13 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import EmailProvider from 'next-auth/providers/email'; // Add this import
-import { prisma } from '@/lib/prisma';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { prisma } from '@/lib/prisma';
 import type { Session } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import argon2 from 'argon2';
+import { NextAuthOptions } from 'next-auth';
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -40,25 +41,26 @@ export const authOptions = {
   ],
   session: { strategy: 'jwt' as const },
   callbacks: {
+    // keep your JWT.com token in sync
+    async jwt({ token, user }) {
+      if (user) {
+        token.image = user.image;
+      }
+      return token;
+    },
+    // whenever `useSession({ required: false }).update()` is called,
+    // re-fetch the user from the DB and overwrite session.user.image
     async session({ session, token }: { session: Session; token: JWT }): Promise<Session> {
-      if (token) {
-        if (!session.user) {
-          session.user = {} as Session['user'];
-        }
-        if (token.sub) {
-          (session.user as NonNullable<Session['user']>).id = token.sub;
-        }
-        // Fetch user from DB to get isEmailVerified
-        if (session.user && session.user.email) {
-          const user = await prisma.user.findUnique({
-            where: { email: session.user.email },
-            select: { isEmailVerified: true },
-          });
-          (session.user as NonNullable<Session['user']>).isEmailVerified =
-            user?.isEmailVerified ?? false;
+      if (session.user && token.email) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: token.email as string },
+          select: { image: true, username: true },
+        });
+        if (dbUser) {
+          session.user.image = dbUser.image;
+          session.user.name = dbUser.username;
         }
       }
-
       return {
         ...session,
         expires: session.expires ?? new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString(), // fallback: 30 days
