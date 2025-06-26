@@ -232,18 +232,19 @@
     flex: 0.7;
 }
 
-hr {
-    width: 4px;
-    background-color: var(--background-color);
-    margin: 0 25px;
-    border-radius: 4px;
-    align-self: stretch;
-    height: auto;
-    border: none;
-    display: inline-block;
+.projecthr {
+  width: 4px;
+  background-color: var(--background-color);
+  margin: 0 25px;
+  border-radius: 4px;
+  align-self: stretch;
+  height: auto;
+  border: none;
+  display: inline-block;
+  border-width: 0;
 }
 
-hr.horizontal {
+#project-container hr.horizontal {
     width: calc(100% - 150px);
     height: 4px;
     background-color: var(--background-color);

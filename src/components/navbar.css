@@ -40,6 +40,39 @@
     transform: scale(1.08);
 }
 
+#navbar a.underline-effect {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    overflow: visible;
+}
+
+#navbar a.underline-effect::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background: var(--main-color);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#navbar a.underline-effect:hover::after,
+#navbar a.underline-effect:focus-visible::after {
+    width: 100%;
+}
+
+#navbar a.underline-effect:hover {
+    transform: none;
+}
+
+#navbar a:not(.underline-effect)::after {
+    display: none;
+    content: none;
+}
+
 #navbar-userinfo {
   display: flex;
   align-items: center;

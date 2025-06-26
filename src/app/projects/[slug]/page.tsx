@@ -168,7 +168,7 @@ export default function ProjectPage() {
                 <p key={index}>{tag}</p>
               ))}
             </div>
-            <hr id="project-overview-hr" />
+            <hr className="projecthr" id="project-overview-hr" />
             <div id="buttons-row">
               <button
                 id="star-button"
@@ -201,7 +201,7 @@ export default function ProjectPage() {
             </div>
           </div>
         </div>
-        <hr className="horizontal" />
+        <hr className="horizontal projecthr" />
         <div id="project-contents">
           <div id="project-contents-left">
             <div
@@ -209,7 +209,7 @@ export default function ProjectPage() {
               dangerouslySetInnerHTML={{ __html: markdownToSafeHtml(project.content) }}
             />
           </div>
-          <hr />
+          <hr className="projecthr" />
           <div id="project-contents-right">
             <div id="project-contents-details">
               <h2>Details</h2>
@@ -245,7 +245,7 @@ export default function ProjectPage() {
                   <p key={index}>{tag}</p>
                 ))}
               </div>
-              <hr className="details-hr" />
+              <hr className="projecthr details-hr" />
               {project.links.length > 0 && (
                 <>
                   <h3 style={{ marginTop: '0', marginBottom: '10px' }}>Links</h3>

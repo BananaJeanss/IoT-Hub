@@ -71,7 +71,11 @@ export default function DeleteConfirmationModal({
             <button type="button" onClick={onCancel} className="cancel-btn">
               Cancel
             </button>
-            <button type="submit" className="delete-btn" disabled={inputUsername !== username}>
+            <button
+              type="submit"
+              className="delete-btn-confirmation"
+              disabled={inputUsername !== username}
+            >
               Delete my account
             </button>
           </div>

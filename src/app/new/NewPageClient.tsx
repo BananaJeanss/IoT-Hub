@@ -71,7 +71,7 @@ export default function NewPageClient() {
         </div>
       </div>
       <div id="content">
-        <div className="content-container">
+        <div className="content-container-newpost">
           <TypeSelector onTypeSelection={handleTypeSelection} />
         </div>
       </div>

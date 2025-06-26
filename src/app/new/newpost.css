@@ -4,7 +4,7 @@
   }
 }
 
-.content-container {
+.content-container-newpost {
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -905,7 +905,7 @@
 }
 
 @media (width <=768px) {
-  .content-container {
+  .content-container-newpost {
     padding: 16px;
   }
 

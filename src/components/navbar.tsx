@@ -42,10 +42,18 @@ export default function Navbar() {
         <Link href="/">
           <Image src="/assets/logow.png" alt="Logo" width={64} height={64} />
         </Link>
-        <Link href="/explore">Explore</Link>
-        <Link href="/projects">Projects</Link>
-        <Link href="/guides">Guides</Link>
-        <Link href="/community">Community</Link>
+        <Link href="/explore" className="underline-effect">
+          Explore
+        </Link>
+        <Link href="/projects" className="underline-effect">
+          Projects
+        </Link>
+        <Link href="/guides" className="underline-effect">
+          Guides
+        </Link>
+        <Link href="/community" className="underline-effect">
+          Community
+        </Link>
       </div>
       <button
         id="navbar-toggle"

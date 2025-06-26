@@ -54,11 +54,12 @@ export const authOptions: NextAuthOptions = {
       if (session.user && token.email) {
         const dbUser = await prisma.user.findUnique({
           where: { email: token.email as string },
-          select: { image: true, username: true },
+          select: { image: true, username: true, isEmailVerified: true },
         });
         if (dbUser) {
           session.user.image = dbUser.image;
           session.user.name = dbUser.username;
+          session.user.isEmailVerified = !!dbUser.isEmailVerified;
         }
       }
       return {

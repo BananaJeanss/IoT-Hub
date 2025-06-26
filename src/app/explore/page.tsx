@@ -16,7 +16,7 @@ export default function CommunityPage() {
             <Image src="/assets/logow.png" height={150} width={150} alt="" />
           </div>
           <div id="right-half">
-            <div className="glow-bg cyan"></div>
+            <div className="glow-bg purple"></div>
             <h1>Explore</h1>
             <p>Explore recently uploaded, highest rated, or upcoming projects. </p>
           </div>
